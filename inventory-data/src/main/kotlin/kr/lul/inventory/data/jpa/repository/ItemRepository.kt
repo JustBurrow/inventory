@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository
  * @since 2019-07-06
  */
 @Repository
-interface ItemRepository : JpaRepository<Long, ItemEntity>
+interface ItemRepository : JpaRepository<ItemEntity, Long>

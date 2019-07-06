@@ -48,7 +48,10 @@ subprojects {
             mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
         }
 
-        dependencies { }
+        dependencies {
+            dependency("org.apache.commons:commons-lang3:3.9")
+            dependency("com.willowtreeapps.assertk:assertk-jvm:0.17")
+        }
     }
 
     dependencies {
@@ -57,8 +60,6 @@ subprojects {
 
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-        testImplementation("org.jetbrains.kotlin:kotlin-test")
-        testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
     }
 
