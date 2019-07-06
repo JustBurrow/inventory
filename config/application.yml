@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    jdbc-url: jdbc:mysql://localhost/inventory?connectionCollation=utf8mb4_bin&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: ''
+    maximum-pool-size: 1
+  jpa:
+    show-sql: false
+    open-in-view=: false
+    properties:
+      hibernate:
+        show_sql: false
+logging:
+  level:
+    root: warn
+    org.hibernate.SQL: debug
+    kr.lul.inventory: trace
