@@ -1,27 +1,19 @@
+import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    id("org.springframework.boot") version "2.1.6.RELEASE"
+    val kotlinVersion = "1.3.41"
+    val springVersion = "2.1.6.RELEASE"
+
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.spring") version kotlinVersion apply false
+    id("org.jetbrains.kotlin.plugin.jpa") version kotlinVersion apply false
+
+    id("org.springframework.boot") version springVersion
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
 
-    kotlin("jvm") version "1.3.41"
-    kotlin("plugin.jpa") version "1.3.41"
-    kotlin("plugin.spring") version "1.3.41"
-}
-
-group = "kr.lul.inventory"
-version = "0.0.1.SNAPSHOT"
-
-java.sourceCompatibility = JavaVersion.VERSION_12
-
-val developmentOnly by configurations.creating
-configurations {
-    runtimeClasspath {
-        extendsFrom(developmentOnly)
-    }
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
+    idea
 }
 
 repositories {
@@ -29,12 +21,55 @@ repositories {
     jcenter()
 }
 
-dependencies {
+allprojects {
+    group = "kr.lul.inventory"
+    version = "0.0.1.SNAPSHOT"
+
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "1.8"
+subprojects {
+    apply(plugin = "kotlin")
+    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    the<DependencyManagementExtension>().apply {
+        imports {
+            mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+        }
+
+        dependencies { }
+    }
+
+    dependencies {
+        implementation(kotlin("reflect"))
+        implementation(kotlin("stdlib-jdk8"))
+
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+        testImplementation("org.jetbrains.kotlin:kotlin-test")
+        testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "1.8"
+        }
+    }
+
+    tasks.withType<Jar> {
+        enabled = true
+    }
+
+    tasks.withType<BootJar> {
+        enabled = false
     }
 }
