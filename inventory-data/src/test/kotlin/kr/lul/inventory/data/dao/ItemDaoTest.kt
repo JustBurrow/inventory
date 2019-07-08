@@ -1,4 +1,4 @@
-package kr.lul.inventory.data.jpa.repository
+package kr.lul.inventory.data.dao
 
 import kr.lul.inventory.data.DataModuleTestConfiguration
 import kr.lul.inventory.design.domain.Item
@@ -9,56 +9,47 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.test.context.ContextConfiguration
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * @author justburrow
- * @since 2019-07-06
+ * @since 2019-07-07
  */
 @RunWith(SpringRunner::class)
-@DataJpaTest
-@ContextConfiguration(classes = [DataModuleTestConfiguration::class])
-class ItemRepositoryTest {
-    private val log = LoggerFactory.getLogger(ItemRepositoryTest::class.java)
+//@DataJpaTest
+//@ContextConfiguration(classes = [DataModuleTestConfiguration::class])
+@SpringBootTest(classes = [DataModuleTestConfiguration::class])
+@Transactional
+class ItemDaoTest {
+    private val log = LoggerFactory.getLogger(ItemDaoTest::class.java)
 
     @Autowired
-    private lateinit var itemRepository: ItemRepository
-
+    private lateinit var itemDao: ItemDao
     @Autowired
     private lateinit var itemUtil: ItemDataUtil
 
     @Before
     fun setUp() {
-        assertThat(itemRepository).isNotNull
-        assertThat(itemUtil).isNotNull()
     }
 
     @Test
-    fun `test findAll()`() {
-        assertThat(itemRepository.findAll())
-                .isNotNull()
-                .isEmpty()
-    }
-
-    @Test
-    fun `test save() with random item`() {
+    fun `test create() with random item`() {
         // GIVEN
         val expected = itemUtil.random()
         val id = expected.getId()
         val key = expected.getKey()
         val label = expected.getLabel()
         val labelCode = expected.getLabelCode()
-        log.debug("GIVEN - item={}", expected)
+        log.debug("GIVEN - expected={}", expected)
 
         // WHEN
-        val actual = itemRepository.save(expected)
+        val actual = itemDao.create(expected)
         log.debug("WHEN - actual={}", actual)
 
         // THEN
         assertThat(actual)
-                .isNotNull
                 .extracting(Item.ATTR_KEY, Item.ATTR_LABEL, Item.ATTR_LABEL_CODE)
                 .containsSequence(key, label, labelCode)
         assertThat(actual.getId())

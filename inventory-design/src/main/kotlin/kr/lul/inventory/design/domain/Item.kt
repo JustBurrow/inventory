@@ -8,6 +8,7 @@ package kr.lul.inventory.design.domain
  */
 interface Item {
     companion object {
+        const val ATTR_ID = "id"
         const val ATTR_KEY = "key"
         const val ATTR_LABEL = "label"
         const val ATTR_LABEL_CODE = "labelCode"

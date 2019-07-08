@@ -33,6 +33,7 @@ allprojects {
 subprojects {
     apply(plugin = "kotlin")
     apply(plugin = "org.jetbrains.kotlin.kapt")
+    apply(plugin = "org.jetbrains.kotlin.plugin.allopen")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
 
     apply(plugin = "org.springframework.boot")

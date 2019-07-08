@@ -1,5 +1,4 @@
 apply(plugin = "org.jetbrains.kotlin.plugin.noarg")
-apply(plugin = "org.jetbrains.kotlin.plugin.allopen")
 apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
 
 dependencies {

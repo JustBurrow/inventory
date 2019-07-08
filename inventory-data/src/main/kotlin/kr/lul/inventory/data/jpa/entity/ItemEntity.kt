@@ -1,5 +1,11 @@
 package kr.lul.inventory.data.jpa.entity
 
+import kr.lul.inventory.data.jpa.mapping.ItemMapping.COL_ID
+import kr.lul.inventory.data.jpa.mapping.ItemMapping.COL_KEY
+import kr.lul.inventory.data.jpa.mapping.ItemMapping.COL_LABEL
+import kr.lul.inventory.data.jpa.mapping.ItemMapping.COL_LABEL_CODE
+import kr.lul.inventory.data.jpa.mapping.ItemMapping.ENTITY_NAME
+import kr.lul.inventory.data.jpa.mapping.ItemMapping.TABLE_NAME
 import kr.lul.inventory.design.domain.Item
 import kr.lul.inventory.design.domain.Item.Companion.KEY_MAX_LENGTH
 import kr.lul.inventory.design.domain.Item.Companion.validateKey
@@ -12,18 +18,18 @@ import javax.persistence.*
  * @author justburrow
  * @since 2019-07-06
  */
-@Entity(name = "Item")
-@Table(name = "master_item")
+@Entity(name = ENTITY_NAME)
+@Table(name = TABLE_NAME)
 class ItemEntity(key: String, label: String, labelCode: String) : Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = false, updatable = false)
+    @Column(name = COL_ID, nullable = false, insertable = false, updatable = false)
     private val id: Long = 0L
-    @Column(name = "key", length = KEY_MAX_LENGTH, nullable = false, updatable = false)
+    @Column(name = COL_KEY, length = KEY_MAX_LENGTH, nullable = false, updatable = false)
     private val key: String
-    @Column(name = "label", nullable = false)
+    @Column(name = COL_LABEL, nullable = false)
     private lateinit var label: String
-    @Column(name = "label_code", nullable = false)
+    @Column(name = COL_LABEL_CODE, nullable = false)
     private lateinit var labelCode: String
 
     init {

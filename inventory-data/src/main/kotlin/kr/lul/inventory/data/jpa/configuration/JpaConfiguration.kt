@@ -1,7 +1,6 @@
 package kr.lul.inventory.data.jpa.configuration
 
 import kr.lul.inventory.data.jpa.JpaAnchor
-import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
@@ -23,7 +22,7 @@ import javax.sql.DataSource
  */
 @Configuration
 @EnableJpaRepositories(basePackageClasses = [JpaAnchor::class])
-@EntityScan(basePackageClasses = [JpaAnchor::class])
+//@EntityScan(basePackageClasses = [JpaAnchor::class])
 @EnableTransactionManagement
 class JpaConfiguration {
     @Bean
@@ -39,6 +38,7 @@ class JpaConfiguration {
 
         val factory = LocalContainerEntityManagerFactoryBean()
         factory.dataSource = dataSource()
+        factory.setPackagesToScan(JpaAnchor.PACKAGE_NAME)
         factory.jpaVendorAdapter = adapter
 
         return factory
