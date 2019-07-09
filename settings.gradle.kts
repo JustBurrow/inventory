@@ -4,8 +4,10 @@ include(
         "inventory-design",
 
         "inventory-data",
-        "inventory-test-data",
-
         "inventory-business",
+
+        "inventory-dto",
+
+        "inventory-test-data",
         "inventory-test-business"
 )
