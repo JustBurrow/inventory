@@ -4,12 +4,15 @@ import kr.lul.inventory.data.jpa.entity.ItemEntity
 import kr.lul.inventory.design.domain.Item
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric
+import org.slf4j.LoggerFactory
 
 /**
  * @author justburrow
  * @since 2019-07-06
  */
 open class ItemDataUtil {
+    private val log = LoggerFactory.getLogger(ItemDataUtil::class.java)!!
+
     fun key(): String = "test.item.key.${randomAlphabetic(1)}${randomAlphanumeric(10, 20)}".toLowerCase()
 
     fun label(): String = randomAlphanumeric(1, Item.LABEL_MAX_LENGTH)

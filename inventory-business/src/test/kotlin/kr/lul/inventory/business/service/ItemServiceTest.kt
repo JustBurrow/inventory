@@ -19,9 +19,8 @@ import org.springframework.transaction.annotation.Transactional
 @RunWith(SpringRunner::class)
 @SpringBootTest(classes = [BusinessModuleTestConfiguration::class])
 @Transactional
-//@Rollback(false)
 class ItemServiceTest {
-    private val log = LoggerFactory.getLogger(ItemServiceTest::class.java)
+    private val log = LoggerFactory.getLogger(ItemServiceTest::class.java)!!
 
     @Autowired
     private lateinit var itemService: ItemService

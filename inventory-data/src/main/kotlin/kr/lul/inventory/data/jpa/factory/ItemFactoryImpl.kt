@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component
  * @since 2019-07-08
  */
 @Component
-class ItemFactoryImpl : ItemFactory {
+internal class ItemFactoryImpl : ItemFactory {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // kr.lul.inventory.design.factory.ItemFactory
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun getInstance(key: String, label: String, labelCode: String): Item = ItemEntity(key, label, labelCode)
 }

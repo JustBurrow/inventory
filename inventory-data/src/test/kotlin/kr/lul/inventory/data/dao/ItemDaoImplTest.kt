@@ -18,12 +18,10 @@ import org.springframework.transaction.annotation.Transactional
  * @since 2019-07-07
  */
 @RunWith(SpringRunner::class)
-//@DataJpaTest
-//@ContextConfiguration(classes = [DataModuleTestConfiguration::class])
 @SpringBootTest(classes = [DataModuleTestConfiguration::class])
 @Transactional
-class ItemDaoTest {
-    private val log = LoggerFactory.getLogger(ItemDaoTest::class.java)
+class ItemDaoImplTest {
+    private val log = LoggerFactory.getLogger(ItemDaoImplTest::class.java)!!
 
     @Autowired
     private lateinit var itemDao: ItemDao

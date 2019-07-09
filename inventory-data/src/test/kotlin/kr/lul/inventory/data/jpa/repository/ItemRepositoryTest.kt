@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @ContextConfiguration(classes = [DataModuleTestConfiguration::class])
 class ItemRepositoryTest {
-    private val log = LoggerFactory.getLogger(ItemRepositoryTest::class.java)
+    private val log = LoggerFactory.getLogger(ItemRepositoryTest::class.java)!!
 
     @Autowired
     private lateinit var itemRepository: ItemRepository
