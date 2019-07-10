@@ -620,3 +620,5 @@ buildNumber.properties
 *.patch
 *.diff
 
+### Project
+*.pid

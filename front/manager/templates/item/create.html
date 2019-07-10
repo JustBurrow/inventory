@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}">
+<head>
+    <meta name="author" content="justburrow" th:remove="all"/>
+    <meta name="since" content="2019-07-10 22:34" th:remove="all"/>
+    <meta charset="UTF-8"/>
+    <title>Create Form</title>
+</head>
+<body>
+<main>
+    <h1>Create Form</h1>
+    <!--/*@thymesVar id="createReq" type="kr.lul.inventory.web.manager.controller.request.CreateItemReq"*/-->
+    <form id="form-create" action="#" method="post"
+          th:action="@{/item}"></form>
+    <div th:object="${createReq}">
+        <div>
+            <label for="key">KEY</label>
+            <div>
+                <input id="key" form="form-create"
+                       required="required" minlength="1" maxlength="255"
+                       th:field="*{key}"
+                       th:minlength="${T(kr.lul.inventory.design.domain.Item).KEY_MIN_LENGTH}"
+                       th:maxlength="${T(kr.lul.inventory.design.domain.Item).KEY_MAX_LENGTH}"
+                       th:pattern="${T(kr.lul.inventory.design.domain.Item).KEY_PATTERN}"/>
+            </div>
+        </div>
+        <div>
+            <label for="label">LABEL</label>
+            <div>
+                <input id="label" form="form-create"
+                       required="required" minlength="1" maxlength="255"
+                       th:field="*{label}"
+                       th:minlength="${T(kr.lul.inventory.design.domain.Item).LABEL_MIN_LENGTH}"
+                       th:maxlength="${T(kr.lul.inventory.design.domain.Item).LABEL_MAX_LENGTH}"
+                       th:pattern="${T(kr.lul.inventory.design.domain.Item).LABEL_PATTERN}"/>
+            </div>
+        </div>
+        <div>
+            <label for="labelCode">LABEL CODE</label>
+            <div>
+                <input id="labelCode" form="form-create"
+                       required="required" minlength="1" maxlength="255"
+                       th:field="*{labelCode}"
+                       th:minlength="${T(kr.lul.inventory.design.domain.Item).LABEL_CODE_MIN_LENGTH}"
+                       th:maxlength="${T(kr.lul.inventory.design.domain.Item).LABEL_CODE_MAX_LENGTH}"
+                       th:pattern="${T(kr.lul.inventory.design.domain.Item).LABEL_CODE_PATTERN}"/>
+            </div>
+        </div>
+        <div>
+            <button form="form-create">SUBMIT</button>
+            <button type="reset" form="form-create">RESET</button>
+        </div>
+    </div>
+</main>
+</body>
+</html>

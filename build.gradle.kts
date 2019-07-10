@@ -52,6 +52,7 @@ subprojects {
         dependencies {
             dependency("org.apache.commons:commons-lang3:3.9")
             dependency("com.willowtreeapps.assertk:assertk-jvm:0.17")
+            dependency("io.github.jpenren:thymeleaf-spring-data-dialect:3.4.1")
         }
     }
 
