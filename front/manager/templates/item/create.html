@@ -5,6 +5,14 @@
     <meta name="author" content="justburrow" th:remove="all"/>
     <meta name="since" content="2019-07-10 22:34" th:remove="all"/>
     <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../../libs/bootstrap/css/bootstrap.css"
+          th:rel=""/>
+    <script src="../../libs/jquery/jquery.js"
+            th:href=""></script>
+    <script src="../../libs/popper/popper.js"
+            th:href=""></script>
+    <script src="../../libs/bootstrap/js/bootstrap.js"
+            th:href=""></script>
     <title>Create Form</title>
 </head>
 <body>
@@ -13,11 +21,14 @@
     <!--/*@thymesVar id="createReq" type="kr.lul.inventory.web.manager.controller.request.CreateItemReq"*/-->
     <form id="form-create" action="#" method="post"
           th:action="@{/item}"></form>
-    <div th:object="${createReq}">
-        <div>
-            <label for="key">KEY</label>
-            <div>
-                <input id="key" form="form-create"
+    <div class="container"
+         th:object="${createReq}">
+        <div class="form-group row">
+            <label class="col-form-label col-2"
+                   for="key">KEY</label>
+            <div class="col">
+                <input class="form-control"
+                       id="key" form="form-create"
                        required="required" minlength="1" maxlength="255"
                        th:field="*{key}"
                        th:minlength="${T(kr.lul.inventory.design.domain.Item).KEY_MIN_LENGTH}"
@@ -25,10 +36,12 @@
                        th:pattern="${T(kr.lul.inventory.design.domain.Item).KEY_PATTERN}"/>
             </div>
         </div>
-        <div>
-            <label for="label">LABEL</label>
-            <div>
-                <input id="label" form="form-create"
+        <div class="form-group row">
+            <label class="col-form-label col-2"
+                   for="label">LABEL</label>
+            <div class="col">
+                <input class="form-control"
+                       id="label" form="form-create"
                        required="required" minlength="1" maxlength="255"
                        th:field="*{label}"
                        th:minlength="${T(kr.lul.inventory.design.domain.Item).LABEL_MIN_LENGTH}"
@@ -36,10 +49,12 @@
                        th:pattern="${T(kr.lul.inventory.design.domain.Item).LABEL_PATTERN}"/>
             </div>
         </div>
-        <div>
-            <label for="labelCode">LABEL CODE</label>
-            <div>
-                <input id="labelCode" form="form-create"
+        <div class="form-group row">
+            <label class="col-form-label col-2"
+                   for="labelCode">LABEL CODE</label>
+            <div class="col">
+                <input class="form-control"
+                       id="labelCode" form="form-create"
                        required="required" minlength="1" maxlength="255"
                        th:field="*{labelCode}"
                        th:minlength="${T(kr.lul.inventory.design.domain.Item).LABEL_CODE_MIN_LENGTH}"
@@ -47,9 +62,9 @@
                        th:pattern="${T(kr.lul.inventory.design.domain.Item).LABEL_CODE_PATTERN}"/>
             </div>
         </div>
-        <div>
-            <button form="form-create">SUBMIT</button>
-            <button type="reset" form="form-create">RESET</button>
+        <div class="form-group">
+            <button class="btn btn-lg btn-primary" form="form-create">SUBMIT</button>
+            <button class="btn btn-lg btn-warning" type="reset" form="form-create">RESET</button>
         </div>
     </div>
 </main>
