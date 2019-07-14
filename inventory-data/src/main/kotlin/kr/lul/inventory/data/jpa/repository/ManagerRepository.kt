@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface ManagerRepository : JpaRepository<ManagerEntity, Int> {
+    fun existsByEmail(email: String): Boolean
+
+    fun existsByName(name: String): Boolean
 }

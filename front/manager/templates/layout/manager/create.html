@@ -33,7 +33,8 @@
                     <input id="create-email" class="form-control"
                            form="form-create-manager" name="email"
                            required="required"
-                           th:field="*{email}"/>
+                           th:field="*{email}"
+                           th:errorClass="is-invalid"/>
                 </div>
                 <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('email')}">
                     <li th:each="err : ${#fields.errors('email')}" th:text="${err}">err</li>
@@ -45,7 +46,8 @@
                     <input id="create-name" class="form-control"
                            form="form-create-manager" name="name"
                            required="required"
-                           th:field="*{name}"/>
+                           th:field="*{name}"
+                           th:errorClass="is-invalid"/>
                 </div>
                 <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('name')}">
                     <li th:each="err : ${#fields.errors('name')}" th:text="${err}">err</li>
@@ -57,7 +59,8 @@
                     <input type="password" id="create-secret" class="form-control"
                            form="form-create-manager" name="secret"
                            required="required"
-                           th:field="*{secret}"/>
+                           th:field="*{secret}"
+                           th:errorClass="is-invalid"/>
                 </div>
                 <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('secret')}">
                     <li th:each="err : ${#fields.errors('secret')}" th:text="${err}">err</li>
@@ -69,7 +72,8 @@
                     <input type="password" id="create-confirm" class="form-control"
                            form="form-create-manager" name="confirm"
                            required="required"
-                           th:field="*{confirm}"/>
+                           th:field="*{confirm}"
+                           th:errorClass="is-invalid"/>
                 </div>
                 <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('confirm')}">
                     <li th:each="err : ${#fields.errors('confirm')}" th:text="${err}">err</li>

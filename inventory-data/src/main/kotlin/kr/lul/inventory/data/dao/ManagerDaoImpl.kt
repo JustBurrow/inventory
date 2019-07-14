@@ -4,7 +4,10 @@ import kr.lul.inventory.data.jpa.entity.ManagerCredentialEntity
 import kr.lul.inventory.data.jpa.entity.ManagerEntity
 import kr.lul.inventory.data.jpa.repository.ManagerCredentialRepository
 import kr.lul.inventory.data.jpa.repository.ManagerRepository
+import kr.lul.inventory.design.domain.AttributeValidationException
 import kr.lul.inventory.design.domain.Manager
+import kr.lul.inventory.design.domain.Manager.Companion.ATTR_EMAIL
+import kr.lul.inventory.design.domain.Manager.Companion.ATTR_NAME
 import kr.lul.inventory.design.domain.ManagerCredential
 import kr.lul.inventory.design.util.Assertion.`is`
 import org.slf4j.LoggerFactory
@@ -28,6 +31,12 @@ internal class ManagerDaoImpl : ManagerDao {
             log.trace("args : manager={}", manager)
 
         `is`(manager, ManagerEntity::class, "manager")
+
+        if (managerRepository.existsByEmail(manager.getEmail()))
+            throw AttributeValidationException(ATTR_EMAIL, manager.getEmail(), "used $ATTR_EMAIL.")
+        else if (managerRepository.existsByName(manager.getName()))
+            throw AttributeValidationException(ATTR_NAME, manager.getName(), "used $ATTR_NAME.")
+
 
         val saved = managerRepository.save(manager as ManagerEntity)
 
