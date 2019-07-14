@@ -3,5 +3,5 @@ dependencies {
     implementation(project(":inventory-business"))
     implementation(project(":inventory-test-data"))
 
-    implementation("org.springframework.boot:spring-boot-starter-logging")
+    implementation("org.springframework.boot:spring-boot-starter")
 }
