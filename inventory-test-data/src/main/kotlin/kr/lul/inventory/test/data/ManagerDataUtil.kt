@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.util.concurrent.ThreadLocalRandom.current
 
-class ManagerDataUtil {
+open class ManagerDataUtil {
     private val log = LoggerFactory.getLogger(ManagerDataUtil::class.java)!!
 
     fun name(): String {
@@ -30,7 +30,7 @@ class ManagerDataUtil {
         var email: String
 
         do {
-            email = "${randomAlphabetic(1)}${randomAlphanumeric(0, EMAIL_MAX_LENGTH / 2 - 1)}@test"
+            email = "${randomAlphabetic(1)}${randomAlphanumeric(0, EMAIL_MAX_LENGTH / 2 - 1)}@test".toLowerCase()
             log.trace("email='{}'", email)
         } while (!isValidEmail(email))
 

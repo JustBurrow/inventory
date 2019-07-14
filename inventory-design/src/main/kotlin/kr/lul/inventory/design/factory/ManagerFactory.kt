@@ -8,5 +8,5 @@ import java.time.Instant
  * @since 2019-07-14
  */
 interface ManagerFactory {
-    fun getInstance(name: String, email: String, createdAt: Instant): Manager
+    fun instance(email: String, name: String, createdAt: Instant): Manager
 }

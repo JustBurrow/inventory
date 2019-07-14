@@ -15,7 +15,7 @@ interface Manager {
         const val ATTR_UPDATED_AT = "updatedAt"
 
         const val EMAIL_MAX_LENGTH = 128
-        const val EMAIL_PATTERN = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)*[\\w]+[\\w]$"
+        const val EMAIL_PATTERN = "^[a-z\\d._.%+-]+@([a-z\\d.-]+\\.)*[a-z]{2,6}$"
         val EMAIL_REGEX = EMAIL_PATTERN.toRegex()
 
         fun isValidEmail(email: String) = email.length in 1..EMAIL_MAX_LENGTH
