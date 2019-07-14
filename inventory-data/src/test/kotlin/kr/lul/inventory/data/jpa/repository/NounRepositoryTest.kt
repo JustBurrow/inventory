@@ -1,10 +1,9 @@
 package kr.lul.inventory.data.jpa.repository
 
 import kr.lul.inventory.data.DataModuleTestConfiguration
-import kr.lul.inventory.design.domain.Item
-import kr.lul.inventory.test.data.ItemTestUtil
+import kr.lul.inventory.design.domain.Noun
+import kr.lul.inventory.test.data.NounDataUtil
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
@@ -20,46 +19,39 @@ import org.springframework.test.context.junit4.SpringRunner
 @RunWith(SpringRunner::class)
 @DataJpaTest
 @ContextConfiguration(classes = [DataModuleTestConfiguration::class])
-class ItemRepositoryTest {
-    private val log = LoggerFactory.getLogger(ItemRepositoryTest::class.java)
+class NounRepositoryTest {
+    private val log = LoggerFactory.getLogger(NounRepositoryTest::class.java)!!
 
     @Autowired
-    private lateinit var itemRepository: ItemRepository
+    private lateinit var nounRepository: NounRepository
 
     @Autowired
-    private lateinit var itemUtil: ItemTestUtil
-
-    @Before
-    fun setUp() {
-        assertThat(itemRepository).isNotNull
-        assertThat(itemUtil).isNotNull()
-    }
+    private lateinit var nounDataUtil: NounDataUtil
 
     @Test
     fun `test findAll()`() {
-        assertThat(itemRepository.findAll())
-                .isNotNull()
+        assertThat(nounRepository.findAll())
                 .isEmpty()
     }
 
     @Test
-    fun `test save() with random item`() {
+    fun `test save() with random Noun instance`() {
         // GIVEN
-        val expected = itemUtil.random()
+        val expected = nounDataUtil.random()
         val id = expected.getId()
         val key = expected.getKey()
         val label = expected.getLabel()
         val labelCode = expected.getLabelCode()
-        log.debug("GIVEN - item={}", expected)
+        log.debug("GIVEN - noun={}", expected)
 
         // WHEN
-        val actual = itemRepository.save(expected)
+        val actual = nounRepository.save(expected)
         log.debug("WHEN - actual={}", actual)
 
         // THEN
         assertThat(actual)
                 .isNotNull
-                .extracting(Item.ATTR_KEY, Item.ATTR_LABEL, Item.ATTR_LABEL_CODE)
+                .extracting(Noun.ATTR_KEY, Noun.ATTR_LABEL, Noun.ATTR_LABEL_CODE)
                 .containsSequence(key, label, labelCode)
         assertThat(actual.getId())
                 .isGreaterThan(0L)

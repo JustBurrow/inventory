@@ -1,8 +1,8 @@
 spring:
-  datasource:
-    jdbc-url: jdbc:mysql://localhost/inventory?connectionCollation=utf8mb4_bin&allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: ''
+  datasource.hikari:
+    jdbc-url: jdbc:mysql://localhost:3306/inventory?allowPublicKeyRetrieval=true
+    username: test
+    password: 'HU]iaet]zE}p6QJY88QHd9*Cb3VJR^Mcoxqax9dr7QLMGA3/{Drn,AJ]c9=zWMD6'
     maximum-pool-size: 1
   jpa:
     show-sql: false
@@ -10,7 +10,12 @@ spring:
     properties:
       hibernate:
         show_sql: false
+  thymeleaf:
+    cache: false
+    prefix: file:./front/templates/
 logging:
+  pattern:
+    console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%t]){faint} %clr(%logger#%M L.%line){cyan} %clr(:){faint} %m%n%wEx'
   level:
     root: warn
     org.hibernate.SQL: debug

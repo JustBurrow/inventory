@@ -1,0 +1,15 @@
+spring:
+  datasource.hikari:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: false
+    open-in-view=: false
+    properties:
+      hibernate:
+        show_sql: false
+  thymeleaf:
+    cache: false
+    prefix: file:./front/templates/
+logging:
+  level:
+    root: warn

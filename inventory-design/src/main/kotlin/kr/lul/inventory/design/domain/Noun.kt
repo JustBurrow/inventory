@@ -1,13 +1,14 @@
 package kr.lul.inventory.design.domain
 
 /**
- * 인벤토리에서 관리하는 아이템.
+ * 추사화한 아이템 정보. 유저는 소유할 수 없다.
  *
  * @author justburrow
  * @since 2019-07-06
  */
-interface Item {
+interface Noun {
     companion object {
+        const val ATTR_ID = "id"
         const val ATTR_KEY = "key"
         const val ATTR_LABEL = "label"
         const val ATTR_LABEL_CODE = "labelCode"
@@ -37,6 +38,9 @@ interface Item {
             }
         }
 
+        fun isValidKey(key: String): Boolean = key.length in KEY_MIN_LENGTH..KEY_MAX_LENGTH
+                && key.matches(KEY_REGEX)
+
         const val LABEL_MIN_LENGTH = 1
         const val LABEL_MAX_LENGTH = 255
         const val LABEL_PATTERN = "\\S(.*\\S)?"
@@ -62,6 +66,9 @@ interface Item {
             }
         }
 
+        fun isValidLabel(label: String) = label.length in LABEL_MIN_LENGTH..LABEL_MAX_LENGTH
+                && label.matches(LABEL_REGEX)
+
         const val LABEL_CODE_MIN_LENGTH = 1
         const val LABEL_CODE_MAX_LENGTH = 255
         const val LABEL_CODE_PATTERN = "([a-z][a-z\\d]*\\.)*[a-z][a-z\\d]*"
@@ -86,6 +93,9 @@ interface Item {
                 throw AttributeValidationException(ATTR_LABEL_CODE, msg)
             }
         }
+
+        fun isValidLabelCode(labelCode: String) = labelCode.length in LABEL_CODE_MIN_LENGTH..LABEL_CODE_MAX_LENGTH
+                && labelCode.matches(LABEL_REGEX)
     }
 
     /**
