@@ -76,6 +76,6 @@ class NounEntity(key: String, label: String, labelCode: String) : Noun {
     }
 
     override fun toString(): String {
-        return "NounEntity(id=$id, key='$key', label='$label', labelCode='$labelCode')"
+        return "${NounEntity::class.simpleName}(id=$id, key='$key', label='$label', labelCode='$labelCode')"
     }
 }

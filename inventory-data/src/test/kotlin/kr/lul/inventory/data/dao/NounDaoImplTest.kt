@@ -1,7 +1,9 @@
 package kr.lul.inventory.data.dao
 
 import kr.lul.inventory.data.DataModuleTestConfiguration
-import kr.lul.inventory.design.domain.Noun
+import kr.lul.inventory.design.domain.Noun.Companion.ATTR_KEY
+import kr.lul.inventory.design.domain.Noun.Companion.ATTR_LABEL
+import kr.lul.inventory.design.domain.Noun.Companion.ATTR_LABEL_CODE
 import kr.lul.inventory.test.data.NounDataUtil
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -48,7 +50,7 @@ class NounDaoImplTest {
 
         // THEN
         assertThat(actual)
-                .extracting(Noun.ATTR_KEY, Noun.ATTR_LABEL, Noun.ATTR_LABEL_CODE)
+                .extracting(ATTR_KEY, ATTR_LABEL, ATTR_LABEL_CODE)
                 .containsSequence(key, label, labelCode)
         assertThat(actual.getId())
                 .isGreaterThan(0L)
