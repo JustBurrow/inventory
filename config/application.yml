@@ -12,7 +12,7 @@ spring:
         show_sql: false
   thymeleaf:
     cache: false
-    prefix: file:./front/manager/templates/
+    prefix: file:./front/templates/
 logging:
   pattern:
     console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%t]){faint} %clr(%logger#%M L.%line){cyan} %clr(:){faint} %m%n%wEx'

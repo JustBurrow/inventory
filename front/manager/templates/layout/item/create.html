@@ -5,18 +5,25 @@
     <meta name="author" content="justburrow" th:remove="all"/>
     <meta name="since" content="2019-07-10 22:34" th:remove="all"/>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="../../libs/bootstrap/css/bootstrap.css"
-          th:rel=""/>
-    <script src="../../libs/jquery/jquery.js"
-            th:href=""></script>
-    <script src="../../libs/popper/popper.js"
-            th:href=""></script>
-    <script src="../../libs/bootstrap/js/bootstrap.js"
-            th:href=""></script>
+    <link rel="stylesheet" href="../../../libs/bootstrap/css/bootstrap.css"
+          th:href="@{/libs/bootstrap/css/bootstrap.css}"/>
+    <link rel="stylesheet" href="../../../assets/css/inventory.css"
+          th:href="@{/assets/css/inventory.css}"/>
+    <script src="../../../libs/jquery/jquery.js"
+            th:href="@{/libs/jquery/jquery.js}"></script>
+    <script src="../../../libs/popper/popper.js"
+            th:href="@{/libs/popper/popper.js}"></script>
+    <script src="../../../libs/bootstrap/js/bootstrap.js"
+            th:href="@{/libs/bootstrap/js/bootstrap.js}"></script>
+    <script src="../../../assets/js/inventory.js"
+            th:href="@{/assets/js/inventory.js}"></script>
     <title>Create Form</title>
 </head>
 <body>
-<main>
+<header th:replace="component/navbar :: delegator()">
+    navbar
+</header>
+<main class="container">
     <h1>Create Form</h1>
     <!--/*@thymesVar id="createReq" type="kr.lul.inventory.web.manager.controller.request.CreateItemReq"*/-->
     <form id="form-create" action="#" method="post"
@@ -25,10 +32,10 @@
          th:object="${createReq}">
         <div class="form-group row">
             <label class="col-form-label col-2"
-                   for="key">KEY</label>
+                   for="input-create-key">KEY</label>
             <div class="col">
-                <input class="form-control"
-                       id="key" form="form-create"
+                <input id="input-create-key" class="form-control"
+                       form="form-create"
                        required="required" minlength="1" maxlength="255"
                        th:field="*{key}"
                        th:minlength="${T(kr.lul.inventory.design.domain.Item).KEY_MIN_LENGTH}"
@@ -38,10 +45,10 @@
         </div>
         <div class="form-group row">
             <label class="col-form-label col-2"
-                   for="label">LABEL</label>
+                   for="input-create-label">LABEL</label>
             <div class="col">
-                <input class="form-control"
-                       id="label" form="form-create"
+                <input id="input-create-label" class="form-control"
+                       form="form-create"
                        required="required" minlength="1" maxlength="255"
                        th:field="*{label}"
                        th:minlength="${T(kr.lul.inventory.design.domain.Item).LABEL_MIN_LENGTH}"
@@ -51,10 +58,10 @@
         </div>
         <div class="form-group row">
             <label class="col-form-label col-2"
-                   for="labelCode">LABEL CODE</label>
+                   for="input-create-label-code">LABEL CODE</label>
             <div class="col">
-                <input class="form-control"
-                       id="labelCode" form="form-create"
+                <input id="input-create-label-code" class="form-control"
+                       form="form-create"
                        required="required" minlength="1" maxlength="255"
                        th:field="*{labelCode}"
                        th:minlength="${T(kr.lul.inventory.design.domain.Item).LABEL_CODE_MIN_LENGTH}"

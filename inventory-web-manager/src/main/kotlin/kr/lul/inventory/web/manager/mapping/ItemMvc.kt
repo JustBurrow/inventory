@@ -10,14 +10,14 @@ object ItemMvc {
     }
 
     object V {
-        const val PREFIX = "item/"
+        const val PREFIX = "layout/item"
 
-        const val CREATE_FORM = "${PREFIX}create"
+        const val CREATE_FORM = "$PREFIX/create"
     }
 
     object C {
+        const val GROUP = "/items"
 
-        const val GROUP = "/item"
         const val API_CREATE_FORM = "/create"
         const val API_CREATE = ""
 
