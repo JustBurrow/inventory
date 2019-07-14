@@ -27,7 +27,45 @@
     <h1 class="h1">Index</h1>
     <div class="row">
         <div class="col">
-            signup
+            <form id="form-signup" action="index.html" method="post"
+                  th:action="@{/signup}"></form>
+            <div class="container">
+                <div class="row">
+                    <label class="col-form-label col-2" for="create-email">E-Mail</label>
+                    <div class="col">
+                        <input id="create-email" class="form-control"
+                               form="form-signup" name="email"
+                               required="required"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-form-label col-2" for="create-name">Name</label>
+                    <div class="col">
+                        <input id="create-name" class="form-control"
+                               form="form-signup" name="name"
+                               required="required"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-form-label col-2" for="create-secret">Password</label>
+                    <div class="col">
+                        <input type="password" id="create-secret" class="form-control"
+                               form="form-signup" name="secret"
+                               required="required"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-form-label" for="create-confirm">PW Confirm</label>
+                    <div class="col">
+                        <input type="password" id="create-confirm" class="form-control"
+                               form="form-signup" name="confirm"
+                               required="required"/>
+                    </div>
+                </div>
+                <div class="">
+                    <button form="form-signup" class="btn btn-primary">SIGN-UP</button>
+                </div>
+            </div>
         </div>
         <div class="col">
             signin

@@ -27,7 +27,7 @@ internal class NounConverterImpl : NounConverter {
         val dto = when (type) {
             NounDetailDto::class -> detail(noun) as T
             NounSimpleDto::class -> simple(noun) as T
-            else -> throw IllegalArgumentException()
+            else -> throw IllegalArgumentException("unsupported type : $type")
         }
 
         if (log.isTraceEnabled) log.trace("return : {}", dto)
