@@ -6,6 +6,7 @@ import kr.lul.inventory.design.domain.Manager.Companion.NAME_MAX_LENGTH
 import kr.lul.inventory.design.domain.Manager.Companion.NAME_MIN_LENGTH
 import kr.lul.inventory.design.domain.Manager.Companion.isValidEmail
 import kr.lul.inventory.design.domain.Manager.Companion.isValidName
+import kr.lul.inventory.design.domain.ManagerCredential.Companion.SECRET_MIN_LENGTH
 import org.apache.commons.lang3.RandomStringUtils.*
 import org.slf4j.LoggerFactory
 import java.time.Instant
@@ -39,4 +40,7 @@ open class ManagerDataUtil {
     }
 
     fun random() = ManagerEntity(email(), name(), Instant.now())
+
+
+    fun secret() = random(current().nextInt(SECRET_MIN_LENGTH, 4 * SECRET_MIN_LENGTH))
 }

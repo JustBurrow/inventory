@@ -1,8 +1,11 @@
 package kr.lul.inventory.data.dao
 
+import kr.lul.inventory.data.jpa.entity.ManagerCredentialEntity
 import kr.lul.inventory.data.jpa.entity.ManagerEntity
+import kr.lul.inventory.data.jpa.repository.ManagerCredentialRepository
 import kr.lul.inventory.data.jpa.repository.ManagerRepository
 import kr.lul.inventory.design.domain.Manager
+import kr.lul.inventory.design.domain.ManagerCredential
 import kr.lul.inventory.design.util.Assertion.`is`
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +17,8 @@ internal class ManagerDaoImpl : ManagerDao {
 
     @Autowired
     private lateinit var managerRepository: ManagerRepository
+    @Autowired
+    private lateinit var managerCredentialRepository: ManagerCredentialRepository
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // kr.lul.inventory.data.dao.ManagerDao
@@ -25,6 +30,18 @@ internal class ManagerDaoImpl : ManagerDao {
         `is`(manager, ManagerEntity::class, "manager")
 
         val saved = managerRepository.save(manager as ManagerEntity)
+
+        if (log.isTraceEnabled)
+            log.trace("return : {}", saved)
+        return saved
+    }
+
+    override fun create(credential: ManagerCredential): ManagerCredential {
+        if (log.isTraceEnabled)
+            log.trace("args : credential={}", credential)
+        `is`(credential, ManagerCredentialEntity::class, "manager")
+
+        val saved = managerCredentialRepository.save(credential as ManagerCredentialEntity)
 
         if (log.isTraceEnabled)
             log.trace("return : {}", saved)

@@ -1,6 +1,7 @@
 package kr.lul.inventory.data.dao
 
 import kr.lul.inventory.design.domain.Manager
+import kr.lul.inventory.design.domain.ManagerCredential
 
 /**
  * @author justburrow
@@ -8,4 +9,6 @@ import kr.lul.inventory.design.domain.Manager
  */
 interface ManagerDao {
     fun create(manager: Manager): Manager
+
+    fun create(credential: ManagerCredential): ManagerCredential
 }

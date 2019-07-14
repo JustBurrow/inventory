@@ -15,6 +15,8 @@ object ManagerMapping {
     const val COL_UPDATED_AT = "updated_utc"
 
     const val UQ_MANAGER_EMAIL = "UQ_MANAGER_EMAIL"
+    val UQ_MANAGER_EMAIL_COLUMNS = arrayOf(COL_EMAIL)
 
     const val UQ_MANAGER_NAME = "UQ_MANAGER_NAME"
+    val UQ_MANAGER_NAME_COLUMNS = arrayOf(COL_NAME)
 }

@@ -3,9 +3,11 @@ package kr.lul.inventory.business.service
 import kr.lul.inventory.business.service.params.CreateManagerParams
 import kr.lul.inventory.data.dao.ManagerDao
 import kr.lul.inventory.design.domain.Manager
+import kr.lul.inventory.design.factory.ManagerCredentialFactory
 import kr.lul.inventory.design.factory.ManagerFactory
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -17,6 +19,10 @@ internal class ManagerServiceImpl : ManagerService {
     private lateinit var managerDao: ManagerDao
     @Autowired
     private lateinit var managerFactory: ManagerFactory
+    @Autowired
+    private lateinit var managerCredentialFactory: ManagerCredentialFactory
+    @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // kr.lul.inventory.business.service.ManagerService
@@ -27,6 +33,11 @@ internal class ManagerServiceImpl : ManagerService {
 
         var manager = managerFactory.instance(params.email, params.name, Instant.now())
         manager = managerDao.create(manager)
+        listOf(params.email, params.name).forEach {
+            val credential = managerCredentialFactory.instance(manager, it,
+                    passwordEncoder.encode(params.secret), manager.getCreatedAt())
+            managerDao.create(credential)
+        }
 
         if (log.isTraceEnabled)
             log.trace("return : {}", manager)

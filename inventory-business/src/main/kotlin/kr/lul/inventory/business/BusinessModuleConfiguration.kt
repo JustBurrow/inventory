@@ -1,8 +1,10 @@
 package kr.lul.inventory.business
 
 import kr.lul.inventory.data.DataModuleAnchor
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 /**
  * @author justburrow
@@ -11,4 +13,6 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 @ComponentScan(basePackageClasses = [DataModuleAnchor::class])
 class BusinessModuleConfiguration {
+    @Bean
+    fun passwordEncoder() = BCryptPasswordEncoder()
 }
