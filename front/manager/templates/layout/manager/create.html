@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}">
+<head>
+    <meta name="author" content="justburrow" th:remove="all"/>
+    <meta name="since" content="2019-07-14 23:00" th:remove="all"/>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../../../libs/bootstrap/css/bootstrap.css"
+          th:href="@{/libs/bootstrap/css/bootstrap.css}"/>
+    <link rel="stylesheet" href="../../../assets/css/inventory.css"
+          th:href="@{/assets/css/inventory.css}"/>
+    <script src="../../../libs/jquery/jquery.js"
+            th:href="@{/libs/jquery/jquery.js}"></script>
+    <script src="../../../libs/popper/popper.js"
+            th:href="@{/libs/popper/popper.js}"></script>
+    <script src="../../../libs/bootstrap/js/bootstrap.js"
+            th:href="@{/libs/bootstrap/js/bootstrap.js}"></script>
+    <script src="../../../assets/js/inventory.js"
+            th:href="@{/assets/js/inventory.js}"></script>
+    <title>Create Manager</title>
+</head>
+<body>
+<main>
+    <h1>Create Manager</h1>
+    <div class="container">
+        <form id="form-create-manager" action="../_/index.html" method="post"
+              th:action="@{/managers}"></form>
+        <!--/*@thymesVar id="createManagerReq" type="kr.lul.inventory.web.manager.controller.request.CreateManagerReq"*/-->
+        <div th:object="${createManagerReq}">
+            <div class="row">
+                <label class="col-form-label col-2" for="create-email">E-Mail</label>
+                <div class="col">
+                    <input id="create-email" class="form-control"
+                           form="form-create-manager" name="email"
+                           required="required"
+                           th:field="*{email}"/>
+                </div>
+                <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('email')}">
+                    <li th:each="err : ${#fields.errors('email')}" th:text="${err}">err</li>
+                </ul>
+            </div>
+            <div class="row">
+                <label class="col-form-label col-2" for="create-name">Name</label>
+                <div class="col">
+                    <input id="create-name" class="form-control"
+                           form="form-create-manager" name="name"
+                           required="required"
+                           th:field="*{name}"/>
+                </div>
+                <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('name')}">
+                    <li th:each="err : ${#fields.errors('name')}" th:text="${err}">err</li>
+                </ul>
+            </div>
+            <div class="row">
+                <label class="col-form-label col-2" for="create-secret">Password</label>
+                <div class="col">
+                    <input type="password" id="create-secret" class="form-control"
+                           form="form-create-manager" name="secret"
+                           required="required"
+                           th:field="*{secret}"/>
+                </div>
+                <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('secret')}">
+                    <li th:each="err : ${#fields.errors('secret')}" th:text="${err}">err</li>
+                </ul>
+            </div>
+            <div class="row">
+                <label class="col-form-label col-2" for="create-confirm">PW Confirm</label>
+                <div class="col">
+                    <input type="password" id="create-confirm" class="form-control"
+                           form="form-create-manager" name="confirm"
+                           required="required"
+                           th:field="*{confirm}"/>
+                </div>
+                <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('confirm')}">
+                    <li th:each="err : ${#fields.errors('confirm')}" th:text="${err}">err</li>
+                </ul>
+            </div>
+            <div class="">
+                <button form="form-create-manager" class="btn btn-primary">SIGN-UP</button>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

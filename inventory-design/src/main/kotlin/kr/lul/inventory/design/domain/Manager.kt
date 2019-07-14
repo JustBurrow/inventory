@@ -33,7 +33,7 @@ interface Manager {
                 null
 
             if (null != msg) {
-                throw AttributeValidationException(ATTR_EMAIL, msg)
+                throw AttributeValidationException(ATTR_EMAIL, email, msg)
             }
         }
 
@@ -57,7 +57,7 @@ interface Manager {
                 null
 
             if (null != msg) {
-                throw AttributeValidationException(ATTR_NAME, msg)
+                throw AttributeValidationException(ATTR_NAME, name, msg)
             }
         }
     }

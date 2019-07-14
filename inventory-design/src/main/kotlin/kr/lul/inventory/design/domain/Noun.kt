@@ -34,7 +34,7 @@ interface Noun {
                 null
 
             if (null != msg) {
-                throw AttributeValidationException(ATTR_KEY, msg);
+                throw AttributeValidationException(ATTR_KEY, key, msg);
             }
         }
 
@@ -62,7 +62,7 @@ interface Noun {
                 null
 
             if (null != msg) {
-                throw AttributeValidationException(ATTR_LABEL, msg)
+                throw AttributeValidationException(ATTR_LABEL, label, msg)
             }
         }
 
@@ -90,7 +90,7 @@ interface Noun {
                 null
 
             if (null != msg) {
-                throw AttributeValidationException(ATTR_LABEL_CODE, msg)
+                throw AttributeValidationException(ATTR_LABEL_CODE, labelCode, msg)
             }
         }
 
