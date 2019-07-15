@@ -27,7 +27,7 @@ internal class NounServiceImpl : NounService {
     override fun create(params: CreateNounParams): Noun {
         if (log.isTraceEnabled) log.trace("args : params={}", params)
 
-        var noun = nounFactory.getInstance(params.key, params.label, params.labelCode)
+        var noun = nounFactory.instance(params.key, params.label, params.labelCode)
         noun = nounDao.create(noun)
 
         if (log.isTraceEnabled) log.trace("return : {}", noun)

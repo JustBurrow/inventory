@@ -13,5 +13,5 @@ class NounFactoryImpl : NounFactory {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // kr.lul.inventory.design.factory.NounFactory
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    override fun getInstance(key: String, label: String, labelCode: String) = NounEntity(key, label, labelCode)
+    override fun instance(key: String, label: String, labelCode: String) = NounEntity(key, label, labelCode)
 }

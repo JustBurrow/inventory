@@ -3,8 +3,9 @@ dependencies {
     implementation(project(":inventory-data"))
     implementation(project(":inventory-dto"))
 
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework:spring-tx")
+    api("org.springframework.boot:spring-boot-starter")
+    api("org.springframework.security:spring-security-core")
+    api("org.springframework:spring-tx")
 
     testImplementation(project(":inventory-test-business"))
 }

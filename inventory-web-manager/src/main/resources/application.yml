@@ -13,3 +13,4 @@ spring:
 logging:
   level:
     root: warn
+    org.hibernate.SQL: debug
