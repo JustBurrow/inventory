@@ -20,75 +20,107 @@
     <title>Create Manager</title>
 </head>
 <body>
-<header th:replace="component/navbar :: delegator()">
-    navbar
-</header>
-<div class="pt-3">
-    <main class="container container-fluid">
-        <h1>Create Manager</h1>
-        <div class="container">
-            <form id="form-create-manager" action="../_/index.html" method="post"
-                  th:action="@{/managers}"></form>
-            <!--/*@thymesVar id="createManagerReq" type="kr.lul.inventory.web.manager.controller.request.CreateManagerReq"*/-->
-            <div th:object="${createManagerReq}">
-                <div class="row">
-                    <label class="col-form-label col-2" for="create-email">E-Mail</label>
-                    <div class="col">
-                        <input id="create-email" class="form-control"
-                               form="form-create-manager" name="email"
-                               required="required"
-                               th:field="*{email}"
-                               th:errorClass="is-invalid"/>
-                    </div>
-                    <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('email')}">
-                        <li th:each="err : ${#fields.errors('email')}" th:text="${err}">err</li>
+<header class="position-fixed fixed-top" th:replace="component/navbar :: delegator">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="../_/index.html">Navbar</a>
+        <button class="navbar-toggler" type="button"
+                data-toggle="collapse" data-target="#global-navbar"
+                aria-controls="global-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="global-navbar" class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../../layout/manager/create.html">SIGN-UP</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../../layout/_/signin.html">SIGN-IN</a>
+                </li>
+            </ul>
+            <div id="global-navbar-anonymous" class="navbar-nav">
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false"
+                       href="#gnv-menu-anonymous"><span>Guest</span></a>
+                    <ul id="gnv-menu-anonymous" class="dropdown-menu dropdown-menu-right"
+                        aria-labelledby="global-navbar-manager">
+                        <li class="dropdown-item">
+                            <a class="btn btn-sm btn-link" href="../../layout/_/signin.html">SIGN-IN</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="btn btn-sm btn-link" href="../../layout/manager/create.html">SIGN-UP</a>
+                        </li>
                     </ul>
-                </div>
-                <div class="row">
-                    <label class="col-form-label col-2" for="create-name">Name</label>
-                    <div class="col">
-                        <input id="create-name" class="form-control"
-                               form="form-create-manager" name="name"
-                               required="required"
-                               th:field="*{name}"
-                               th:errorClass="is-invalid"/>
-                    </div>
-                    <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('name')}">
-                        <li th:each="err : ${#fields.errors('name')}" th:text="${err}">err</li>
-                    </ul>
-                </div>
-                <div class="row">
-                    <label class="col-form-label col-2" for="create-secret">Password</label>
-                    <div class="col">
-                        <input type="password" id="create-secret" class="form-control"
-                               form="form-create-manager" name="secret"
-                               required="required"
-                               th:field="*{secret}"
-                               th:errorClass="is-invalid"/>
-                    </div>
-                    <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('secret')}">
-                        <li th:each="err : ${#fields.errors('secret')}" th:text="${err}">err</li>
-                    </ul>
-                </div>
-                <div class="row">
-                    <label class="col-form-label col-2" for="create-confirm">PW Confirm</label>
-                    <div class="col">
-                        <input type="password" id="create-confirm" class="form-control"
-                               form="form-create-manager" name="confirm"
-                               required="required"
-                               th:field="*{confirm}"
-                               th:errorClass="is-invalid"/>
-                    </div>
-                    <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('confirm')}">
-                        <li th:each="err : ${#fields.errors('confirm')}" th:text="${err}">err</li>
-                    </ul>
-                </div>
-                <div class="">
-                    <button form="form-create-manager" class="btn btn-primary">SIGN-UP</button>
                 </div>
             </div>
         </div>
-    </main>
-</div>
+    </nav>
+</header>
+<main class="container container-fluid">
+    <h1>Create Manager</h1>
+    <div class="container">
+        <form id="form-create-manager" action="../_/index.html" method="post"
+              th:action="@{/managers}"></form>
+        <!--/*@thymesVar id="createManagerReq" type="kr.lul.inventory.web.manager.controller.request.CreateManagerReq"*/-->
+        <div th:object="${createManagerReq}">
+            <div class="row">
+                <label class="col-form-label col-2" for="create-email">E-Mail</label>
+                <div class="col">
+                    <input id="create-email" class="form-control"
+                           form="form-create-manager" name="email"
+                           required="required"
+                           th:field="*{email}"
+                           th:errorClass="is-invalid"/>
+                </div>
+                <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('email')}">
+                    <li th:each="err : ${#fields.errors('email')}" th:text="${err}">err</li>
+                </ul>
+            </div>
+            <div class="row">
+                <label class="col-form-label col-2" for="create-name">Name</label>
+                <div class="col">
+                    <input id="create-name" class="form-control"
+                           form="form-create-manager" name="name"
+                           required="required"
+                           th:field="*{name}"
+                           th:errorClass="is-invalid"/>
+                </div>
+                <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('name')}">
+                    <li th:each="err : ${#fields.errors('name')}" th:text="${err}">err</li>
+                </ul>
+            </div>
+            <div class="row">
+                <label class="col-form-label col-2" for="create-secret">Password</label>
+                <div class="col">
+                    <input type="password" id="create-secret" class="form-control"
+                           form="form-create-manager" name="secret"
+                           required="required"
+                           th:field="*{secret}"
+                           th:errorClass="is-invalid"/>
+                </div>
+                <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('secret')}">
+                    <li th:each="err : ${#fields.errors('secret')}" th:text="${err}">err</li>
+                </ul>
+            </div>
+            <div class="row">
+                <label class="col-form-label col-2" for="create-confirm">PW Confirm</label>
+                <div class="col">
+                    <input type="password" id="create-confirm" class="form-control"
+                           form="form-create-manager" name="confirm"
+                           required="required"
+                           th:field="*{confirm}"
+                           th:errorClass="is-invalid"/>
+                </div>
+                <ul class="alert alert-danger col-12" th:if="${#fields.hasErrors('confirm')}">
+                    <li th:each="err : ${#fields.errors('confirm')}" th:text="${err}">err</li>
+                </ul>
+            </div>
+            <div class="">
+                <button form="form-create-manager" class="btn btn-primary">SIGN-UP</button>
+            </div>
+        </div>
+    </div>
+</main>
 </body>
 </html>

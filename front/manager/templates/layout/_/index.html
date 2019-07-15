@@ -20,79 +20,77 @@
     <title>Index</title>
 </head>
 <body>
-<header th:replace="component/navbar :: delegator">
+<header class="position-fixed fixed-top" th:replace="component/navbar :: delegator">
     navbar
 </header>
-<div class="pt-3">
-    <main class="container container-fluid">
-        <h1 class="h1">Index</h1>
-        <div class="row">
-            <div class="col">
-                <form id="form-signup" action="index.html" method="post"
-                      th:action="@{/signup}"></form>
-                <div class="container">
-                    <div class="row">
-                        <label class="col-form-label col-2" for="create-email">E-Mail</label>
-                        <div class="col">
-                            <input id="create-email" class="form-control"
-                                   form="form-signup" name="email"
-                                   required="required"/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-form-label col-2" for="create-name">Name</label>
-                        <div class="col">
-                            <input id="create-name" class="form-control"
-                                   form="form-signup" name="name"
-                                   required="required"/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-form-label col-2" for="create-secret">Password</label>
-                        <div class="col">
-                            <input type="password" id="create-secret" class="form-control"
-                                   form="form-signup" name="secret"
-                                   required="required"/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-form-label" for="create-confirm">PW Confirm</label>
-                        <div class="col">
-                            <input type="password" id="create-confirm" class="form-control"
-                                   form="form-signup" name="confirm"
-                                   required="required"/>
-                        </div>
-                    </div>
-                    <div class="">
-                        <button form="form-signup" class="btn btn-primary">SIGN-UP</button>
+<main class="container container-fluid">
+    <h1 class="h1">Index</h1>
+    <div class="row">
+        <div class="col">
+            <form id="form-signup" action="index.html" method="post"
+                  th:action="@{/signup}"></form>
+            <div class="container">
+                <div class="row">
+                    <label class="col-form-label col-2" for="create-email">E-Mail</label>
+                    <div class="col">
+                        <input id="create-email" class="form-control"
+                               form="form-signup" name="email"
+                               required="required"/>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <form id="form-signin" class="hide" action="index.html" method="post"
-                      th:action="@{/signin}"></form>
-                <div class="container">
-                    <div class="row">
-                        <label class="col-form-label col-2" for="signin-username">ID</label>
-                        <div class="col">
-                            <input id="signin-username" class="form-control"
-                                   form="form-signin" name="username"/>
-                        </div>
+                <div class="row">
+                    <label class="col-form-label col-2" for="create-name">Name</label>
+                    <div class="col">
+                        <input id="create-name" class="form-control"
+                               form="form-signup" name="name"
+                               required="required"/>
                     </div>
-                    <div class="row">
-                        <label class="col-form-label col-2" for="signin-password">Password</label>
-                        <div class="col">
-                            <input type="password" id="signin-password" class="form-control"
-                                   form="form-signin" name="password"/>
-                        </div>
+                </div>
+                <div class="row">
+                    <label class="col-form-label col-2" for="create-secret">Password</label>
+                    <div class="col">
+                        <input type="password" id="create-secret" class="form-control"
+                               form="form-signup" name="secret"
+                               required="required"/>
                     </div>
-                    <div class="container">
-                        <button class="btn btn-primary" form="form-signin">SIGN-IN</button>
+                </div>
+                <div class="row">
+                    <label class="col-form-label" for="create-confirm">PW Confirm</label>
+                    <div class="col">
+                        <input type="password" id="create-confirm" class="form-control"
+                               form="form-signup" name="confirm"
+                               required="required"/>
                     </div>
+                </div>
+                <div class="">
+                    <button form="form-signup" class="btn btn-primary">SIGN-UP</button>
                 </div>
             </div>
         </div>
-    </main>
-</div>
+        <div class="col">
+            <form id="form-signin" class="hide" action="index.html" method="post"
+                  th:action="@{/signin}"></form>
+            <div class="container">
+                <div class="row">
+                    <label class="col-form-label col-2" for="signin-username">ID</label>
+                    <div class="col">
+                        <input id="signin-username" class="form-control"
+                               form="form-signin" name="username"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-form-label col-2" for="signin-password">Password</label>
+                    <div class="col">
+                        <input type="password" id="signin-password" class="form-control"
+                               form="form-signin" name="password"/>
+                    </div>
+                </div>
+                <div class="container">
+                    <button class="btn btn-primary" form="form-signin">SIGN-IN</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 </body>
 </html>

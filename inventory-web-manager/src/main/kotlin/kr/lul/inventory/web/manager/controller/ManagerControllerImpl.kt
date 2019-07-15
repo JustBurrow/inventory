@@ -4,6 +4,7 @@ import kr.lul.inventory.business.borderline.ManagerBorderline
 import kr.lul.inventory.business.borderline.cmd.CreateManagerCmd
 import kr.lul.inventory.design.domain.AttributeValidationException
 import kr.lul.inventory.web.manager.controller.request.CreateManagerReq
+import kr.lul.inventory.web.manager.mapping.IndexMvc
 import kr.lul.inventory.web.manager.mapping.ManagerMvc.M
 import kr.lul.inventory.web.manager.mapping.ManagerMvc.V
 import org.slf4j.LoggerFactory
@@ -37,21 +38,20 @@ internal class ManagerControllerImpl : ManagerController {
         return V.CREATE_FORM
     }
 
-    private fun doCreate(req: CreateManagerReq, result: BindingResult, model: Model): String {
-        return try {
-            managerBorderline.create(CreateManagerCmd(
-                    req.email!!,
-                    req.name!!,
-                    req.secret!!
-            ))
+    private fun doCreate(req: CreateManagerReq, result: BindingResult, model: Model): String =
+            try {
+                managerBorderline.create(CreateManagerCmd(
+                        req.email!!,
+                        req.name!!,
+                        req.secret!!
+                ))
 
-            "redirect:/"
-        } catch (e: AttributeValidationException) {
-            result.addError(FieldError(M.CREATE_MANAGER_REQ, e.attribute, e.value, false,
-                    arrayOf(), arrayOf(), e.message))
-            doCreateForm(model)
-        }
-    }
+                "redirect:${IndexMvc.C.FULL_API_SIGN_IN}"
+            } catch (e: AttributeValidationException) {
+                result.addError(FieldError(M.CREATE_MANAGER_REQ, e.attribute, e.value, false,
+                        arrayOf(), arrayOf(), e.message))
+                doCreateForm(model)
+            }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // kr.lul.inventory.web.manager.controller.ManagerController
@@ -68,12 +68,14 @@ internal class ManagerControllerImpl : ManagerController {
         if (log.isTraceEnabled)
             log.trace("args : req={}, result={}, model={}", req, result, model)
         validate(req, result)
+
         val template = if (result.hasErrors())
             doCreateForm(model)
         else
             doCreate(req, result, model)
 
-        if (log.isTraceEnabled) log.trace("result : template='{}', model={}", template, model)
+        if (log.isTraceEnabled)
+            log.trace("result : template='{}', model={}", template, model)
         return template
     }
 }

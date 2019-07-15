@@ -49,6 +49,7 @@ class WebSecurityConfiguration : WebSecurityConfigurerAdapter() {
                 .loginPage(IndexMvc.C.FULL_API_SIGN_IN)
                 .defaultSuccessUrl(IndexMvc.C.FULL_API_INDEX)
         http.logout()
+                .logoutUrl(IndexMvc.C.FULL_API_SIGN_OUT)
                 .logoutSuccessUrl(IndexMvc.C.FULL_API_INDEX)
 
         http.authorizeRequests()

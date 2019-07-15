@@ -1,5 +1,6 @@
 package kr.lul.inventory.web.manager.support
 
+import kr.lul.inventory.design.domain.Constants.Role
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import java.time.ZonedDateTime
@@ -12,7 +13,7 @@ class ManagerDetails(
         private val updatedAt: ZonedDateTime,
         password: String
 ) : User(name, password, true, true, true, true,
-        mutableListOf(SimpleGrantedAuthority("ROLE_MANAGER"))) {
+        mutableListOf(SimpleGrantedAuthority(Role.ROLE_MANAGER))) {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // java.lang.Object
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:lang="${#locale}">
 <head>
     <meta name="author" content="justburrow" th:remove="all"/>
@@ -12,7 +13,7 @@
     <title>Navbar</title>
 </head>
 <body>
-<header class="position-static" th:fragment="delegator()">
+<header class="position-fixed fixed-top" th:fragment="delegator()">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="navbar.html" th:href="@{/}">Navbar</a>
         <button class="navbar-toggler" type="button"
@@ -20,51 +21,36 @@
                 aria-controls="global-navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div id="global-navbar" class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li id="global-navbar-item-1" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"
-                       role="button" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false"
-                       href="#gnv-menu-noun">Noun</a>
-                    <ul id="gnv-menu-noun" class="dropdown-menu" aria-labelledby="global-navbar-item-1">
-                        <li class="dropdown-item">
-                            <a class="nav-link" href="../layout/noun/create.html"
-                               th:href="@{/nouns/create}">New</a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a class="nav-link" href="../layout/noun/index.html"
-                               th:href="@{/nouns}">List</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link">Dummy</a>
-                </li>
-            </ul>
+        <div sec:authorize="hasRole('ROLE_ANONYMOUS')" th:remove="tag">
+            <div th:replace="component/navbar/role_anonymous :: navbar">
+                ROLE_ANONYMOUS
+            </div>
+        </div>
+        <div sec:authorize="hasRole('ROLE_MANAGER')" th:remove="tag">
+            <div th:replace="component/navbar/role_manager :: navbar">
+                ROLE_MANAGER
+            </div>
         </div>
     </nav>
 </header>
-<div class="pt-3">
-    <main class="container">
-        <h1 class="h1">Navbar</h1>
-        <section>
-            <h2 class="h2">Guest</h2>
-            <div class="shadow">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="navbar/guest.html"></iframe>
-                </div>
+<main class="container container-fluid">
+    <h1 class="h1">Navbar</h1>
+    <section class="my-5">
+        <h2 class="h2">Anonymous(Guest)</h2>
+        <div class="shadow">
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="navbar/role_anonymous.html"></iframe>
             </div>
-        </section>
-        <section>
-            <h2 class="h2">Manager</h2>
-            <div class="shadow">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="navbar/manager.html"></iframe>
-                </div>
+        </div>
+    </section>
+    <section class="my-5">
+        <h2 class="h2">Manager</h2>
+        <div class="shadow">
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="navbar/role_manager.html"></iframe>
             </div>
-        </section>
-    </main>
-</div>
+        </div>
+    </section>
+</main>
 </body>
 </html>

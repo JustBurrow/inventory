@@ -20,39 +20,71 @@
     <title>Sign-In</title>
 </head>
 <body>
-<header th:replace="component/navbar :: delegator">
-    navbar
-</header>
-<div class="pt-3">
-    <main class="container container-fluid">
-        <h1 class="h1">Sign-In</h1>
-        <div class="container">
-            <p class="alert alert-danger"
-               th:if="${param.error}">Wrong ID or password.</p>
-            <form id="form-signin" class="hide"
-                  action="index.html" method="post"
-                  th:action="@{/signin}"></form>
-            <div class="row">
-                <label class="col-form-label col-2" for="input-username">ID</label>
-                <div class="col">
-                    <input id="input-username" class="form-control"
-                           form="form-signin" name="username"
-                           required="required"/>
+<header class="position-fixed fixed-top" th:replace="component/navbar :: delegator">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="../_/index.html">Navbar</a>
+        <button class="navbar-toggler" type="button"
+                data-toggle="collapse" data-target="#global-navbar"
+                aria-controls="global-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="global-navbar" class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../../layout/manager/create.html">SIGN-UP</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../../layout/_/signin.html">SIGN-IN</a>
+                </li>
+            </ul>
+            <div id="global-navbar-anonymous" class="navbar-nav">
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false"
+                       href="#gnv-menu-anonymous"><span>Guest</span></a>
+                    <ul id="gnv-menu-anonymous" class="dropdown-menu dropdown-menu-right"
+                        aria-labelledby="global-navbar-manager">
+                        <li class="dropdown-item">
+                            <a class="btn btn-sm btn-link" href="../../layout/_/signin.html">SIGN-IN</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="btn btn-sm btn-link" href="../../layout/manager/create.html">SIGN-UP</a>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-            <div class="row">
-                <label class="col-form-label col-2" for="input-password">PASSWORD</label>
-                <div class="col">
-                    <input type="password" id="input-password" class="form-control"
-                           form="form-signin" name="password"
-                           required="required"/>
-                </div>
-            </div>
-            <div>
-                <button form="form-signin" class="btn btn-primary">SIGN-IN</button>
             </div>
         </div>
-    </main>
-</div>
+    </nav>
+</header>
+<main class="container container-fluid">
+    <h1 class="h1">Sign-In</h1>
+    <div class="container">
+        <p class="alert alert-danger"
+           th:if="${param.error}">Wrong ID or password.</p>
+        <form id="form-signin" class="hide"
+              action="index.html" method="post"
+              th:action="@{/signin}"></form>
+        <div class="row">
+            <label class="col-form-label col-2" for="input-username">ID</label>
+            <div class="col">
+                <input id="input-username" class="form-control"
+                       form="form-signin" name="username"
+                       required="required"/>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-2" for="input-password">PASSWORD</label>
+            <div class="col">
+                <input type="password" id="input-password" class="form-control"
+                       form="form-signin" name="password"
+                       required="required"/>
+            </div>
+        </div>
+        <div>
+            <button form="form-signin" class="btn btn-primary">SIGN-IN</button>
+        </div>
+    </div>
+</main>
 </body>
 </html>

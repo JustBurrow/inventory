@@ -20,62 +20,60 @@
     <title>Create Form</title>
 </head>
 <body>
-<header th:replace="component/navbar :: delegator()">
+<header class="position-fixed fixed-top" th:replace="component/navbar :: delegator">
     navbar
 </header>
-<div class="pt-3">
-    <main class="container container-fluid">
-        <h1>Create Noun</h1>
-        <!--/*@thymesVar id="createNounReq" type="kr.lul.inventory.web.manager.controller.request.CreateItemReq"*/-->
-        <form id="form-create" action="#" method="post"
-              th:action="@{/nouns}"></form>
-        <div class="container"
-             th:object="${createNounReq}">
-            <div class="form-group row">
-                <label class="col-form-label col-2"
-                       for="input-create-key">KEY</label>
-                <div class="col">
-                    <input id="input-create-key" class="form-control"
-                           form="form-create"
-                           required="required" minlength="1" maxlength="255"
-                           th:field="*{key}"
-                           th:minlength="${T(kr.lul.inventory.design.domain.Noun).KEY_MIN_LENGTH}"
-                           th:maxlength="${T(kr.lul.inventory.design.domain.Noun).KEY_MAX_LENGTH}"
-                           th:pattern="${T(kr.lul.inventory.design.domain.Noun).KEY_PATTERN}"/>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-form-label col-2"
-                       for="input-create-label">LABEL</label>
-                <div class="col">
-                    <input id="input-create-label" class="form-control"
-                           form="form-create"
-                           required="required" minlength="1" maxlength="255"
-                           th:field="*{label}"
-                           th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_MIN_LENGTH}"
-                           th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_MAX_LENGTH}"
-                           th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_PATTERN}"/>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-form-label col-2"
-                       for="input-create-label-code">LABEL CODE</label>
-                <div class="col">
-                    <input id="input-create-label-code" class="form-control"
-                           form="form-create"
-                           required="required" minlength="1" maxlength="255"
-                           th:field="*{labelCode}"
-                           th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MIN_LENGTH}"
-                           th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MAX_LENGTH}"
-                           th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_PATTERN}"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-lg btn-primary" form="form-create">SUBMIT</button>
-                <button class="btn btn-lg btn-warning" type="reset" form="form-create">RESET</button>
+<main class="container container-fluid">
+    <h1>Create Noun</h1>
+    <!--/*@thymesVar id="createNounReq" type="kr.lul.inventory.web.manager.controller.request.CreateItemReq"*/-->
+    <form id="form-create" action="#" method="post"
+          th:action="@{/nouns}"></form>
+    <div class="container"
+         th:object="${createNounReq}">
+        <div class="form-group row">
+            <label class="col-form-label col-2"
+                   for="input-create-key">KEY</label>
+            <div class="col">
+                <input id="input-create-key" class="form-control"
+                       form="form-create"
+                       required="required" minlength="1" maxlength="255"
+                       th:field="*{key}"
+                       th:minlength="${T(kr.lul.inventory.design.domain.Noun).KEY_MIN_LENGTH}"
+                       th:maxlength="${T(kr.lul.inventory.design.domain.Noun).KEY_MAX_LENGTH}"
+                       th:pattern="${T(kr.lul.inventory.design.domain.Noun).KEY_PATTERN}"/>
             </div>
         </div>
-    </main>
-</div>
+        <div class="form-group row">
+            <label class="col-form-label col-2"
+                   for="input-create-label">LABEL</label>
+            <div class="col">
+                <input id="input-create-label" class="form-control"
+                       form="form-create"
+                       required="required" minlength="1" maxlength="255"
+                       th:field="*{label}"
+                       th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_MIN_LENGTH}"
+                       th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_MAX_LENGTH}"
+                       th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_PATTERN}"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-2"
+                   for="input-create-label-code">LABEL CODE</label>
+            <div class="col">
+                <input id="input-create-label-code" class="form-control"
+                       form="form-create"
+                       required="required" minlength="1" maxlength="255"
+                       th:field="*{labelCode}"
+                       th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MIN_LENGTH}"
+                       th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MAX_LENGTH}"
+                       th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_PATTERN}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-lg btn-primary" form="form-create">SUBMIT</button>
+            <button class="btn btn-lg btn-warning" type="reset" form="form-create">RESET</button>
+        </div>
+    </div>
+</main>
 </body>
 </html>
