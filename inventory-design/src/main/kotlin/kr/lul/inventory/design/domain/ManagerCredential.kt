@@ -35,7 +35,7 @@ interface ManagerCredential {
 
         fun isValidPublicKey(publicKey: String): Boolean {
             return publicKey.length in PUBLIC_KEY_MIN_LENGTH..PUBLIC_KEY_MAX_LENGTH
-                    && publicKey.matches(Manager.NAME_REGEX) && publicKey.matches(Manager.EMAIL_REGEX)
+                    && (publicKey.matches(Manager.NAME_REGEX) || publicKey.matches(Manager.EMAIL_REGEX))
         }
 
         @Throws(AttributeValidationException::class)
