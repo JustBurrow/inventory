@@ -3,8 +3,8 @@ dependencies {
     implementation(project(":inventory-dto"))
     implementation(project(":inventory-business"))
 
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("io.github.jpenren:thymeleaf-spring-data-dialect")
+    api("org.springframework.boot:spring-boot-starter-web")
+    api("org.springframework.boot:spring-boot-starter-thymeleaf")
+    api("io.github.jpenren:thymeleaf-spring-data-dialect")
     api("org.springframework.boot:spring-boot-starter-security")
 }

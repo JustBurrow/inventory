@@ -56,4 +56,15 @@ internal class ManagerDaoImpl : ManagerDao {
             log.trace("return : {}", saved)
         return saved
     }
+
+    override fun readCredential(publicKey: String): ManagerCredential? {
+        if (log.isTraceEnabled)
+            log.trace("args : publicKey='{}'", publicKey)
+
+        val credential = managerCredentialRepository.findOneByPublicKey(publicKey)
+
+        if (log.isTraceEnabled)
+            log.trace("return : {}", credential)
+        return credential
+    }
 }

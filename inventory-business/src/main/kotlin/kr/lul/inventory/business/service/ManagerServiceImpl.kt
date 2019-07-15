@@ -1,8 +1,10 @@
 package kr.lul.inventory.business.service
 
 import kr.lul.inventory.business.service.params.CreateManagerParams
+import kr.lul.inventory.business.service.params.SearchCredentialParams
 import kr.lul.inventory.data.dao.ManagerDao
 import kr.lul.inventory.design.domain.Manager
+import kr.lul.inventory.design.domain.ManagerCredential
 import kr.lul.inventory.design.factory.ManagerCredentialFactory
 import kr.lul.inventory.design.factory.ManagerFactory
 import org.slf4j.LoggerFactory
@@ -17,6 +19,7 @@ internal class ManagerServiceImpl : ManagerService {
 
     @Autowired
     private lateinit var managerDao: ManagerDao
+
     @Autowired
     private lateinit var managerFactory: ManagerFactory
     @Autowired
@@ -42,5 +45,19 @@ internal class ManagerServiceImpl : ManagerService {
         if (log.isTraceEnabled)
             log.trace("return : {}", manager)
         return manager
+    }
+
+    override fun search(params: SearchCredentialParams): ManagerCredential? {
+        if (log.isTraceEnabled)
+            log.trace("args : params={}", params)
+
+        val credential = if (ManagerCredential.isValidPublicKey(params.query))
+            managerDao.readCredential(params.query)
+        else
+            null
+
+        if (log.isTraceEnabled)
+            log.trace("return : {}", credential)
+        return credential
     }
 }
