@@ -21,5 +21,7 @@ object NounMvc {
         const val API_CREATE_FORM = "/create"
         const val API_CREATE = ""
 
+        const val FULL_API_CREATE_FORM = "$GROUP$API_CREATE_FORM"
+        const val FULL_API_CREATE = GROUP
     }
 }

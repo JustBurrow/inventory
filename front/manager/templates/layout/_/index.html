@@ -20,7 +20,7 @@
     <title>Index</title>
 </head>
 <body>
-<header th:replace="component/navbar :: delegator()">
+<header th:replace="component/navbar :: delegator">
     navbar
 </header>
 <main class="container container-fluid">
@@ -68,7 +68,27 @@
             </div>
         </div>
         <div class="col">
-            signin
+            <form id="form-signin" class="hide" action="index.html" method="post"
+                  th:action="@{/login}"></form>
+            <div class="container">
+                <div class="row">
+                    <label class="col-form-label col-2" for="signin-username">ID</label>
+                    <div class="col">
+                        <input id="signin-username" class="form-control"
+                               form="form-signin" name="username"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-form-label col-2" for="signin-password">Password</label>
+                    <div class="col">
+                        <input type="password" id="signin-password" class="form-control"
+                               form="form-signin" name="password"/>
+                    </div>
+                </div>
+                <div class="container">
+                    <button class="btn btn-primary" form="form-signin">SIGN-IN</button>
+                </div>
+            </div>
         </div>
     </div>
 </main>

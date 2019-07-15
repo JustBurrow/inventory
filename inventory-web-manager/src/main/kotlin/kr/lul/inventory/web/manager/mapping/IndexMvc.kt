@@ -16,9 +16,14 @@ object IndexMvc {
     }
 
     object C {
-        const val GROUP = "/"
+        const val GROUP = ""
 
-        const val API_INDEX = ""
+        const val API_INDEX = "/"
         const val API_SIGN_UP = "/signup"
+        const val API_SIGN_IN = "/signin"
+
+        const val FULL_API_INDEX = "$GROUP$API_INDEX"
+        const val FULL_API_SIGN_UP = "$GROUP$API_SIGN_UP"
+        const val FULL_API_SIGN_IN = "$GROUP$API_SIGN_IN"
     }
 }
