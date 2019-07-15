@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}">
+<head>
+    <meta name="author" content="justburrow" th:remove="all"/>
+    <meta name="since" content="2019-07-15 10:27" th:remove="all"/>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../../../libs/bootstrap/css/bootstrap.css"
+          th:href="@{/libs/bootstrap/css/bootstrap.css}"/>
+    <link rel="stylesheet" href="../../../assets/css/inventory.css"
+          th:href="@{/assets/css/inventory.css}"/>
+    <script src="../../../libs/jquery/jquery.js"
+            th:href="@{/libs/jquery/jquery.js}"></script>
+    <script src="../../../libs/popper/popper.js"
+            th:href="@{/libs/popper/popper.js}"></script>
+    <script src="../../../libs/bootstrap/js/bootstrap.js"
+            th:href="@{/libs/bootstrap/js/bootstrap.js}"></script>
+    <script src="../../../assets/js/inventory.js"
+            th:href="@{/assets/js/inventory.js}"></script>
+    <title>Sign-In</title>
+</head>
+<body>
+<header th:replace="component/navbar :: delegator">
+    navbar
+</header>
+<div class="pt-3">
+    <main class="container container-fluid">
+        <h1>Sign-In</h1>
+        <div>
+            <form id="form-signin" class="hide"
+                  action="index.html" method="post"
+                  th:action="@{/signin}"></form>
+            <div class="row">
+                <label class="col-form-label col-2" for="input-username">ID</label>
+                <div class="col">
+                    <input id="input-username" class="form-control"
+                           form="form-signin" name="username"
+                           required="required"/>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-form-label col-2" for="input-password">PASSWORD</label>
+                <div class="col">
+                    <input type="password" id="input-password" class="form-control"
+                           form="form-signin" name="password"
+                           required="required"/>
+                </div>
+            </div>
+            <div>
+                <button form="form-signin" class="btn btn-primary">SIGN-IN</button>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
