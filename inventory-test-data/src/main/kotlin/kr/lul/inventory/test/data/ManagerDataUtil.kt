@@ -1,5 +1,6 @@
 package kr.lul.inventory.test.data
 
+import kr.lul.inventory.data.jpa.entity.ManagerCredentialEntity
 import kr.lul.inventory.data.jpa.entity.ManagerEntity
 import kr.lul.inventory.design.domain.Manager.Companion.EMAIL_MAX_LENGTH
 import kr.lul.inventory.design.domain.Manager.Companion.NAME_MAX_LENGTH
@@ -9,11 +10,16 @@ import kr.lul.inventory.design.domain.Manager.Companion.isValidName
 import kr.lul.inventory.design.domain.ManagerCredential.Companion.SECRET_MIN_LENGTH
 import org.apache.commons.lang3.RandomStringUtils.*
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import java.time.Instant
 import java.util.concurrent.ThreadLocalRandom.current
 
 open class ManagerDataUtil {
     private val log = LoggerFactory.getLogger(ManagerDataUtil::class.java)!!
+
+    @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
 
     fun name(): String {
         var name: String
@@ -39,8 +45,20 @@ open class ManagerDataUtil {
         return email
     }
 
-    fun random() = ManagerEntity(email(), name(), Instant.now())
+    fun password() = random(current().nextInt(SECRET_MIN_LENGTH, 4 * SECRET_MIN_LENGTH))!!
 
+    fun manager() = ManagerEntity(email(), name(), Instant.now())
 
-    fun secret() = random(current().nextInt(SECRET_MIN_LENGTH, 4 * SECRET_MIN_LENGTH))
+    fun credential(nameAsPublicKey: Boolean = true, password: String = password()): ManagerCredentialEntity {
+        val manager = manager()
+
+        val credential = if (nameAsPublicKey)
+            ManagerCredentialEntity(manager, manager.getName(), passwordEncoder.encode(password), Instant.now())
+        else
+            ManagerCredentialEntity(manager, manager.getEmail(), passwordEncoder.encode(password), Instant.now())
+
+        if (log.isTraceEnabled)
+            log.trace("return : $credential")
+        return credential
+    }
 }

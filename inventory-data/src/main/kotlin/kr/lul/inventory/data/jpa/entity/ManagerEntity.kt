@@ -29,13 +29,13 @@ class ManagerEntity(email: String, name: String, createdAt: Instant) : Manager {
     @Column(name = COL_ID, nullable = false, insertable = false, updatable = false)
     private var id: Int = 0
     @Column(name = COL_EMAIL, unique = true, nullable = false)
-    private lateinit var email: String
+    private var email: String
     @Column(name = COL_NAME, unique = true, nullable = false)
-    private lateinit var name: String
+    private var name: String
     @Column(name = COL_CREATED_AT, nullable = false, updatable = false)
-    private lateinit var createdAt: Instant
+    private var createdAt: Instant
     @Column(name = COL_UPDATED_AT, nullable = false)
-    private lateinit var updatedAt: Instant
+    private var updatedAt: Instant
 
     init {
         validateEmail(email)
@@ -61,6 +61,11 @@ class ManagerEntity(email: String, name: String, createdAt: Instant) : Manager {
     override fun getUpdatedAt(): Instant = updatedAt
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // kr.lul.inventory.design.util.ToSimpleString
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    override fun toSimpleString(): String = "($id, $name)"
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // java.lang.Object
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun equals(other: Any?): Boolean {
@@ -74,7 +79,6 @@ class ManagerEntity(email: String, name: String, createdAt: Instant) : Manager {
         return id
     }
 
-    override fun toString(): String {
-        return "${ManagerEntity::class.simpleName}(id=$id, email='$email', name='$name', createdAt=$createdAt, updatedAt=$updatedAt)"
-    }
+    override fun toString(): String = "${ManagerEntity::class.simpleName}" +
+            "(id=$id, email='$email', name='$name', createdAt=$createdAt, updatedAt=$updatedAt)"
 }

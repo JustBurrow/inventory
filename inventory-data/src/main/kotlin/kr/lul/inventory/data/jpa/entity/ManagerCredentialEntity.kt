@@ -85,7 +85,6 @@ class ManagerCredentialEntity(
         return id.hashCode()
     }
 
-    override fun toString(): String {
-        return "${ManagerCredentialEntity::class.simpleName}(id=$id, manager=$manager, publicKey='$publicKey', secretHash=[ PROTECTED ], createdAt=$createdAt)"
-    }
+    override fun toString(): String = "${ManagerCredentialEntity::class.simpleName}" +
+            "(id=$id, manager=${manager.toSimpleString()}, publicKey='$publicKey', secretHash=[ PROTECTED ], createdAt=$createdAt)"
 }

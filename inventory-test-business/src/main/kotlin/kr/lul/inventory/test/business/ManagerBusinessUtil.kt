@@ -5,9 +5,9 @@ import kr.lul.inventory.test.data.ManagerDataUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 
-open class ManagerBusinessUtl : ManagerDataUtil() {
+open class ManagerBusinessUtil : ManagerDataUtil() {
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
 
-    fun createParams() = CreateManagerParams(email(), name(), secret())
+    fun createParams() = CreateManagerParams(email(), name(), password())
 }

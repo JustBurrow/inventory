@@ -21,6 +21,6 @@ interface ManagerController {
     fun createForm(model: Model): String
 
     @PostMapping(C.API_CREATE)
-    fun create(@ModelAttribute(M.CREATE_MANAGER_REQ) @Valid req: CreateManagerReq, result: BindingResult,
+    fun create(@ModelAttribute(M.CREATE_MANAGER_REQ) @Valid req: CreateManagerReq, binding: BindingResult,
                model: Model): String
 }

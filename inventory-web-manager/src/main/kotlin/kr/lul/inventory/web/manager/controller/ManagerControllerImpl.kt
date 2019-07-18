@@ -63,19 +63,19 @@ internal class ManagerControllerImpl : ManagerController {
         return V.CREATE_FORM
     }
 
-    override fun create(@ModelAttribute(M.CREATE_MANAGER_REQ) @Valid req: CreateManagerReq, result: BindingResult,
+    override fun create(@ModelAttribute(M.CREATE_MANAGER_REQ) @Valid req: CreateManagerReq, binding: BindingResult,
                         model: Model): String {
         if (log.isTraceEnabled)
-            log.trace("args : req={}, result={}, model={}", req, result, model)
-        validate(req, result)
+            log.trace("args : req={}, binding={}, model={}", req, binding, model)
+        validate(req, binding)
 
-        val template = if (result.hasErrors())
+        val template = if (binding.hasErrors())
             doCreateForm(model)
         else
-            doCreate(req, result, model)
+            doCreate(req, binding, model)
 
         if (log.isTraceEnabled)
-            log.trace("result : template='{}', model={}", template, model)
+            log.trace("binding : template='{}', model={}", template, model)
         return template
     }
 }

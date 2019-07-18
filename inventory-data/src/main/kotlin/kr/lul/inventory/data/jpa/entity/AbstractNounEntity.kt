@@ -1,16 +1,22 @@
 package kr.lul.inventory.data.jpa.entity
 
+import kr.lul.inventory.data.jpa.mapping.ManagerMapping
+import kr.lul.inventory.data.jpa.mapping.NounMapping
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_ID
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_KEY
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_LABEL
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_LABEL_CODE
+import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_MANAGER
+import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_TYPE
 import kr.lul.inventory.data.jpa.mapping.NounMapping.ENTITY_NAME
 import kr.lul.inventory.data.jpa.mapping.NounMapping.TABLE_NAME
+import kr.lul.inventory.design.domain.Manager
 import kr.lul.inventory.design.domain.Noun
 import kr.lul.inventory.design.domain.Noun.Companion.KEY_MAX_LENGTH
 import kr.lul.inventory.design.domain.Noun.Companion.validateKey
 import kr.lul.inventory.design.domain.Noun.Companion.validateLabel
 import kr.lul.inventory.design.domain.Noun.Companion.validateLabelCode
+import kr.lul.inventory.design.domain.Noun.Companion.validateManager
 import java.util.*
 import javax.persistence.*
 
@@ -20,11 +26,23 @@ import javax.persistence.*
  */
 @Entity(name = ENTITY_NAME)
 @Table(name = TABLE_NAME)
-class NounEntity(key: String, label: String, labelCode: String) : Noun {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = COL_TYPE, discriminatorType = DiscriminatorType.INTEGER)
+abstract class AbstractNounEntity(
+        manager: Manager,
+        key: String,
+        label: String,
+        labelCode: String
+) : Noun {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = COL_ID, nullable = false, insertable = false, updatable = false)
     private val id: Long = 0L
+    @ManyToOne(targetEntity = ManagerEntity::class)
+    @JoinColumn(name = COL_MANAGER, nullable = false, updatable = false,
+            foreignKey = ForeignKey(name = NounMapping.FK_NOUN_PK_MANAGER),
+            referencedColumnName = ManagerMapping.COL_ID)
+    private val manager: Manager
     @Column(name = COL_KEY, length = KEY_MAX_LENGTH, nullable = false, updatable = false)
     private val key: String
     @Column(name = COL_LABEL, nullable = false)
@@ -33,8 +51,10 @@ class NounEntity(key: String, label: String, labelCode: String) : Noun {
     private lateinit var labelCode: String
 
     init {
+        validateManager(manager)
         validateKey(key)
 
+        this.manager = manager
         this.key = key
         setLabel(label)
         setLabelCode(labelCode)
@@ -44,6 +64,8 @@ class NounEntity(key: String, label: String, labelCode: String) : Noun {
     // kr.lul.inventory.design.domain.Noun
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun getId(): Long = id
+
+    override fun getManager(): Manager = manager
 
     override fun getKey(): String = key
 
@@ -65,7 +87,7 @@ class NounEntity(key: String, label: String, labelCode: String) : Noun {
     // java.lang.Object
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun equals(other: Any?): Boolean {
-        if (null == other || 0L >= id || other !is NounEntity) {
+        if (null == other || 0L >= id || other !is AbstractNounEntity) {
             return false
         }
         return id == other.getId()
@@ -76,6 +98,7 @@ class NounEntity(key: String, label: String, labelCode: String) : Noun {
     }
 
     override fun toString(): String {
-        return "${NounEntity::class.simpleName}(id=$id, key='$key', label='$label', labelCode='$labelCode')"
+        return "${AbstractNounEntity::class.simpleName}(id=$id, manager=(${manager.getId()}, ${manager.getName()})," +
+                " key='$key', label='$label', labelCode='$labelCode')"
     }
 }

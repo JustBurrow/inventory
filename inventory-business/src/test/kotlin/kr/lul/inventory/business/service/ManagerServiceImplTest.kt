@@ -2,7 +2,7 @@ package kr.lul.inventory.business.service
 
 import kr.lul.inventory.business.BusinessModuleTestConfiguration
 import kr.lul.inventory.design.domain.Manager
-import kr.lul.inventory.test.business.ManagerBusinessUtl
+import kr.lul.inventory.test.business.ManagerBusinessUtil
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -27,7 +27,7 @@ class ManagerServiceImplTest {
     @Autowired
     private lateinit var managerService: ManagerService
     @Autowired
-    private lateinit var managerBusinessUtl: ManagerBusinessUtl
+    private lateinit var managerBusinessUtil: ManagerBusinessUtil
 
     private lateinit var before: Instant
 
@@ -39,7 +39,7 @@ class ManagerServiceImplTest {
     @Test
     fun `test create() with random params`() {
         // GIVEN
-        val params = managerBusinessUtl.createParams()
+        val params = managerBusinessUtil.createParams()
         log.debug("GIVEN - params={}", params)
 
         // WHEN
