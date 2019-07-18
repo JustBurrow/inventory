@@ -11,7 +11,6 @@ interface ManagerCredential {
         const val ATTR_ID = "id"
         const val ATTR_MANAGER = "manager"
         const val ATTR_PUBLIC_KEY = "publicKey"
-        const val ATTR_SECRET = "secret"
         const val ATTR_SECRET_HASH = "secretHash"
         const val ATTR_CREATED_AT = "createdAt"
 
@@ -51,17 +50,6 @@ interface ManagerCredential {
 
             if (null != msg)
                 throw AttributeValidationException(ATTR_PUBLIC_KEY, publicKey, msg)
-        }
-
-        const val SECRET_MIN_LENGTH = 4
-
-        fun isValidSecret(secret: String) = SECRET_MIN_LENGTH < secret.length
-
-        @Throws(AttributeValidationException::class)
-        fun validateSecret(secret: String) {
-            if (SECRET_MIN_LENGTH > secret.length)
-                throw AttributeValidationException(ATTR_SECRET, "[ PROTECTED ]",
-                        "too short $ATTR_SECRET : length=${secret.length}, min=$SECRET_MIN_LENGTH")
         }
 
         const val SECRET_HASH_PATTERN = "\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}"

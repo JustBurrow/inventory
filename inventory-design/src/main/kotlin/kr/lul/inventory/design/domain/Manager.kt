@@ -1,16 +1,18 @@
 package kr.lul.inventory.design.domain
 
+import kr.lul.inventory.design.util.ToSimpleString
 import java.time.Instant
 
 /**
  * @author justburrow
  * @since 2019-07-14
  */
-interface Manager {
+interface Manager : ToSimpleString {
     companion object {
         const val ATTR_ID = "id"
         const val ATTR_EMAIL = "email"
         const val ATTR_NAME = "name"
+        const val ATTR_PASSWORD = "password"
         const val ATTR_CREATED_AT = "createdAt"
         const val ATTR_UPDATED_AT = "updatedAt"
 
@@ -59,6 +61,17 @@ interface Manager {
             if (null != msg) {
                 throw AttributeValidationException(ATTR_NAME, name, msg)
             }
+        }
+
+        const val PASSWORD_MIN_LENGTH = 4
+
+        fun isValidPassword(secret: String) = PASSWORD_MIN_LENGTH < secret.length
+
+        @Throws(AttributeValidationException::class)
+        fun validatePassword(secret: String) {
+            if (PASSWORD_MIN_LENGTH > secret.length)
+                throw AttributeValidationException(ATTR_PASSWORD, "[ PROTECTED ]",
+                        "too short $ATTR_PASSWORD : length=${secret.length}, min=$PASSWORD_MIN_LENGTH")
         }
     }
 

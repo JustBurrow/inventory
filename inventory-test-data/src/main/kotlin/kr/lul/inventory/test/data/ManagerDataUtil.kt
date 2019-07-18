@@ -5,9 +5,9 @@ import kr.lul.inventory.data.jpa.entity.ManagerEntity
 import kr.lul.inventory.design.domain.Manager.Companion.EMAIL_MAX_LENGTH
 import kr.lul.inventory.design.domain.Manager.Companion.NAME_MAX_LENGTH
 import kr.lul.inventory.design.domain.Manager.Companion.NAME_MIN_LENGTH
+import kr.lul.inventory.design.domain.Manager.Companion.PASSWORD_MIN_LENGTH
 import kr.lul.inventory.design.domain.Manager.Companion.isValidEmail
 import kr.lul.inventory.design.domain.Manager.Companion.isValidName
-import kr.lul.inventory.design.domain.ManagerCredential.Companion.SECRET_MIN_LENGTH
 import org.apache.commons.lang3.RandomStringUtils.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,7 +45,7 @@ open class ManagerDataUtil {
         return email
     }
 
-    fun password() = random(current().nextInt(SECRET_MIN_LENGTH, 4 * SECRET_MIN_LENGTH))!!
+    fun password() = random(current().nextInt(PASSWORD_MIN_LENGTH, 4 * PASSWORD_MIN_LENGTH))!!
 
     fun manager() = ManagerEntity(email(), name(), Instant.now())
 

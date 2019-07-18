@@ -3,10 +3,10 @@ package kr.lul.inventory.test.data
 import kr.lul.inventory.design.domain.Manager
 import kr.lul.inventory.design.domain.Manager.Companion.isValidEmail
 import kr.lul.inventory.design.domain.Manager.Companion.isValidName
+import kr.lul.inventory.design.domain.Manager.Companion.isValidPassword
 import kr.lul.inventory.design.domain.Manager.Companion.validateEmail
 import kr.lul.inventory.design.domain.Manager.Companion.validateName
-import kr.lul.inventory.design.domain.ManagerCredential.Companion.isValidPassword
-import kr.lul.inventory.design.domain.ManagerCredential.Companion.validatePassword
+import kr.lul.inventory.design.domain.Manager.Companion.validatePassword
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
