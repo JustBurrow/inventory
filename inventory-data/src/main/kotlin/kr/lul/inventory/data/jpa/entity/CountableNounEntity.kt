@@ -4,6 +4,7 @@ import kr.lul.inventory.data.jpa.mapping.CountableNounMapping.DISCRIMINATOR_VALU
 import kr.lul.inventory.data.jpa.mapping.CountableNounMapping.ENTITY_NAME
 import kr.lul.inventory.design.domain.CountableNoun
 import kr.lul.inventory.design.domain.Manager
+import java.time.Instant
 import javax.persistence.DiscriminatorValue
 import javax.persistence.Entity
 
@@ -13,6 +14,6 @@ import javax.persistence.Entity
  */
 @Entity(name = ENTITY_NAME)
 @DiscriminatorValue(DISCRIMINATOR_VALUE)
-class CountableNounEntity(manager: Manager, key: String, label: String, labelCode: String)
-    : AbstractNounEntity(manager, key, label, labelCode), CountableNoun {
+class CountableNounEntity(manager: Manager, key: String, label: String, labelCode: String, createdAt: Instant)
+    : AbstractNounEntity(manager, key, label, labelCode, createdAt), CountableNoun {
 }

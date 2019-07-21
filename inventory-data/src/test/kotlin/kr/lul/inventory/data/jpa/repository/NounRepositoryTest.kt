@@ -1,6 +1,9 @@
 package kr.lul.inventory.data.jpa.repository
 
 import kr.lul.inventory.data.DataModuleTestConfiguration
+import kr.lul.inventory.test.data.ManagerDataUtil
+import kr.lul.inventory.test.data.NounDataUtil
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
@@ -21,8 +24,19 @@ class NounRepositoryTest {
 
     @Autowired
     private lateinit var nounRepository: NounRepository
+    @Autowired
+    private lateinit var managerDataUtil: ManagerDataUtil
+    @Autowired
+    private lateinit var nounDataUtil: NounDataUtil
 
     @Test
     fun `test findAll()`() {
+        // WHEN
+        val list = nounRepository.findAll()
+        log.debug("WHEN - list=$list")
+
+        // THEN
+        assertThat(list)
+                .isEmpty()
     }
 }

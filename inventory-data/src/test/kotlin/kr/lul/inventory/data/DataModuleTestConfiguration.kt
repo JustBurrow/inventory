@@ -1,6 +1,7 @@
 package kr.lul.inventory.data
 
 import kr.lul.inventory.test.data.ManagerDataUtil
+import kr.lul.inventory.test.data.NounDataUtil
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -12,4 +13,7 @@ class DataModuleTestConfiguration {
 
     @Bean
     fun managerDataUtil() = ManagerDataUtil()
+
+    @Bean
+    fun nounDataUtil() = NounDataUtil()
 }

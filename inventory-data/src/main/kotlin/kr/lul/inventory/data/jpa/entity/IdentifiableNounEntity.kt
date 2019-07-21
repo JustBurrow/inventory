@@ -4,6 +4,7 @@ import kr.lul.inventory.data.jpa.mapping.IdentifiableNounMapping.DISCRIMINATOR_V
 import kr.lul.inventory.data.jpa.mapping.IdentifiableNounMapping.ENTITY_NAME
 import kr.lul.inventory.design.domain.IdentifiableNoun
 import kr.lul.inventory.design.domain.Manager
+import java.time.Instant
 import javax.persistence.DiscriminatorValue
 import javax.persistence.Entity
 
@@ -13,6 +14,7 @@ import javax.persistence.Entity
  */
 @Entity(name = ENTITY_NAME)
 @DiscriminatorValue(DISCRIMINATOR_VALUE)
-class IdentifiableNounEntity(manager: Manager, key: String, label: String, labelCode: String)
-    : AbstractNounEntity(manager, key, label, labelCode), IdentifiableNoun {
+class IdentifiableNounEntity(
+        manager: Manager, key: String, label: String, labelCode: String, createdAt: Instant
+) : AbstractNounEntity(manager, key, label, labelCode, createdAt), IdentifiableNoun {
 }

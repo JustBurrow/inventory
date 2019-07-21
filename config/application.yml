@@ -11,4 +11,6 @@ logging:
   pattern:
     console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%t]){faint} %clr(%logger#%M L.%line){cyan} %clr(:){faint} %m%n%wEx'
   level:
+    root: warn
+    org.hibernate.SQL: debug
     kr.lul.inventory: trace

@@ -33,7 +33,7 @@ class ManagerDaoImplTest {
     @Test
     fun `test create() with random ManagerEntity`() {
         // GIVEN
-        val expected = managerDataUtil.manager()
+        val expected = managerDataUtil.unusedManager()
         val id = expected.getId()
         val name = expected.getName()
         val email = expected.getEmail()

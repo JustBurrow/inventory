@@ -1,0 +1,13 @@
+package kr.lul.inventory.design.domain
+
+/**
+ * @author justburrow
+ * @since 2019-07-15
+ */
+interface LimitedIdentifiableNoun : LimitedNoun, IdentifiableNoun {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // kr.lul.inventory.design.domain.IdentifiableNoun
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    override fun getType(): NounType = NounType.LIMITED_IDENTIFIABLE
+//    fun getLimit(): Int
+}

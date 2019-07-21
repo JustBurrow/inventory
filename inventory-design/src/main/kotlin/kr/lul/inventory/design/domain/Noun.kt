@@ -1,5 +1,7 @@
 package kr.lul.inventory.design.domain
 
+import java.time.Instant
+
 /**
  * 추사화한 아이템 정보. 유저는 소유할 수 없다.
  *
@@ -9,9 +11,22 @@ package kr.lul.inventory.design.domain
 interface Noun {
     companion object {
         const val ATTR_ID = "id"
+        const val ATTR_MANAGER = "manager"
+        const val ATTR_TYPE = "type"
         const val ATTR_KEY = "key"
         const val ATTR_LABEL = "label"
         const val ATTR_LABEL_CODE = "labelCode"
+        const val ATTR_CREATED_AT = "createdAt"
+        const val ATTR_UPDATED_AT = "updatedAt"
+
+        fun isValidManager(manager: Manager) = 0 < manager.getId()
+
+        @Throws(AttributeValidationException::class)
+        fun validateManager(manager: Manager) {
+            if (0 >= manager.getId())
+                throw AttributeValidationException(ATTR_MANAGER, manager,
+                        "not persisted $ATTR_MANAGER : manager=$manager")
+        }
 
         const val KEY_MIN_LENGTH = 1
         const val KEY_MAX_LENGTH: Int = 255
@@ -101,7 +116,17 @@ interface Noun {
     /**
      * 시스템이 부여하는 아이템 ID.
      */
-    fun getId(): Long
+    fun getId(): Int
+
+    /**
+     * @return [Noun]의 관리자.
+     */
+    fun getManager(): Manager
+
+    /**
+     * @return [Noun]의 종류.
+     */
+    fun getType(): NounType
 
     /**
      * 아이템 관리자가 지정한 아이템 키. 변경할 수 없음.
@@ -125,4 +150,8 @@ interface Noun {
     fun getLabelCode(): String
 
     fun setLabelCode(labelCode: String)
+
+    fun getCreatedAt(): Instant
+
+    fun getUpdatedAt(): Instant
 }
