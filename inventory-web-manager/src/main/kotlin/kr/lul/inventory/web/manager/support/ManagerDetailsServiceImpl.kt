@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import java.time.ZoneId
 
 @Service
 internal class ManagerDetailsServiceImpl : ManagerDetailsService {
@@ -15,6 +14,8 @@ internal class ManagerDetailsServiceImpl : ManagerDetailsService {
 
     @Autowired
     private lateinit var managerService: ManagerService
+    @Autowired
+    private lateinit var timeProvider: TimeProvider
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // kr.lul.inventory.web.manager.support.ManagerDetailsService
@@ -37,14 +38,12 @@ internal class ManagerDetailsServiceImpl : ManagerDetailsService {
         if (log.isTraceEnabled)
             log.trace("manager={}", manager)
 
-        val details = ManagerDetails(
-                manager.id,
+        val details = ManagerDetails(manager.id,
                 manager.email,
                 manager.name,
-                manager.createdAt.atZone(ZoneId.systemDefault()),
-                manager.updatedAt.atZone(ZoneId.systemDefault()),
-                credential.secretHash
-        )
+                timeProvider.toZoneDateTime(manager.createdAt),
+                timeProvider.toZoneDateTime(manager.updatedAt),
+                credential.secretHash)
 
         if (log.isTraceEnabled)
             log.trace("return : {}", details)

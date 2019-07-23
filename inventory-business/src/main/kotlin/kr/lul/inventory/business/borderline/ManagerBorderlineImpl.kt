@@ -8,8 +8,10 @@ import kr.lul.inventory.dto.ManagerDetailDto
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 internal class ManagerBorderlineImpl : ManagerBorderline {
     private val log = LoggerFactory.getLogger(ManagerBorderlineImpl::class.java)!!
 
