@@ -24,8 +24,7 @@ internal class ManagerDetailsServiceImpl : ManagerDetailsService {
     override fun loadUserByUsername(username: String?): ManagerDetails {
         if (log.isTraceEnabled)
             log.trace("args : username={}", username)
-        if (null == username)
-            throw IllegalArgumentException("username is null.")
+        username ?: throw UsernameNotFoundException("username is null.")
 
         val credential = managerService.search(SearchCredentialParams(username))
                 ?: run {
