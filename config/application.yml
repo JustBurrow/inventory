@@ -1,9 +1,19 @@
 spring:
-  datasource.hikari:
-    jdbc-url: jdbc:mysql://localhost:3306/inventory?allowPublicKeyRetrieval=true
-    username: test
-    password: 'HU]iaet]zE}p6QJY88QHd9*Cb3VJR^Mcoxqax9dr7QLMGA3/{Drn,AJ]c9=zWMD6'
-    maximum-pool-size: 1
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/inventory?allowPublicKeyRetrieval=true
+      username: test
+      password: 'HU]iaet]zE}p6QJY88QHd9*Cb3VJR^Mcoxqax9dr7QLMGA3/{Drn,AJ]c9=zWMD6'
+      maximum-pool-size: 1
+  jpa:
+    show-sql: false
+    open-in-view=: false
+    properties:
+      hibernate:
+        show_sql: false
+        hbm2ddl:
+          auto: update
   thymeleaf:
     cache: false
     prefix: file:./front/templates/

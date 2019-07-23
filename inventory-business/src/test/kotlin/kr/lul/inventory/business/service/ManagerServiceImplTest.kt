@@ -1,9 +1,6 @@
 package kr.lul.inventory.business.service
 
 import kr.lul.inventory.business.BusinessModuleTestConfiguration
-import kr.lul.inventory.design.domain.Manager
-import kr.lul.inventory.test.business.ManagerBusinessUtil
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,8 +23,6 @@ class ManagerServiceImplTest {
 
     @Autowired
     private lateinit var managerService: ManagerService
-    @Autowired
-    private lateinit var managerBusinessUtil: ManagerBusinessUtil
 
     private lateinit var before: Instant
 
@@ -38,22 +33,5 @@ class ManagerServiceImplTest {
 
     @Test
     fun `test create() with random params`() {
-        // GIVEN
-        val params = managerBusinessUtil.createParams()
-        log.debug("GIVEN - params={}", params)
-
-        // WHEN
-        val manager = managerService.create(params)
-        log.debug("WHEN - manager={}", manager)
-
-        // Then
-        assertThat(manager)
-                .extracting(Manager.ATTR_EMAIL, Manager.ATTR_NAME)
-                .containsSequence(params.email, params.name)
-        assertThat(manager.getId())
-                .isGreaterThan(0)
-        assertThat(manager.getCreatedAt())
-                .isAfterOrEqualTo(before)
-                .isEqualTo(manager.getUpdatedAt())
     }
 }

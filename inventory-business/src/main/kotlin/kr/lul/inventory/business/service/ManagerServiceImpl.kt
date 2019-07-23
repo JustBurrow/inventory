@@ -38,7 +38,7 @@ internal class ManagerServiceImpl : ManagerService {
         manager = managerDao.create(manager)
         listOf(params.email, params.name).forEach {
             val credential = managerCredentialFactory.instance(manager, it,
-                    passwordEncoder.encode(params.secret), manager.getCreatedAt())
+                    passwordEncoder.encode(params.secret), manager.createdAt)
             managerDao.create(credential)
         }
 

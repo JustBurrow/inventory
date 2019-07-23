@@ -12,21 +12,21 @@ import org.springframework.test.context.junit4.SpringRunner
 
 /**
  * @author justburrow
- * @since 2019-07-06
+ * @since 2019-07-23
  */
 @RunWith(SpringRunner::class)
 @DataJpaTest
 @ContextConfiguration(classes = [DataModuleTestConfiguration::class])
-class NounRepositoryTest {
-    private val log = LoggerFactory.getLogger(NounRepositoryTest::class.java)!!
+class ManagerCredentialRepositoryTest {
+    private val log = LoggerFactory.getLogger(ManagerCredentialRepositoryTest::class.java)!!
 
     @Autowired
-    private lateinit var nounRepository: NounRepository
+    private lateinit var repository: ManagerCredentialRepository
 
     @Test
     fun `test findAll()`() {
         // WHEN
-        val list = nounRepository.findAll()
+        val list = repository.findAll()
         log.debug("WHEN - list=$list")
 
         // THEN

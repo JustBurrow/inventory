@@ -9,11 +9,26 @@ import java.time.Instant
  */
 interface Manager : ToSimpleString {
     companion object {
+        /**
+         * @see [Manager.id]
+         */
         const val ATTR_ID = "id"
+        /**
+         * @see [Manager.email]
+         */
         const val ATTR_EMAIL = "email"
+        /**
+         * @see [Manager.name]
+         */
         const val ATTR_NAME = "name"
         const val ATTR_PASSWORD = "password"
+        /**
+         * @see [Manager.createdAt]
+         */
         const val ATTR_CREATED_AT = "createdAt"
+        /**
+         * @see [Manager.updatedAt]
+         */
         const val ATTR_UPDATED_AT = "updatedAt"
 
         const val EMAIL_MAX_LENGTH = 128
@@ -75,13 +90,13 @@ interface Manager : ToSimpleString {
         }
     }
 
-    fun getId(): Int
+    val id: Int
 
-    fun getEmail(): String
+    val email: String
 
-    fun getName(): String
+    val name: String
 
-    fun getCreatedAt(): Instant
+    val createdAt: Instant
 
-    fun getUpdatedAt(): Instant
+    val updatedAt: Instant
 }

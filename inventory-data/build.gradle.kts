@@ -7,7 +7,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("mysql:mysql-connector-java")
 
-    testImplementation(project(":inventory-test-data"))
-
+    testImplementation("org.springframework.security:spring-security-core")
     testImplementation("com.h2database:h2")
 }

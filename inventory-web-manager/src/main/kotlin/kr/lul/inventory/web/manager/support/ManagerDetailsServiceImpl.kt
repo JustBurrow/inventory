@@ -2,6 +2,7 @@ package kr.lul.inventory.web.manager.support
 
 import kr.lul.inventory.business.service.ManagerService
 import kr.lul.inventory.business.service.params.SearchCredentialParams
+import kr.lul.inventory.design.util.TimeProvider
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -32,17 +33,17 @@ internal class ManagerDetailsServiceImpl : ManagerDetailsService {
                     throw UsernameNotFoundException(msg)
                 }
 
-        val manager = credential.getManager()
+        val manager = credential.manager
         if (log.isTraceEnabled)
             log.trace("manager={}", manager)
 
         val details = ManagerDetails(
-                manager.getId(),
-                manager.getEmail(),
-                manager.getName(),
-                manager.getCreatedAt().atZone(ZoneId.systemDefault()),
-                manager.getUpdatedAt().atZone(ZoneId.systemDefault()),
-                credential.getSecretHash()
+                manager.id,
+                manager.email,
+                manager.name,
+                manager.createdAt.atZone(ZoneId.systemDefault()),
+                manager.updatedAt.atZone(ZoneId.systemDefault()),
+                credential.secretHash
         )
 
         if (log.isTraceEnabled)

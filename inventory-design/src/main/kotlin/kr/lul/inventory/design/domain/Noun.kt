@@ -19,11 +19,11 @@ interface Noun {
         const val ATTR_CREATED_AT = "createdAt"
         const val ATTR_UPDATED_AT = "updatedAt"
 
-        fun isValidManager(manager: Manager) = 0 < manager.getId()
+        fun isValidManager(manager: Manager) = 0 < manager.id
 
         @Throws(AttributeValidationException::class)
         fun validateManager(manager: Manager) {
-            if (0 >= manager.getId())
+            if (0 >= manager.id)
                 throw AttributeValidationException(ATTR_MANAGER, manager,
                         "not persisted $ATTR_MANAGER : manager=$manager")
         }
