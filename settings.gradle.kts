@@ -10,6 +10,6 @@ include(
 
         "inventory-web-user",
         "inventory-web-manager",
-        
-        "test-data"
+
+        "test-util"
 )

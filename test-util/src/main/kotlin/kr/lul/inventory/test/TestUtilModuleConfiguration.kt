@@ -1,4 +1,4 @@
-package kr.lul.inventory.test.data
+package kr.lul.inventory.test
 
 import kr.lul.inventory.data.DataModuleAnchor
 import org.springframework.context.annotation.ComponentScan
@@ -10,4 +10,4 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 @ComponentScan(basePackageClasses = [DataModuleAnchor::class])
-class TestDataModuleConfiguration
+class TestUtilModuleConfiguration

@@ -1,4 +1,4 @@
-package kr.lul.inventory.test.data
+package kr.lul.inventory.test
 
 import kr.lul.inventory.data.jpa.mapping.ManagerMapping.COL_EMAIL
 import kr.lul.inventory.data.jpa.mapping.ManagerMapping.COL_NAME
@@ -30,13 +30,13 @@ import javax.sql.DataSource
  * @since 2019-07-23
  */
 @RunWith(SpringRunner::class)
-@SpringBootTest(classes = [TestDataModuleTestConfiguration::class])
+@SpringBootTest(classes = [TestUtilModuleTestConfiguration::class])
 @Transactional
-class ManagerDataUtilTest {
-    private val log = LoggerFactory.getLogger(ManagerDataUtilTest::class.java)!!
+class ManagerUtilTest {
+    private val log = LoggerFactory.getLogger(ManagerUtilTest::class.java)!!
 
     @Autowired
-    private lateinit var util: ManagerDataUtil
+    private lateinit var util: ManagerUtil
     @Autowired
     private lateinit var repository: ManagerRepository
     @Autowired

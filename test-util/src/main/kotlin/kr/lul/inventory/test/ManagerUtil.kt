@@ -1,6 +1,5 @@
-package kr.lul.inventory.test.data
+package kr.lul.inventory.test
 
-import kr.lul.inventory.data.dao.ManagerDao
 import kr.lul.inventory.data.jpa.entity.ManagerEntity
 import kr.lul.inventory.data.jpa.repository.ManagerRepository
 import kr.lul.inventory.design.domain.Manager.Companion.isValidEmail
@@ -10,20 +9,16 @@ import org.apache.commons.lang3.RandomStringUtils.random
 import org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.Instant
 import java.util.concurrent.ThreadLocalRandom.current
 
 /**
  * @author justburrow
  * @since 2019-07-23
  */
-class ManagerDataUtil {
-    private val log = LoggerFactory.getLogger(ManagerDataUtil::class.java)!!
+class ManagerUtil {
+    private val log = LoggerFactory.getLogger(ManagerUtil::class.java)!!
 
-    /**
-     * `@DataJpaTeat`일 경우에는 `@Repository` 외의 일반 컴포넌트는 사용 불가.
-     */
-    @Autowired(required = false)
-    private lateinit var dao: ManagerDao
     @Autowired
     private lateinit var repository: ManagerRepository
     @Autowired
@@ -76,5 +71,6 @@ class ManagerDataUtil {
     /**
      * 새로 저장할 수 있는 [ManagerEntity].
      */
-    fun freshManager() = ManagerEntity(unusedEmail(), unusedName(), timeProvider.instant)
+    fun freshManager(createdAt: Instant = timeProvider.instant) =
+            ManagerEntity(unusedEmail(), unusedName(), createdAt)
 }
