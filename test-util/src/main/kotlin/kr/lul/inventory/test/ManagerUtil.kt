@@ -4,6 +4,7 @@ import kr.lul.inventory.data.jpa.entity.ManagerEntity
 import kr.lul.inventory.data.jpa.repository.ManagerRepository
 import kr.lul.inventory.design.domain.Manager.Companion.isValidEmail
 import kr.lul.inventory.design.domain.Manager.Companion.isValidName
+import kr.lul.inventory.design.domain.Manager.Companion.isValidPassword
 import kr.lul.inventory.design.util.TimeProvider
 import org.apache.commons.lang3.RandomStringUtils.random
 import org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric
@@ -66,6 +67,16 @@ class ManagerUtil {
 
         log.trace("return : '$email'")
         return email
+    }
+
+    fun password(): String {
+        var password: String
+
+        do {
+            password = "password-${random(current().nextInt(1, 50))}"
+        } while (!isValidPassword(password))
+
+        return password
     }
 
     /**

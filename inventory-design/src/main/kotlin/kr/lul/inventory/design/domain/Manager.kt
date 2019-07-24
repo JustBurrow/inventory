@@ -80,7 +80,7 @@ interface Manager : ToSimpleString {
 
         const val PASSWORD_MIN_LENGTH = 4
 
-        fun isValidPassword(secret: String) = PASSWORD_MIN_LENGTH < secret.length
+        fun isValidPassword(password: String) = PASSWORD_MIN_LENGTH < password.length
 
         @Throws(AttributeValidationException::class)
         fun validatePassword(secret: String) {
