@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 dependencies {
     implementation(project(":inventory-design"))
     implementation(project(":inventory-dto"))
@@ -10,4 +12,8 @@ dependencies {
 
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
     implementation("io.github.jpenren:thymeleaf-spring-data-dialect")
+}
+
+tasks.withType<BootJar> {
+    launchScript()
 }

@@ -71,12 +71,4 @@ subprojects {
             jvmTarget = "1.8"
         }
     }
-
-    tasks.withType<Jar> {
-        enabled = true
-    }
-
-    tasks.withType<BootJar> {
-        enabled = false
-    }
 }

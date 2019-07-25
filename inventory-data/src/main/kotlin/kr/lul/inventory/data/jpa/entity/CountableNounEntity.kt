@@ -15,5 +15,4 @@ import javax.persistence.Entity
 @Entity(name = ENTITY_NAME)
 @DiscriminatorValue(DISCRIMINATOR_VALUE)
 class CountableNounEntity(manager: Manager, key: String, label: String, labelCode: String, createdAt: Instant)
-    : AbstractNounEntity(manager, key, label, labelCode, createdAt), CountableNoun {
-}
+    : AbstractNounEntity(manager, key, label, labelCode, createdAt), CountableNoun

@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import java.time.Instant
 
 @Service
 internal class ManagerServiceImpl : ManagerService {
@@ -34,11 +33,14 @@ internal class ManagerServiceImpl : ManagerService {
         if (log.isTraceEnabled())
             log.trace("args : params={}", params)
 
-        var manager = managerFactory.instance(params.email, params.name, Instant.now())
+        var manager = managerFactory.instance(params.email, params.name, params.timestamp)
         manager = managerDao.create(manager)
         listOf(params.email, params.name).forEach {
-            val credential = managerCredentialFactory.instance(manager, it,
-                    passwordEncoder.encode(params.secret), manager.createdAt)
+            val credential = managerCredentialFactory.instance(
+                    manager,
+                    it,
+                    passwordEncoder.encode(params.password),
+                    params.timestamp)
             managerDao.create(credential)
         }
 

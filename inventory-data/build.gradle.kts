@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 apply(plugin = "org.jetbrains.kotlin.plugin.noarg")
 apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
 
@@ -12,4 +14,12 @@ dependencies {
     testImplementation("com.h2database:h2")
 
     testImplementation("org.apache.commons:commons-lang3")
+}
+
+tasks.withType<Jar> {
+    enabled = true
+}
+
+tasks.withType<BootJar> {
+    enabled = false
 }

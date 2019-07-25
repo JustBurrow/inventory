@@ -17,8 +17,9 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class NounServiceTest {
     private val log = LoggerFactory.getLogger(NounServiceTest::class.java)!!
+
     @Test
-    fun test_name() {
+    fun `test name`() {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
