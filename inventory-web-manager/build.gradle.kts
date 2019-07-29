@@ -14,6 +14,11 @@ dependencies {
     implementation("io.github.jpenren:thymeleaf-spring-data-dialect")
 }
 
+tasks.withType<Jar> {
+    enabled = true
+}
+
 tasks.withType<BootJar> {
+    enabled = true
     launchScript()
 }
