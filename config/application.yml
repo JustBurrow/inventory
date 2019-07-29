@@ -25,3 +25,4 @@ logging:
     org.hibernate.SQL: debug
     kr.lul.inventory: trace
     kr.lul.inventory.runner: warn
+    kr.lul.inventory.web.manager.support.LoggingHandlerInterceptor: info

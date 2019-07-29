@@ -1,11 +1,10 @@
 package kr.lul.inventory.web.manager.configuration
 
 import kr.lul.inventory.web.manager.mapping.IndexMvc
+import kr.lul.inventory.web.manager.support.LoggingHandlerInterceptor
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import org.springframework.web.servlet.config.annotation.*
 
 /**
  * @author justburrow
@@ -14,6 +13,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 @EnableWebMvc
 class WebMvcConfiguration : WebMvcConfigurer {
+    @Autowired
+    private lateinit var loggingHandlerInterceptor: LoggingHandlerInterceptor
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // org.springframework.web.servlet.config.annotation.WebMvcConfigurer
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,5 +29,9 @@ class WebMvcConfiguration : WebMvcConfigurer {
     override fun addViewControllers(registry: ViewControllerRegistry) {
         registry.addViewController(IndexMvc.C.FULL_API_SIGN_IN)
                 .setViewName(IndexMvc.V.SIGN_IN)
+    }
+
+    override fun addInterceptors(registry: InterceptorRegistry) {
+        registry.addInterceptor(loggingHandlerInterceptor)
     }
 }
