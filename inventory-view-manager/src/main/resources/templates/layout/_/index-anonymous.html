@@ -17,17 +17,17 @@
             th:href="@{/libs/bootstrap/js/bootstrap.js}"></script>
     <script src="../../../assets/js/inventory.js"
             th:href="@{/assets/js/inventory.js}"></script>
-    <title>Index</title>
+    <title>Anonymous Index</title>
 </head>
 <body>
 <header class="position-fixed fixed-top" th:replace="component/navbar :: delegator">
     navbar
 </header>
 <main class="container-fluid">
-    <h1 class="h1">Index</h1>
+    <h1 class="h1">Anonymous Index</h1>
     <div class="container-fluid row">
         <div class="col">
-            <form id="form-signup" action="index.html" method="post"
+            <form id="form-signup" action="index-anonymous.html" method="post"
                   th:action="@{/signup}"></form>
             <div class="container-fluid row">
                 <label class="col-form-label col-3" for="create-email">E-Mail</label>
@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="col">
-            <form id="form-signin" class="hide" action="index.html" method="post"
+            <form id="form-signin" class="hide" action="index-manager.html" method="post"
                   th:action="@{/signin}"></form>
             <div class="container-fluid row">
                 <label class="col-form-label col-3" for="signin-username">ID</label>

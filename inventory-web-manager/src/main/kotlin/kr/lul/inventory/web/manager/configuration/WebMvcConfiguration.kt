@@ -2,8 +2,10 @@ package kr.lul.inventory.web.manager.configuration
 
 import kr.lul.inventory.web.manager.mapping.IndexMvc
 import kr.lul.inventory.web.manager.support.LoggingHandlerInterceptor
+import kr.lul.inventory.web.manager.support.ManagerDetailsHandlerMethodArgumentResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.*
 
 /**
@@ -15,6 +17,8 @@ import org.springframework.web.servlet.config.annotation.*
 class WebMvcConfiguration : WebMvcConfigurer {
     @Autowired
     private lateinit var loggingHandlerInterceptor: LoggingHandlerInterceptor
+    @Autowired
+    private lateinit var managerDetailsHandlerMethodArgumentResolver: ManagerDetailsHandlerMethodArgumentResolver
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // org.springframework.web.servlet.config.annotation.WebMvcConfigurer
@@ -33,5 +37,9 @@ class WebMvcConfiguration : WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(loggingHandlerInterceptor)
+    }
+
+    override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
+        resolvers.add(managerDetailsHandlerMethodArgumentResolver)
     }
 }

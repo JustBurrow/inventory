@@ -22,7 +22,7 @@
 <body>
 <header class="position-fixed fixed-top" th:replace="component/navbar :: delegator">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="../_/index.html">Navbar</a>
+        <a class="navbar-brand" href="../_/index-anonymous.html">Navbar</a>
         <button class="navbar-toggler" type="button"
                 data-toggle="collapse" data-target="#global-navbar"
                 aria-controls="global-navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +60,7 @@
 <main class="container container-fluid">
     <h1>Create Manager</h1>
     <div class="container">
-        <form id="form-create-manager" action="../_/index.html" method="post"
+        <form id="form-create-manager" action="../_/signin.html" method="post"
               th:action="@{/managers}"></form>
         <!--/*@thymesVar id="createManagerReq" type="kr.lul.inventory.web.manager.controller.request.CreateManagerReq"*/-->
         <div th:object="${createManagerReq}">

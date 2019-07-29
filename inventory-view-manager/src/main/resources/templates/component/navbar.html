@@ -22,12 +22,12 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div sec:authorize="hasRole('ROLE_ANONYMOUS')" th:remove="tag">
-            <div th:replace="component/navbar/role_anonymous :: navbar">
+            <div th:replace="component/navbar/role-anonymous :: navbar">
                 ROLE_ANONYMOUS
             </div>
         </div>
         <div sec:authorize="hasRole('ROLE_MANAGER')" th:remove="tag">
-            <div th:replace="component/navbar/role_manager :: navbar">
+            <div th:replace="component/navbar/role-manager :: navbar">
                 ROLE_MANAGER
             </div>
         </div>
@@ -39,7 +39,7 @@
         <h2 class="h2">Anonymous(Guest)</h2>
         <div class="shadow">
             <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="navbar/role_anonymous.html"></iframe>
+                <iframe class="embed-responsive-item" src="navbar/role-anonymous.html"></iframe>
             </div>
         </div>
     </section>
@@ -47,7 +47,7 @@
         <h2 class="h2">Manager</h2>
         <div class="shadow">
             <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="navbar/role_manager.html"></iframe>
+                <iframe class="embed-responsive-item" src="navbar/role-manager.html"></iframe>
             </div>
         </div>
     </section>
