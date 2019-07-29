@@ -24,3 +24,4 @@ logging:
     root: warn
     org.hibernate.SQL: debug
     kr.lul.inventory: trace
+    kr.lul.inventory.runner: warn
