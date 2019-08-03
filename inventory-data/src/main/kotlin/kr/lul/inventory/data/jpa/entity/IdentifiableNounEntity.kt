@@ -15,6 +15,6 @@ import javax.persistence.Entity
 @Entity(name = ENTITY_NAME)
 @DiscriminatorValue(DISCRIMINATOR_VALUE)
 class IdentifiableNounEntity(
-        manager: Manager, key: String, label: String, labelCode: String, createdAt: Instant
-) : AbstractNounEntity(manager, key, label, labelCode, createdAt), IdentifiableNoun {
-}
+        manager: Manager, key: String, label: String, labelCode: String, description: String, createdAt: Instant
+) : AbstractNounEntity(manager, key, label, labelCode, description, createdAt),
+        IdentifiableNoun

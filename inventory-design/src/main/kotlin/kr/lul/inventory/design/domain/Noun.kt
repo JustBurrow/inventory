@@ -16,6 +16,7 @@ interface Noun {
         const val ATTR_KEY = "key"
         const val ATTR_LABEL = "label"
         const val ATTR_LABEL_CODE = "labelCode"
+        const val ATTR_DESCRIPTION = "description"
         const val ATTR_CREATED_AT = "createdAt"
         const val ATTR_UPDATED_AT = "updatedAt"
 
@@ -31,8 +32,10 @@ interface Noun {
         const val KEY_MIN_LENGTH = 1
         const val KEY_MAX_LENGTH: Int = 255
         const val KEY_PATTERN = "([a-z][a-z\\d]*\\.)*[a-z][a-z\\d]*"
-        @JvmStatic
         val KEY_REGEX = KEY_PATTERN.toRegex()
+
+        fun isValidKey(key: String): Boolean = key.length in KEY_MIN_LENGTH..KEY_MAX_LENGTH
+                && key.matches(KEY_REGEX)
 
         /**
          * 사용할 수 있는 키인지 검증한다.
@@ -53,14 +56,13 @@ interface Noun {
             }
         }
 
-        fun isValidKey(key: String): Boolean = key.length in KEY_MIN_LENGTH..KEY_MAX_LENGTH
-                && key.matches(KEY_REGEX)
-
         const val LABEL_MIN_LENGTH = 1
         const val LABEL_MAX_LENGTH = 255
         const val LABEL_PATTERN = "\\S(.*\\S)?"
-        @JvmStatic
         val LABEL_REGEX = LABEL_PATTERN.toRegex()
+
+        fun isValidLabel(label: String) = label.length in LABEL_MIN_LENGTH..LABEL_MAX_LENGTH
+                && label.matches(LABEL_REGEX)
 
         /**
          * 사용할 수 있는 레이블인지 검증한다.
@@ -81,14 +83,14 @@ interface Noun {
             }
         }
 
-        fun isValidLabel(label: String) = label.length in LABEL_MIN_LENGTH..LABEL_MAX_LENGTH
-                && label.matches(LABEL_REGEX)
-
+        const val LABEL_CODE_PREFIX = "noun.labelcode."
         const val LABEL_CODE_MIN_LENGTH = 1
         const val LABEL_CODE_MAX_LENGTH = 255
         const val LABEL_CODE_PATTERN = "([a-z][a-z\\d]*\\.)*[a-z][a-z\\d]*"
-        @JvmStatic
         val LABEL_CODE_REGEX = LABEL_CODE_PATTERN.toRegex()
+
+        fun isValidLabelCode(labelCode: String) = labelCode.length in LABEL_CODE_MIN_LENGTH..LABEL_CODE_MAX_LENGTH
+                && labelCode.matches(LABEL_REGEX)
 
         /**
          * ㅅㅏ용할 수 있는 레이블 코드인지 검증한다.
@@ -109,49 +111,55 @@ interface Noun {
             }
         }
 
-        fun isValidLabelCode(labelCode: String) = labelCode.length in LABEL_CODE_MIN_LENGTH..LABEL_CODE_MAX_LENGTH
-                && labelCode.matches(LABEL_REGEX)
+        const val DESCRIPTION_MAX_LENGTH = 1024
+
+        fun isValidDescription(description: String) = DESCRIPTION_MAX_LENGTH < description.length
+
+        @Throws(AttributeValidationException::class)
+        fun validateDescription(description: String) {
+            if (DESCRIPTION_MAX_LENGTH < description.length)
+                throw AttributeValidationException(ATTR_DESCRIPTION, description,
+                        "too long description : description.length=${description.length}, max=$DESCRIPTION_MAX_LENGTH")
+        }
     }
 
     /**
      * 시스템이 부여하는 아이템 ID.
      */
-    fun getId(): Int
+    val id: Int
 
     /**
      * @return [Noun]의 관리자.
      */
-    fun getManager(): Manager
+    val manager: Manager
 
     /**
      * @return [Noun]의 종류.
      */
-    fun getType(): NounType
+    val type: NounType
 
     /**
      * 아이템 관리자가 지정한 아이템 키. 변경할 수 없음.
      */
-    fun getKey(): String
+    val key: String
 
     /**
      * 아이템 사용자에게 표시할 때 사용하는 아이템의 기본 이름.
      *
      * @see getLabelCode 코드에 해당하는 레이블이 없을 경우 사용.
      */
-    fun getLabel(): String
-
-    fun setLabel(label: String)
+    var label: String
 
     /**
      * 아이템 코드.
      *
      * @see https://ko.wikipedia.org/wiki/%EA%B5%AD%EC%A0%9C%ED%99%94%EC%99%80_%EC%A7%80%EC%97%AD%ED%99%94
      */
-    fun getLabelCode(): String
+    var labelCode: String
 
-    fun setLabelCode(labelCode: String)
+    var description: String
 
-    fun getCreatedAt(): Instant
+    val createdAt: Instant
 
-    fun getUpdatedAt(): Instant
+    val updatedAt: Instant
 }

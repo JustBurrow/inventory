@@ -16,5 +16,8 @@ class DataModuleTestConfiguration {
     fun timeProvider(): TimeProvider = SystemTimeProvider()
 
     @Bean
-    fun util() = Util()
+    fun managerUtil() = ManagerUtil()
+
+    @Bean
+    fun nounUtil() = NounUtil()
 }

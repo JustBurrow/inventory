@@ -1,8 +1,8 @@
 package kr.lul.inventory.data.jpa.entity
 
 import kr.lul.inventory.data.jpa.mapping.ManagerMapping
-import kr.lul.inventory.data.jpa.mapping.NounMapping
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_CREATED_AT
+import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_DESCRIPTION
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_ID
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_KEY
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_LABEL
@@ -18,7 +18,9 @@ import kr.lul.inventory.data.jpa.mapping.NounMapping.FK_NOUN_PK_NOUN_TYPE_COLUMN
 import kr.lul.inventory.data.jpa.mapping.NounMapping.TABLE_NAME
 import kr.lul.inventory.design.domain.Manager
 import kr.lul.inventory.design.domain.Noun
+import kr.lul.inventory.design.domain.Noun.Companion.DESCRIPTION_MAX_LENGTH
 import kr.lul.inventory.design.domain.Noun.Companion.KEY_MAX_LENGTH
+import kr.lul.inventory.design.domain.Noun.Companion.validateDescription
 import kr.lul.inventory.design.domain.Noun.Companion.validateKey
 import kr.lul.inventory.design.domain.Noun.Companion.validateLabel
 import kr.lul.inventory.design.domain.Noun.Companion.validateLabelCode
@@ -37,75 +39,53 @@ import javax.persistence.*
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = COL_TYPE, discriminatorType = DiscriminatorType.INTEGER)
 abstract class AbstractNounEntity(
-        manager: Manager,
-        key: String,
+        @ManyToOne(targetEntity = ManagerEntity::class)
+        @JoinColumn(name = COL_MANAGER, nullable = false, updatable = false,
+                foreignKey = ForeignKey(name = FK_NOUN_PK_MANAGER),
+                referencedColumnName = ManagerMapping.COL_ID)
+        override val manager: Manager,
+        @Column(name = COL_KEY, length = KEY_MAX_LENGTH, nullable = false, updatable = false)
+        override val key: String,
         label: String,
         labelCode: String,
-        createdAt: Instant
+        description: String,
+        @Column(name = COL_CREATED_AT, nullable = false, updatable = false)
+        override val createdAt: Instant
 ) : Noun {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = COL_ID, nullable = false, insertable = false, updatable = false)
-    private val id: Int = 0
-    @ManyToOne(targetEntity = ManagerEntity::class)
-    @JoinColumn(name = COL_MANAGER, nullable = false, updatable = false,
-            foreignKey = ForeignKey(name = NounMapping.FK_NOUN_PK_MANAGER),
-            referencedColumnName = ManagerMapping.COL_ID)
-    private val manager: Manager
-    @Column(name = COL_KEY, length = KEY_MAX_LENGTH, nullable = false, updatable = false)
-    private val key: String
+    override val id: Int = 0
     @Column(name = COL_LABEL, nullable = false)
-    private lateinit var label: String
+    override var label: String = label
+        set(value) {
+            validateLabel(value)
+            field = value
+        }
     @Column(name = COL_LABEL_CODE, nullable = false)
-    private lateinit var labelCode: String
-    @Column(name = COL_CREATED_AT, nullable = false, updatable = false)
-    private var createdAt: Instant = createdAt
+    override var labelCode: String = labelCode
+        set(value) {
+            validateLabelCode(value)
+            field = value
+        }
+    @Column(name = COL_DESCRIPTION, length = DESCRIPTION_MAX_LENGTH, nullable = false)
+    override var description: String = description
+        set(value) {
+            validateDescription(value)
+            field = value
+        }
     @Column(name = COL_UPDATED_AT, nullable = false)
-    private var updatedAt: Instant = createdAt
+    override var updatedAt: Instant = createdAt
 
     init {
         validateManager(manager)
         validateKey(key)
-
-        this.manager = manager
-        this.key = key
-        setLabel(label)
-        setLabelCode(labelCode)
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // kr.lul.inventory.design.domain.Noun
+    // kotlin.Any
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    override fun getId(): Int = id
-
-    override fun getManager(): Manager = manager
-
-    override fun getKey(): String = key
-
-    override fun getLabel(): String = label
-
-    override fun setLabel(label: String) {
-        validateLabel(label)
-        this.label = label
-    }
-
-    override fun getLabelCode(): String = labelCode
-
-    override fun setLabelCode(labelCode: String) {
-        validateLabelCode(labelCode)
-        this.labelCode = labelCode
-    }
-
-    override fun getCreatedAt(): Instant = createdAt
-
-    override fun getUpdatedAt(): Instant = updatedAt
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // java.lang.Object
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    override fun hashCode(): Int {
-        return id
-    }
+    override fun hashCode() = id
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -113,4 +93,8 @@ abstract class AbstractNounEntity(
 
         return id == other.id
     }
+
+    override fun toString(): String = AbstractNounEntity::class.simpleName +
+            "(id=$id, manager=$manager, key='$key', label='$label', labelCode='$labelCode', description='$description', " +
+            "createdAt=$createdAt, updatedAt=$updatedAt)"
 }

@@ -12,10 +12,10 @@ internal class NounConverterImpl : NounConverter {
     private val log = LoggerFactory.getLogger(NounConverterImpl::class.java)!!
 
     private fun detail(noun: Noun): NounDetailDto =
-            NounDetailDto(noun.getId(), noun.getKey(), noun.getLabel(), noun.getLabelCode())
+            NounDetailDto(noun.id, noun.key, noun.label, noun.labelCode, noun.description)
 
     private fun simple(noun: Noun): NounSimpleDto =
-            NounSimpleDto(noun.getId(), noun.getKey(), noun.getLabel(), noun.getLabelCode())
+            NounSimpleDto(noun.id, noun.key, noun.label, noun.labelCode)
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // kr.lul.inventory.business.converter.NounConverter

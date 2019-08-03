@@ -9,18 +9,20 @@ import java.time.Instant
  */
 interface NounFactory {
     fun identifiable(
-            manager: Manager, key: String, label: String, labelCode: String, createdAt: Instant
+            manager: Manager, key: String, label: String, labelCode: String, description: String, createdAt: Instant
     ): IdentifiableNoun
 
     fun countable(
-            manager: Manager, key: String, label: String, labelCode: String, createdAt: Instant
+            manager: Manager, key: String, label: String, labelCode: String, description: String, createdAt: Instant
     ): CountableNoun
 
     fun limitedIdentifiable(
-            manager: Manager, key: String, label: String, labelCode: String, limit: Int, createdAt: Instant
+            manager: Manager, key: String, label: String, labelCode: String, limit: Int, description: String,
+            createdAt: Instant
     ): LimitedIdentifiableNoun
 
     fun limitedCountable(
-            manager: Manager, key: String, label: String, labelCode: String, limit: Int, createdAt: Instant
+            manager: Manager, key: String, label: String, labelCode: String, limit: Int, description: String,
+            createdAt: Instant
     ): LimitedCountableNoun
 }

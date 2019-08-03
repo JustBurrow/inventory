@@ -1,7 +1,7 @@
 package kr.lul.inventory.data.dao
 
 import kr.lul.inventory.data.DataModuleTestConfiguration
-import kr.lul.inventory.data.Util
+import kr.lul.inventory.data.ManagerUtil
 import kr.lul.inventory.design.domain.Manager.Companion.ATTR_CREATED_AT
 import kr.lul.inventory.design.domain.Manager.Companion.ATTR_EMAIL
 import kr.lul.inventory.design.domain.Manager.Companion.ATTR_NAME
@@ -34,7 +34,7 @@ class ManagerDaoImplTest {
     @Autowired
     private lateinit var timeProvider: TimeProvider
     @Autowired
-    private lateinit var util: Util
+    private lateinit var util: ManagerUtil
 
     private lateinit var before: Instant
 

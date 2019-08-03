@@ -14,6 +14,7 @@ object NounMapping {
     const val COL_KEY = "noun_key"
     const val COL_LABEL = "label"
     const val COL_LABEL_CODE = "label_code"
+    const val COL_DESCRIPTION = "description"
     const val COL_CREATED_AT = "created_utc"
     const val COL_UPDATED_AT = "updated_utc"
 

@@ -21,5 +21,5 @@ interface LimitedNoun : Noun {
     /**
      * @return 유저가 가질 수 있는 최대 갯수.
      */
-    fun getLimit(): Int
+    var limit: Int
 }

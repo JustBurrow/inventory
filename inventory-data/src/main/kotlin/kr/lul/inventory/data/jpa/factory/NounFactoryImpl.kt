@@ -19,18 +19,21 @@ class NounFactoryImpl : NounFactory {
     // kr.lul.inventory.design.factory.NounFactory
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun identifiable(
-            manager: Manager, key: String, label: String, labelCode: String, createdAt: Instant
-    ): IdentifiableNoun = IdentifiableNounEntity(manager, key, label, labelCode, createdAt)
+            manager: Manager, key: String, label: String, labelCode: String, description: String, createdAt: Instant
+    ): IdentifiableNoun = IdentifiableNounEntity(manager, key, label, labelCode, description, createdAt)
 
     override fun countable(
-            manager: Manager, key: String, label: String, labelCode: String, createdAt: Instant
-    ): CountableNoun = CountableNounEntity(manager, key, label, labelCode, createdAt)
+            manager: Manager, key: String, label: String, labelCode: String, description: String, createdAt: Instant
+    ): CountableNoun = CountableNounEntity(manager, key, label, labelCode, description, createdAt)
 
     override fun limitedIdentifiable(
-            manager: Manager, key: String, label: String, labelCode: String, limit: Int, createdAt: Instant
-    ): LimitedIdentifiableNoun = LimitedIdentifiableNounEntity(manager, key, label, labelCode, limit, createdAt)
+            manager: Manager, key: String, label: String, labelCode: String, limit: Int, description: String,
+            createdAt: Instant
+    ): LimitedIdentifiableNoun =
+            LimitedIdentifiableNounEntity(manager, key, label, labelCode, limit, description, createdAt)
 
     override fun limitedCountable(
-            manager: Manager, key: String, label: String, labelCode: String, limit: Int, createdAt: Instant
-    ): LimitedCountableNoun = LimitedCountableNounEntity(manager, key, label, labelCode, limit, createdAt)
+            manager: Manager, key: String, label: String, labelCode: String, limit: Int, description: String,
+            createdAt: Instant
+    ): LimitedCountableNoun = LimitedCountableNounEntity(manager, key, label, labelCode, limit, description, createdAt)
 }
