@@ -1,6 +1,6 @@
 package kr.lul.inventory.data
 
-import kr.lul.inventory.design.util.SystemTimeProvider
+import kr.lul.inventory.design.util.MillisecondSystemTimeProvider
 import kr.lul.inventory.design.util.TimeProvider
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
@@ -13,7 +13,7 @@ class DataModuleTestConfiguration {
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
-    fun timeProvider(): TimeProvider = SystemTimeProvider()
+    fun timeProvider(): TimeProvider = MillisecondSystemTimeProvider()
 
     @Bean
     fun managerUtil() = ManagerUtil()

@@ -3,9 +3,9 @@ package kr.lul.inventory.design.util
 import java.time.Instant
 import java.time.ZoneId
 
-class SystemTimeProvider : TimeProvider {
+class MillisecondSystemTimeProvider : TimeProvider {
     override val instant: Instant
-        get() = Instant.now()
+        get() = Instant.ofEpochMilli(System.currentTimeMillis())
 
     override val zoneId: ZoneId = ZoneId.systemDefault()
 }

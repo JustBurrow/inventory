@@ -86,11 +86,11 @@ class ManagerUtil {
     fun freshManager(createdAt: Instant = timeProvider.instant) =
             ManagerEntity(this.unusedEmail, this.unusedName, createdAt)
 
-    fun manager(password: String): ManagerEntity {
-        val manager = managerRepository.save(freshManager())
-        credentialRepository.save(
+    fun manager(password: String = this.password): ManagerEntity {
+        val manager = managerRepository.saveAndFlush(freshManager())
+        credentialRepository.saveAndFlush(
                 ManagerCredentialEntity(manager, manager.name, passwordEncoder.encode(password), manager.createdAt))
-        credentialRepository.save(
+        credentialRepository.saveAndFlush(
                 ManagerCredentialEntity(manager, manager.email, passwordEncoder.encode(password), manager.createdAt))
 
         return manager

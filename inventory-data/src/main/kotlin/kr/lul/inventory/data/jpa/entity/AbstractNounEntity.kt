@@ -4,11 +4,11 @@ import kr.lul.inventory.data.jpa.mapping.ManagerMapping
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_CREATED_AT
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_DESCRIPTION
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_ID
-import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_KEY
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_LABEL
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_LABEL_CODE
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_MANAGER
-import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_TYPE
+import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_NOUN_KEY
+import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_NOUN_TYPE
 import kr.lul.inventory.data.jpa.mapping.NounMapping.COL_UPDATED_AT
 import kr.lul.inventory.data.jpa.mapping.NounMapping.ENTITY_NAME
 import kr.lul.inventory.data.jpa.mapping.NounMapping.FK_NOUN_PK_MANAGER
@@ -37,14 +37,14 @@ import javax.persistence.*
         indexes = [Index(name = FK_NOUN_PK_MANAGER, columnList = FK_NOUN_PK_MANAGER_COLUMNS),
             Index(name = FK_NOUN_PK_NOUN_TYPE, columnList = FK_NOUN_PK_NOUN_TYPE_COLUMNS)])
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = COL_TYPE, discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name = COL_NOUN_TYPE, discriminatorType = DiscriminatorType.INTEGER)
 abstract class AbstractNounEntity(
         @ManyToOne(targetEntity = ManagerEntity::class)
         @JoinColumn(name = COL_MANAGER, nullable = false, updatable = false,
                 foreignKey = ForeignKey(name = FK_NOUN_PK_MANAGER),
                 referencedColumnName = ManagerMapping.COL_ID)
         override val manager: Manager,
-        @Column(name = COL_KEY, length = KEY_MAX_LENGTH, nullable = false, updatable = false)
+        @Column(name = COL_NOUN_KEY, length = KEY_MAX_LENGTH, nullable = false, updatable = false)
         override val key: String,
         label: String,
         labelCode: String,

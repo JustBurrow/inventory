@@ -10,8 +10,8 @@ object NounMapping {
 
     const val COL_ID = "id"
     const val COL_MANAGER = "manager"
-    const val COL_TYPE = "type"
-    const val COL_KEY = "noun_key"
+    const val COL_NOUN_TYPE = "noun_type"
+    const val COL_NOUN_KEY = "noun_key"
     const val COL_LABEL = "label"
     const val COL_LABEL_CODE = "label_code"
     const val COL_DESCRIPTION = "description"
@@ -22,5 +22,5 @@ object NounMapping {
     const val FK_NOUN_PK_MANAGER_COLUMNS = "$COL_MANAGER ASC"
 
     const val FK_NOUN_PK_NOUN_TYPE = "FK_NOUN_PK_NOUN_TYPE"
-    const val FK_NOUN_PK_NOUN_TYPE_COLUMNS = "$COL_TYPE ASC"
+    const val FK_NOUN_PK_NOUN_TYPE_COLUMNS = "$COL_NOUN_TYPE ASC"
 }
