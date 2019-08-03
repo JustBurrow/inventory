@@ -8,18 +8,32 @@ import java.time.Instant
  */
 interface ManagerCredential {
     companion object {
+        /**
+         * @see [ManagerCredential.id]
+         */
         const val ATTR_ID = "id"
+        /**
+         * @see [ManagerCredential.manager]
+         */
         const val ATTR_MANAGER = "manager"
+        /**
+         * @see [ManagerCredential.publicKey]
+         */
         const val ATTR_PUBLIC_KEY = "publicKey"
-        const val ATTR_SECRET = "secret"
+        /**
+         * @see [ManagerCredential.secretHash]
+         */
         const val ATTR_SECRET_HASH = "secretHash"
+        /**
+         * @see [ManagerCredential.createdAt]
+         */
         const val ATTR_CREATED_AT = "createdAt"
 
-        fun isValidManager(manager: Manager) = 0 < manager.getId()
+        fun isValidManager(manager: Manager) = 0 < manager.id
 
         @Throws(AttributeValidationException::class)
         fun validateManager(manager: Manager) {
-            val msg = if (0 >= manager.getId())
+            val msg = if (0 >= manager.id)
                 "not persisted $ATTR_MANAGER : $manager"
             else
                 null
@@ -33,10 +47,9 @@ interface ManagerCredential {
         val PUBLIC_KEY_PATTERNS = listOf(Manager.NAME_PATTERN, Manager.EMAIL_PATTERN)
         val PUBLIC_KEY_REGEXS = listOf(Manager.NAME_REGEX, Manager.EMAIL_REGEX)
 
-        fun isValidPublicKey(publicKey: String): Boolean {
-            return publicKey.length in PUBLIC_KEY_MIN_LENGTH..PUBLIC_KEY_MAX_LENGTH
-                    && (publicKey.matches(Manager.NAME_REGEX) || publicKey.matches(Manager.EMAIL_REGEX))
-        }
+        fun isValidPublicKey(publicKey: String): Boolean =
+                publicKey.length in PUBLIC_KEY_MIN_LENGTH..PUBLIC_KEY_MAX_LENGTH && (publicKey.matches(
+                        Manager.NAME_REGEX) || publicKey.matches(Manager.EMAIL_REGEX))
 
         @Throws(AttributeValidationException::class)
         fun validatePublicKey(publicKey: String) {
@@ -53,17 +66,6 @@ interface ManagerCredential {
                 throw AttributeValidationException(ATTR_PUBLIC_KEY, publicKey, msg)
         }
 
-        const val SECRET_MIN_LENGTH = 4
-
-        fun isValidSecret(secret: String) = SECRET_MIN_LENGTH < secret.length
-
-        @Throws(AttributeValidationException::class)
-        fun validateSecret(secret: String) {
-            if (SECRET_MIN_LENGTH > secret.length)
-                throw AttributeValidationException(ATTR_SECRET, "[ PROTECTED ]",
-                        "too short $ATTR_SECRET : length=${secret.length}, min=$SECRET_MIN_LENGTH")
-        }
-
         const val SECRET_HASH_PATTERN = "\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}"
         val SECRET_HASH_REGEX = SECRET_HASH_PATTERN.toRegex()
 
@@ -77,13 +79,13 @@ interface ManagerCredential {
         }
     }
 
-    fun getId(): Long
+    val id: Long
 
-    fun getManager(): Manager
+    val manager: Manager
 
-    fun getPublicKey(): String
+    val publicKey: String
 
-    fun getSecretHash(): String
+    val secretHash: String
 
-    fun getCreatedAt(): Instant
+    val createdAt: Instant
 }

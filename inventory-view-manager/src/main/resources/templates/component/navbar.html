@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:lang="${#locale}">
+<head>
+    <meta name="author" content="justburrow" th:remove="all"/>
+    <meta name="since" content="2019-07-14 13:00" th:remove="all"/>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../../libs/bootstrap/css/bootstrap.css"/>
+    <script src="../../libs/jquery/jquery.js"></script>
+    <script src="../../libs/popper/popper.js"></script>
+    <script src="../../libs/bootstrap/js/bootstrap.js"></script>
+    <title>Navbar</title>
+</head>
+<body>
+<header class="position-fixed fixed-top" th:fragment="delegator()">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="navbar.html" th:href="@{/}">Navbar</a>
+        <button class="navbar-toggler" type="button"
+                data-toggle="collapse" data-target="#global-navbar"
+                aria-controls="global-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div sec:authorize="hasRole('ROLE_ANONYMOUS')" th:remove="tag">
+            <div th:replace="component/navbar/role-anonymous :: navbar">
+                ROLE_ANONYMOUS
+            </div>
+        </div>
+        <div sec:authorize="hasRole('ROLE_MANAGER')" th:remove="tag">
+            <div th:replace="component/navbar/role-manager :: navbar">
+                ROLE_MANAGER
+            </div>
+        </div>
+    </nav>
+</header>
+<main class="container container-fluid">
+    <h1 class="h1">Navbar</h1>
+    <section class="my-5">
+        <h2 class="h2">Anonymous(Guest)</h2>
+        <div class="shadow">
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="navbar/role-anonymous.html"></iframe>
+            </div>
+        </div>
+    </section>
+    <section class="my-5">
+        <h2 class="h2">Manager</h2>
+        <div class="shadow">
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="navbar/role-manager.html"></iframe>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

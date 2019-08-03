@@ -1,6 +1,6 @@
 package kr.lul.inventory.data.jpa.repository
 
-import kr.lul.inventory.data.jpa.entity.NounEntity
+import kr.lul.inventory.data.jpa.entity.AbstractNounEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository
  * @since 2019-07-06
  */
 @Repository
-interface NounRepository : JpaRepository<NounEntity, Long>
+interface NounRepository : JpaRepository<AbstractNounEntity, Int>

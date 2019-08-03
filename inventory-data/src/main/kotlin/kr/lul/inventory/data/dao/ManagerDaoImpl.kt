@@ -32,10 +32,11 @@ internal class ManagerDaoImpl : ManagerDao {
 
         `is`(manager, ManagerEntity::class, "manager")
 
-        if (managerRepository.existsByEmail(manager.getEmail()))
-            throw AttributeValidationException(ATTR_EMAIL, manager.getEmail(), "used $ATTR_EMAIL.")
-        else if (managerRepository.existsByName(manager.getName()))
-            throw AttributeValidationException(ATTR_NAME, manager.getName(), "used $ATTR_NAME.")
+        if (managerRepository.existsByEmail(manager.email))
+            throw AttributeValidationException(ATTR_EMAIL, manager.email,
+                    "used $ATTR_EMAIL : ${manager.email}")
+        else if (managerRepository.existsByName(manager.name))
+            throw AttributeValidationException(ATTR_NAME, manager.name, "used $ATTR_NAME : ${manager.name}")
 
 
         val saved = managerRepository.save(manager as ManagerEntity)

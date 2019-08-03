@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}">
+<head>
+    <meta name="author" content="justburrow" th:remove="all"/>
+    <meta name="since" content="2019-07-14 14:03" th:remove="all"/>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../../../libs/bootstrap/css/bootstrap.css"
+          th:href="@{/libs/bootstrap/css/bootstrap.css}"/>
+    <link rel="stylesheet" href="../../../assets/css/inventory.css"
+          th:href="@{/assets/css/inventory.css}"/>
+    <script src="../../../libs/jquery/jquery.js"
+            th:href="@{/libs/jquery/jquery.js}"></script>
+    <script src="../../../libs/popper/popper.js"
+            th:href="@{/libs/popper/popper.js}"></script>
+    <script src="../../../libs/bootstrap/js/bootstrap.js"
+            th:href="@{/libs/bootstrap/js/bootstrap.js}"></script>
+    <script src="../../../assets/js/inventory.js"
+            th:href="@{/assets/js/inventory.js}"></script>
+    <title>Manager Dashboard</title>
+</head>
+<body>
+<header class="position-fixed fixed-top" th:replace="component/navbar :: delegator">
+    navbar
+</header>
+<main class="container-fluid">
+    <h1 class="h1">Manager Dashboard</h1>
+    <div class="container-fluid row">
+        <p>Manager</p>
+    </div>
+</main>
+</body>
+</html>

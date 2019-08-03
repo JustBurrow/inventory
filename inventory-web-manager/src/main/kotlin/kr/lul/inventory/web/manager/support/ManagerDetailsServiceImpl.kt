@@ -2,11 +2,11 @@ package kr.lul.inventory.web.manager.support
 
 import kr.lul.inventory.business.service.ManagerService
 import kr.lul.inventory.business.service.params.SearchCredentialParams
+import kr.lul.inventory.design.util.TimeProvider
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import java.time.ZoneId
 
 @Service
 internal class ManagerDetailsServiceImpl : ManagerDetailsService {
@@ -14,6 +14,8 @@ internal class ManagerDetailsServiceImpl : ManagerDetailsService {
 
     @Autowired
     private lateinit var managerService: ManagerService
+    @Autowired
+    private lateinit var timeProvider: TimeProvider
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // kr.lul.inventory.web.manager.support.ManagerDetailsService
@@ -22,8 +24,7 @@ internal class ManagerDetailsServiceImpl : ManagerDetailsService {
     override fun loadUserByUsername(username: String?): ManagerDetails {
         if (log.isTraceEnabled)
             log.trace("args : username={}", username)
-        if (null == username)
-            throw IllegalArgumentException("username is null.")
+        username ?: throw UsernameNotFoundException("username is null.")
 
         val credential = managerService.search(SearchCredentialParams(username))
                 ?: run {
@@ -32,18 +33,16 @@ internal class ManagerDetailsServiceImpl : ManagerDetailsService {
                     throw UsernameNotFoundException(msg)
                 }
 
-        val manager = credential.getManager()
+        val manager = credential.manager
         if (log.isTraceEnabled)
             log.trace("manager={}", manager)
 
-        val details = ManagerDetails(
-                manager.getId(),
-                manager.getEmail(),
-                manager.getName(),
-                manager.getCreatedAt().atZone(ZoneId.systemDefault()),
-                manager.getUpdatedAt().atZone(ZoneId.systemDefault()),
-                credential.getSecretHash()
-        )
+        val details = ManagerDetails(manager.id,
+                manager.email,
+                manager.name,
+                timeProvider.toZoneDateTime(manager.createdAt),
+                timeProvider.toZoneDateTime(manager.updatedAt),
+                credential.secretHash)
 
         if (log.isTraceEnabled)
             log.trace("return : {}", details)

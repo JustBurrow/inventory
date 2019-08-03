@@ -1,6 +1,7 @@
 spring:
-  datasource.hikari:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: false
     open-in-view=: false

@@ -1,11 +1,12 @@
 package kr.lul.inventory.web.manager.configuration
 
 import kr.lul.inventory.web.manager.mapping.IndexMvc
+import kr.lul.inventory.web.manager.support.LoggingHandlerInterceptor
+import kr.lul.inventory.web.manager.support.ManagerDetailsHandlerMethodArgumentResolver
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import org.springframework.web.method.support.HandlerMethodArgumentResolver
+import org.springframework.web.servlet.config.annotation.*
 
 /**
  * @author justburrow
@@ -14,6 +15,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 @EnableWebMvc
 class WebMvcConfiguration : WebMvcConfigurer {
+    @Autowired
+    private lateinit var loggingHandlerInterceptor: LoggingHandlerInterceptor
+    @Autowired
+    private lateinit var managerDetailsHandlerMethodArgumentResolver: ManagerDetailsHandlerMethodArgumentResolver
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // org.springframework.web.servlet.config.annotation.WebMvcConfigurer
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,5 +33,13 @@ class WebMvcConfiguration : WebMvcConfigurer {
     override fun addViewControllers(registry: ViewControllerRegistry) {
         registry.addViewController(IndexMvc.C.FULL_API_SIGN_IN)
                 .setViewName(IndexMvc.V.SIGN_IN)
+    }
+
+    override fun addInterceptors(registry: InterceptorRegistry) {
+        registry.addInterceptor(loggingHandlerInterceptor)
+    }
+
+    override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
+        resolvers.add(managerDetailsHandlerMethodArgumentResolver)
     }
 }

@@ -13,6 +13,8 @@ object IndexMvc {
         const val PREFIX = "layout/_"
 
         const val INDEX = "$PREFIX/index"
+        const val INDEX_ANONYMOUS = "$INDEX-anonymous"
+        const val INDEX_MANAGER = "$INDEX-manager"
         const val SIGN_IN = "$PREFIX/signin"
     }
 

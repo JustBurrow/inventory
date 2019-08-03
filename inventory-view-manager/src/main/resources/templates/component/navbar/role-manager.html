@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:lang="${#locale}">
+<head>
+    <meta name="author" content="justburrow" th:remove="all"/>
+    <meta name="since" content="2019-07-15 12:01" th:remove="all"/>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../../../libs/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../../assets/css/inventory.css"/>
+    <script src="../../../libs/jquery/jquery.js"></script>
+    <script src="../../../libs/popper/popper.js"></script>
+    <script src="../../../libs/bootstrap/js/bootstrap.js"></script>
+    <title>Navbar : ROLE_MANAGER</title>
+</head>
+<body>
+<header class="position-fixed fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="navbar.html" th:href="@{/}">Navbar</a>
+        <button class="navbar-toggler" type="button"
+                data-toggle="collapse" data-target="#global-navbar"
+                aria-controls="global-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="global-navbar" class="collapse navbar-collapse" th:fragment="navbar">
+            <ul class="navbar-nav mr-auto">
+                <li id="global-navbar-item-noun" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false"
+                       href="#gnv-menu-noun">Noun</a>
+                    <ul id="gnv-menu-noun" class="dropdown-menu" aria-labelledby="global-navbar-item-noun">
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="../../layout/noun/create.html"
+                               th:href="@{/nouns/create}">New</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="nav-link" href="../../layout/noun/index.html"
+                               th:href="@{/nouns}">List</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item" th:remove="all">
+                    <a class="nav-link">Dummy</a>
+                </li>
+            </ul>
+            <div id="global-navbar-manager" class="navbar-nav">
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false"
+                       href="#gnv-menu-manager"><span sec:authentication="principal.username">manager name</span></a>
+                    <ul id="gnv-menu-manager" class="dropdown-menu dropdown-menu-right"
+                        aria-labelledby="global-navbar-manager">
+                        <li class="dropdown-item">
+                            <a class="btn btn-sm btn-link" href="../../layout/manager/setting.html"
+                               th:href="@{/managers/setting}">Setting</a>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item">
+                            <form action="../navbar.html" method="post"
+                                  th:action="@{/signout}">
+                                <button class="btn btn-sm btn-link">SIGN-OUT</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<main class="container container-fluid">
+    <h1 class="h1">Navbar : <code>ROLE_MANAGER</code></h1>
+</main>
+</body>
+</html>

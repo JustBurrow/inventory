@@ -1,8 +1,6 @@
 package kr.lul.inventory.data.jpa.repository
 
 import kr.lul.inventory.data.DataModuleTestConfiguration
-import kr.lul.inventory.design.domain.Noun
-import kr.lul.inventory.test.data.NounDataUtil
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,36 +23,14 @@ class NounRepositoryTest {
     @Autowired
     private lateinit var nounRepository: NounRepository
 
-    @Autowired
-    private lateinit var nounDataUtil: NounDataUtil
-
     @Test
     fun `test findAll()`() {
-        assertThat(nounRepository.findAll())
-                .isEmpty()
-    }
-
-    @Test
-    fun `test save() with random Noun instance`() {
-        // GIVEN
-        val expected = nounDataUtil.random()
-        val id = expected.getId()
-        val key = expected.getKey()
-        val label = expected.getLabel()
-        val labelCode = expected.getLabelCode()
-        log.debug("GIVEN - noun={}", expected)
-
         // WHEN
-        val actual = nounRepository.save(expected)
-        log.debug("WHEN - actual={}", actual)
+        val list = nounRepository.findAll()
+        log.debug("WHEN - list=$list")
 
         // THEN
-        assertThat(actual)
-                .isNotNull
-                .extracting(Noun.ATTR_KEY, Noun.ATTR_LABEL, Noun.ATTR_LABEL_CODE)
-                .containsSequence(key, label, labelCode)
-        assertThat(actual.getId())
-                .isGreaterThan(0L)
-                .isNotEqualTo(id)
+        assertThat(list)
+                .isEmpty()
     }
 }

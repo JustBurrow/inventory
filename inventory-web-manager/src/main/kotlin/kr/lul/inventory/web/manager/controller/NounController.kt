@@ -21,6 +21,7 @@ interface NounController {
     fun createForm(model: Model): String
 
     @PostMapping(C.API_CREATE)
-    fun create(@ModelAttribute(M.CREATE_NOUN_REQ) @Valid req: CreateNounReq, result: BindingResult,
-               model: Model): String
+    fun create(
+            @ModelAttribute(M.CREATE_NOUN_REQ) @Valid req: CreateNounReq, binding: BindingResult, model: Model
+    ): String
 }

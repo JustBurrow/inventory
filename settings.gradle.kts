@@ -9,8 +9,9 @@ include(
         "inventory-dto",
 
         "inventory-web-user",
+
+        "inventory-view-manager",
         "inventory-web-manager",
 
-        "inventory-test-data",
-        "inventory-test-business"
+        "test-util"
 )

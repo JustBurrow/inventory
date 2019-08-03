@@ -26,66 +26,42 @@ import javax.persistence.*
 @Table(name = TABLE,
         uniqueConstraints = [UniqueConstraint(name = UQ_MANAGER_CREDENTIAL_PUBLIC_KEY, columnNames = [COL_PUBLIC_KEY])])
 class ManagerCredentialEntity(
-        manager: Manager,
-        publicKey: String,
-        secretHash: String,
-        createdAt: Instant
+        @ManyToOne(targetEntity = ManagerEntity::class)
+        @JoinColumn(name = COL_MANAGER, nullable = false, updatable = false,
+                foreignKey = ForeignKey(name = FK_MANAGER_CREDENTIAL_PK_MANAGER),
+                referencedColumnName = ManagerMapping.COL_ID)
+        override val manager: Manager,
+        @Column(name = COL_PUBLIC_KEY, nullable = false, updatable = false)
+        override val publicKey: String,
+        @Column(name = COL_SECRET_HASH, nullable = false, updatable = false)
+        override val secretHash: String,
+        @Column(name = COL_CREATED_AT, nullable = false, updatable = false)
+        override val createdAt: Instant
 ) : ManagerCredential {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = COL_ID, nullable = false, insertable = false, updatable = false)
-    private var id = 0L
-    @ManyToOne(targetEntity = ManagerEntity::class)
-    @JoinColumn(name = COL_MANAGER, nullable = false, updatable = false,
-            foreignKey = ForeignKey(name = FK_MANAGER_CREDENTIAL_PK_MANAGER),
-            referencedColumnName = ManagerMapping.COL_ID)
-    private var manager: Manager
-    @Column(name = COL_PUBLIC_KEY, nullable = false, updatable = false)
-    private var publicKey: String
-    @Column(name = COL_SECRET_HASH, nullable = false, updatable = false)
-    private var secretHash: String
-    @Column(name = COL_CREATED_AT, nullable = false, updatable = false)
-    private var createdAt: Instant
+    override val id: Long = 0L
 
     init {
         validateManager(manager)
         validatePublicKey(publicKey)
         validateSecretHash(secretHash)
-
-        this.manager = manager
-        this.publicKey = publicKey
-        this.secretHash = secretHash
-        this.createdAt = createdAt
     }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // kr.lul.inventory.design.domain.ManagerCredential
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    override fun getId(): Long = id
-
-    override fun getManager(): Manager = manager
-
-    override fun getPublicKey(): String = publicKey
-
-    override fun getSecretHash(): String = secretHash
-
-    override fun getCreatedAt(): Instant = createdAt
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // java.lang.Object
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    override fun hashCode(): Int = id.hashCode()
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (0L >= id || other !is ManagerCredentialEntity) return false
 
-        return id != other.id
+        return id == other.id
     }
 
-    override fun hashCode(): Int {
-        return id.hashCode()
-    }
-
-    override fun toString(): String {
-        return "${ManagerCredentialEntity::class.simpleName}(id=$id, manager=$manager, publicKey='$publicKey', secretHash=[ PROTECTED ], createdAt=$createdAt)"
-    }
+    override fun toString(): String = "${ManagerCredentialEntity::class.simpleName}" +
+            "(id=$id, manager=${manager.toSimpleString()}, " +
+            "publicKey='$publicKey', secretHash=[ PROTECTED ], createdAt=$createdAt)"
 }
