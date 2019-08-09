@@ -15,7 +15,12 @@ import kr.lul.inventory.data.jpa.mapping.NounMapping.FK_NOUN_PK_MANAGER
 import kr.lul.inventory.data.jpa.mapping.NounMapping.FK_NOUN_PK_MANAGER_COLUMNS
 import kr.lul.inventory.data.jpa.mapping.NounMapping.FK_NOUN_PK_NOUN_TYPE
 import kr.lul.inventory.data.jpa.mapping.NounMapping.FK_NOUN_PK_NOUN_TYPE_COLUMNS
+import kr.lul.inventory.data.jpa.mapping.NounMapping.IDX_NOUN_LABEL
+import kr.lul.inventory.data.jpa.mapping.NounMapping.IDX_NOUN_LABEL_CODE
+import kr.lul.inventory.data.jpa.mapping.NounMapping.IDX_NOUN_LABEL_CODE_COLUMNS
+import kr.lul.inventory.data.jpa.mapping.NounMapping.IDX_NOUN_LABEL_COLUMNS
 import kr.lul.inventory.data.jpa.mapping.NounMapping.TABLE_NAME
+import kr.lul.inventory.data.jpa.mapping.NounMapping.UQ_NOUN_KEY
 import kr.lul.inventory.design.domain.Manager
 import kr.lul.inventory.design.domain.Noun
 import kr.lul.inventory.design.domain.Noun.Companion.DESCRIPTION_MAX_LENGTH
@@ -34,8 +39,11 @@ import javax.persistence.*
  */
 @Entity(name = ENTITY_NAME)
 @Table(name = TABLE_NAME,
+        uniqueConstraints = [UniqueConstraint(name = UQ_NOUN_KEY, columnNames = [COL_NOUN_KEY])],
         indexes = [Index(name = FK_NOUN_PK_MANAGER, columnList = FK_NOUN_PK_MANAGER_COLUMNS),
-            Index(name = FK_NOUN_PK_NOUN_TYPE, columnList = FK_NOUN_PK_NOUN_TYPE_COLUMNS)])
+            Index(name = FK_NOUN_PK_NOUN_TYPE, columnList = FK_NOUN_PK_NOUN_TYPE_COLUMNS),
+            Index(name = IDX_NOUN_LABEL, columnList = IDX_NOUN_LABEL_COLUMNS),
+            Index(name = IDX_NOUN_LABEL_CODE, columnList = IDX_NOUN_LABEL_CODE_COLUMNS)])
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = COL_NOUN_TYPE, discriminatorType = DiscriminatorType.INTEGER)
 abstract class AbstractNounEntity(
@@ -44,7 +52,7 @@ abstract class AbstractNounEntity(
                 foreignKey = ForeignKey(name = FK_NOUN_PK_MANAGER),
                 referencedColumnName = ManagerMapping.COL_ID)
         override val manager: Manager,
-        @Column(name = COL_NOUN_KEY, length = KEY_MAX_LENGTH, nullable = false, updatable = false)
+        @Column(name = COL_NOUN_KEY, length = KEY_MAX_LENGTH, nullable = false, unique = true, updatable = false)
         override val key: String,
         label: String,
         labelCode: String,

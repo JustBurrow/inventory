@@ -23,4 +23,13 @@ object NounMapping {
 
     const val FK_NOUN_PK_NOUN_TYPE = "FK_NOUN_PK_NOUN_TYPE"
     const val FK_NOUN_PK_NOUN_TYPE_COLUMNS = "$COL_NOUN_TYPE ASC"
+
+    const val UQ_NOUN_KEY = "UQ_NOUN_KEY"
+    val UQ_NOUN_KEY_COLUMNS = listOf(UQ_NOUN_KEY)
+
+    const val IDX_NOUN_LABEL = "IDX_NOUN_LABEL"
+    const val IDX_NOUN_LABEL_COLUMNS = "$COL_LABEL ASC"
+
+    const val IDX_NOUN_LABEL_CODE = "IDX_NOUN_LABEL_CODE"
+    const val IDX_NOUN_LABEL_CODE_COLUMNS = "$COL_LABEL_CODE ASC"
 }

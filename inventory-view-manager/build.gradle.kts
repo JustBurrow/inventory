@@ -1,6 +1,7 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 dependencies {
+    compileOnly(project(":inventory-design"))
     compileOnly(project(":inventory-dto"))
 }
 
