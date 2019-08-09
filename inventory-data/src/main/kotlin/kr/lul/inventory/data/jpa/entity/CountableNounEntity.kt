@@ -27,6 +27,6 @@ class CountableNounEntity(
     // Any
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun toString(): String = CountableNounEntity::class.simpleName +
-            "(id=$id, manager=${manager.toSimpleString()}, key='$key', label='$label', labelCode='$labelCode'," +
+            "(id=$id, manager=${manager.simpleString}, key='$key', label='$label', labelCode='$labelCode'," +
             " description='$description', createdAt=$createdAt, updatedAt=$updatedAt)"
 }

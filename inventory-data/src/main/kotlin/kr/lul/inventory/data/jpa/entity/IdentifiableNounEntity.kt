@@ -17,4 +17,8 @@ import javax.persistence.Entity
 class IdentifiableNounEntity(
         manager: Manager, key: String, label: String, labelCode: String, description: String, createdAt: Instant
 ) : AbstractNounEntity(manager, key, label, labelCode, description, createdAt),
-        IdentifiableNoun
+        IdentifiableNoun {
+    override fun toString(): String = IdentifiableNounEntity::class.simpleName +
+            "(id=$id, manager=${manager.simpleString}, key='$key', label='$label', labelCode='$labelCode', " +
+            "description='$description', createdAt=$createdAt, updatedAt=$updatedAt)"
+}

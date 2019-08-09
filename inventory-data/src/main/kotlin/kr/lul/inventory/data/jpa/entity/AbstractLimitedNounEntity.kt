@@ -34,6 +34,6 @@ abstract class AbstractLimitedNounEntity(
     // Any
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun toString(): String = AbstractLimitedNounEntity::class.simpleName +
-            "(id=$id, manager=${manager.toSimpleString()}, key='$key', label='$label', labelCode='$labelCode', " +
+            "(id=$id, manager=${manager.simpleString}, key='$key', label='$label', labelCode='$labelCode', " +
             "limit-$limit, description='$description', createdAt=$createdAt, updatedAt=$updatedAt)"
 }

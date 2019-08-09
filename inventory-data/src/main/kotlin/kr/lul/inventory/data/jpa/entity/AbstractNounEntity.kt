@@ -95,6 +95,6 @@ abstract class AbstractNounEntity(
     }
 
     override fun toString(): String = AbstractNounEntity::class.simpleName +
-            "(id=$id, manager=$manager, key='$key', label='$label', labelCode='$labelCode', description='$description', " +
-            "createdAt=$createdAt, updatedAt=$updatedAt)"
+            "(id=$id, manager=${manager.simpleString}, key='$key', label='$label', labelCode='$labelCode', " +
+            "description='$description', createdAt=$createdAt, updatedAt=$updatedAt)"
 }

@@ -62,6 +62,6 @@ class ManagerCredentialEntity(
     }
 
     override fun toString(): String = "${ManagerCredentialEntity::class.simpleName}" +
-            "(id=$id, manager=${manager.toSimpleString()}, " +
+            "(id=$id, manager=${manager.simpleString}, " +
             "publicKey='$publicKey', secretHash=[ PROTECTED ], createdAt=$createdAt)"
 }
