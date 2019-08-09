@@ -1,8 +1,6 @@
 package kr.lul.inventory.business
 
 import kr.lul.inventory.data.DataModuleAnchor
-import kr.lul.inventory.design.util.SystemTimeProvider
-import kr.lul.inventory.design.util.TimeProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -18,7 +16,4 @@ import org.springframework.security.crypto.password.PasswordEncoder
 class BusinessModuleConfiguration {
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
-
-    @Bean
-    fun timeProvider(): TimeProvider = SystemTimeProvider()
 }

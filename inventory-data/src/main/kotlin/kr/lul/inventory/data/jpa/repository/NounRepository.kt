@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository
  * @since 2019-07-06
  */
 @Repository
-interface NounRepository : JpaRepository<AbstractNounEntity, Int>
+interface NounRepository : JpaRepository<AbstractNounEntity, Int> {
+    fun existsByKey(key: String): Boolean
+}

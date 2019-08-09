@@ -35,4 +35,14 @@ internal class NounDaoImpl : NounDao {
         if (log.isTraceEnabled) log.trace("return : $noun")
         return noun
     }
+
+    override fun exists(key: String): Boolean {
+        if (log.isTraceEnabled)
+            log.trace("args : key='$key'")
+
+        val exists = nounRepository.existsByKey(key)
+
+        if (log.isTraceEnabled) log.trace("return : $exists")
+        return exists
+    }
 }

@@ -52,9 +52,9 @@ class ManagerServiceImplTest {
     fun `test create() with fresh params`() {
         // GIVEN
         val params = CreateManagerParams(
-                util.unusedEmail(),
-                util.unusedName(),
-                util.password(),
+                util.unusedEmail,
+                util.unusedName,
+                util.password,
                 before)
         log.debug("GIVEN - params=$params")
 

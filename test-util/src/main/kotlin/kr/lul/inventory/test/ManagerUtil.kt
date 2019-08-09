@@ -1,15 +1,15 @@
 package kr.lul.inventory.test
 
+import kr.lul.inventory.data.jpa.entity.ManagerCredentialEntity
 import kr.lul.inventory.data.jpa.entity.ManagerEntity
+import kr.lul.inventory.data.jpa.repository.ManagerCredentialRepository
 import kr.lul.inventory.data.jpa.repository.ManagerRepository
-import kr.lul.inventory.design.domain.Manager.Companion.isValidEmail
-import kr.lul.inventory.design.domain.Manager.Companion.isValidName
-import kr.lul.inventory.design.domain.Manager.Companion.isValidPassword
+import kr.lul.inventory.design.domain.Manager
 import kr.lul.inventory.design.util.TimeProvider
+import org.apache.commons.lang3.RandomStringUtils
 import org.apache.commons.lang3.RandomStringUtils.random
-import org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import java.time.Instant
 import java.util.concurrent.ThreadLocalRandom.current
 
@@ -18,70 +18,74 @@ import java.util.concurrent.ThreadLocalRandom.current
  * @since 2019-07-23
  */
 class ManagerUtil {
-    private val log = LoggerFactory.getLogger(ManagerUtil::class.java)!!
+    @Autowired
+    private lateinit var managerRepository: ManagerRepository
 
     @Autowired
-    private lateinit var repository: ManagerRepository
+    private lateinit var credentialRepository: ManagerCredentialRepository
     @Autowired
     private lateinit var timeProvider: TimeProvider
+    @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
+    val name: String
+        get() {
+            var name: String
 
-    fun name(): String {
-        var name: String
+            do {
+                name = "test.name.${random(current().nextInt(1, 10))}"
+            } while (!Manager.isValidName(name))
 
-        do {
-            name = "test.name.${random(current().nextInt(1, 10))}"
-        } while (!isValidName(name))
+            return name
+        }
 
-        log.trace("return : '$name'")
-        return name
-    }
+    val unusedName: String
+        get() {
+            var name: String
 
-    fun unusedName(): String {
-        var name: String
+            do {
+                name = this.name
+            } while (managerRepository.existsByName(name))
 
-        do {
-            name = name()
-        } while (repository.existsByName(name))
+            return name
+        }
 
-        log.trace("return : '$name'")
-        return name
-    }
+    val email: String
+        get() {
+            var email: String
 
-    fun email(): String {
-        var email: String
+            do {
+                email = "${RandomStringUtils.randomAlphanumeric(1, 20)}@test.email".toLowerCase()
+            } while (!Manager.isValidEmail(email))
 
-        do {
-            email = "${randomAlphanumeric(1, 20)}@test.email".toLowerCase()
-        } while (!isValidEmail(email))
+            return email
+        }
 
-        log.trace("return : '$email'")
-        return email
-    }
+    val unusedEmail: String
+        get() {
+            var email: String
 
-    fun unusedEmail(): String {
-        var email: String
+            do {
+                email = this.email
+            } while (managerRepository.existsByEmail(email))
 
-        do {
-            email = email()
-        } while (repository.existsByEmail(email))
+            return email
+        }
 
-        log.trace("return : '$email'")
-        return email
-    }
-
-    fun password(): String {
-        var password: String
-
-        do {
-            password = "password-${random(current().nextInt(1, 50))}"
-        } while (!isValidPassword(password))
-
-        return password
-    }
+    val password: String = random(current().nextInt(Manager.PASSWORD_MIN_LENGTH, 4 * Manager.PASSWORD_MIN_LENGTH))
 
     /**
      * 새로 저장할 수 있는 [ManagerEntity].
      */
     fun freshManager(createdAt: Instant = timeProvider.instant) =
-            ManagerEntity(unusedEmail(), unusedName(), createdAt)
+            ManagerEntity(this.unusedEmail, this.unusedName, createdAt)
+
+    fun manager(password: String = this.password): ManagerEntity {
+        val manager = managerRepository.saveAndFlush(freshManager())
+        credentialRepository.saveAndFlush(
+                ManagerCredentialEntity(manager, manager.name, passwordEncoder.encode(password), manager.createdAt))
+        credentialRepository.saveAndFlush(
+                ManagerCredentialEntity(manager, manager.email, passwordEncoder.encode(password), manager.createdAt))
+
+        return manager
+    }
 }

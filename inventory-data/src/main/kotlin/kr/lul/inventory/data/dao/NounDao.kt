@@ -10,4 +10,6 @@ interface NounDao {
     fun <N : Noun> create(noun: N): N
 
     fun <N : Noun> read(id: Int): N?
+
+    fun exists(key: String): Boolean
 }

@@ -1,15 +1,20 @@
 package kr.lul.inventory.test
 
 import kr.lul.inventory.data.DataModuleAnchor
-import kr.lul.inventory.design.util.SystemTimeProvider
+import kr.lul.inventory.design.util.MillisecondSystemTimeProvider
 import kr.lul.inventory.design.util.TimeProvider
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @SpringBootApplication(scanBasePackageClasses = [DataModuleAnchor::class])
 class TestUtilModuleTestConfiguration {
     @Bean
-    fun timeProvider(): TimeProvider = SystemTimeProvider()
+    fun timeProvider(): TimeProvider = MillisecondSystemTimeProvider()
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
     fun managerUtil() = ManagerUtil()

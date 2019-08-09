@@ -52,9 +52,9 @@ class ManagerUtilTest {
     }
 
     @Test
-    fun `test name()`() {
+    fun `test name`() {
         // WHEN
-        val name = util.name()
+        val name = util.name
         log.debug("WHEN - name='$name'")
 
         // THEN
@@ -64,9 +64,9 @@ class ManagerUtilTest {
     }
 
     @Test
-    fun `test unusedName()`() {
+    fun `test unusedName`() {
         // WHEN
-        val name = util.unusedName()
+        val name = util.unusedName
         log.debug("WHEN - name='$name'")
 
         // THEN
@@ -81,9 +81,9 @@ class ManagerUtilTest {
     }
 
     @Test
-    fun `test email()`() {
+    fun `test email`() {
         // WHEN
-        val email = util.email()
+        val email = util.email
         log.debug("WHEN - email='$email'")
 
         // THEN
@@ -93,9 +93,9 @@ class ManagerUtilTest {
     }
 
     @Test
-    fun `test unusedEmail()`() {
+    fun `test unusedEmail`() {
         // WHEN
-        val email = util.unusedEmail()
+        val email = util.unusedEmail
         log.debug("WHEN - email='$email'")
 
         // THEN
