@@ -19,12 +19,12 @@ object Assertion {
 
     @Throws(AssertionException::class)
     fun positive(num: Int, name: String) {
-        if (0 > num) throw AssertionException(num, name, "$name is not positive : $num")
+        if (0 >= num) throw AssertionException(num, name, "$name is not positive : $num")
     }
 
     @Throws(AssertionException::class)
     fun positive(num: Long, name: String) {
-        if (0L > num) throw AssertionException(num, name, "$name is not positive : $num")
+        if (0L >= num) throw AssertionException(num, name, "$name is not positive : $num")
     }
 
     @Throws(AssertionException::class)

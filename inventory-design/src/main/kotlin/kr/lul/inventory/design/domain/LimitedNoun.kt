@@ -13,7 +13,7 @@ interface LimitedNoun : Noun {
         @Throws(AttributeValidationException::class)
         fun validateLimit(limit: Int) {
             if (0 >= limit) {
-                throw AttributeValidationException(ATTR_LIMIT, limit, "not positive limit : limit=$limit")
+                throw AttributeValidationException("not positive limit", ATTR_LIMIT, limit)
             }
         }
     }

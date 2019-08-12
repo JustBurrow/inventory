@@ -12,15 +12,18 @@ object NounMvc {
     object V {
         const val PREFIX = "layout/noun"
 
+        const val LIST = "$PREFIX/list"
         const val CREATE_FORM = "$PREFIX/create"
     }
 
     object C {
         const val GROUP = "/nouns"
 
+        const val API_LIST = ""
         const val API_CREATE_FORM = "/create"
         const val API_CREATE = ""
 
+        const val FULL_API_LIST = GROUP
         const val FULL_API_CREATE_FORM = "$GROUP$API_CREATE_FORM"
         const val FULL_API_CREATE = GROUP
     }

@@ -1,8 +1,10 @@
 package kr.lul.inventory.web.manager.controller
 
-import kr.lul.inventory.web.manager.controller.request.CreateNounReq
+import kr.lul.inventory.web.manager.controller.argument.CreateNounReq
 import kr.lul.inventory.web.manager.mapping.NounMvc.C
 import kr.lul.inventory.web.manager.mapping.NounMvc.M
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.SortDefault
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
@@ -17,6 +19,9 @@ import javax.validation.Valid
  */
 @RequestMapping(C.GROUP)
 interface NounController {
+    @GetMapping(C.API_LIST)
+    fun list(@SortDefault pageable: Pageable, model: Model): String
+
     @GetMapping(C.API_CREATE_FORM)
     fun createForm(model: Model): String
 

@@ -1,4 +1,4 @@
-package kr.lul.inventory.web.manager.controller.request
+package kr.lul.inventory.web.manager.controller.argument
 
 import kr.lul.inventory.design.domain.Manager.Companion.EMAIL_MAX_LENGTH
 import kr.lul.inventory.design.domain.Manager.Companion.NAME_MAX_LENGTH

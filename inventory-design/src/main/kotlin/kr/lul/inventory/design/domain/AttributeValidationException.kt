@@ -4,4 +4,8 @@ package kr.lul.inventory.design.domain
  * @author justburrow
  * @since 2019-07-06
  */
-class AttributeValidationException(val attribute: String, val value: Any?, message: String) : RuntimeException(message)
+class AttributeValidationException(
+        val baseMessage: String,
+        val attribute: String,
+        val value: Any?
+) : RuntimeException("$baseMessage : attribute=$attribute, value=$value")

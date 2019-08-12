@@ -10,5 +10,5 @@ data class ManagerDetailDto(
         val id: Int,
         val email: String,
         val name: String,
-        val createdAt: ZonedDateTime
-)
+        val createdAt: ZonedDateTime,
+        val updatedAt: ZonedDateTime)

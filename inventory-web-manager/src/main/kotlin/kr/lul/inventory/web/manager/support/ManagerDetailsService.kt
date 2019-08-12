@@ -1,5 +1,6 @@
 package kr.lul.inventory.web.manager.support
 
+import kr.lul.inventory.web.manager.controller.argument.CurrentManager
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.transaction.annotation.Transactional
 
@@ -12,5 +13,5 @@ interface ManagerDetailsService : UserDetailsService {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // org.springframework.security.core.userdetails.UserDetailsService
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    override fun loadUserByUsername(username: String?): ManagerDetails
+    override fun loadUserByUsername(username: String?): CurrentManager
 }

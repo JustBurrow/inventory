@@ -4,6 +4,7 @@ import kr.lul.inventory.business.service.params.CreateManagerParams
 import kr.lul.inventory.business.service.params.SearchCredentialParams
 import kr.lul.inventory.data.dao.ManagerDao
 import kr.lul.inventory.design.domain.Manager
+import kr.lul.inventory.design.domain.Manager.Companion.validatePassword
 import kr.lul.inventory.design.domain.ManagerCredential
 import kr.lul.inventory.design.factory.ManagerCredentialFactory
 import kr.lul.inventory.design.factory.ManagerFactory
@@ -30,8 +31,9 @@ internal class ManagerServiceImpl : ManagerService {
     // kr.lul.inventory.business.service.ManagerService
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun create(params: CreateManagerParams): Manager {
-        if (log.isTraceEnabled())
-            log.trace("args : params={}", params)
+        if (log.isTraceEnabled) log.trace("args : params={}", params)
+
+        validatePassword(params.password)
 
         var manager = managerFactory.instance(params.email, params.name, params.timestamp)
         manager = managerDao.create(manager)
@@ -46,6 +48,18 @@ internal class ManagerServiceImpl : ManagerService {
 
         if (log.isTraceEnabled)
             log.trace("return : {}", manager)
+        return manager
+    }
+
+    override fun read(id: Int): Manager? {
+        if (log.isTraceEnabled) log.trace("args : id=$id")
+
+        val manager = if (0 < id)
+            managerDao.read(id)
+        else
+            null
+
+        if (log.isTraceEnabled) log.trace("return : $manager")
         return manager
     }
 

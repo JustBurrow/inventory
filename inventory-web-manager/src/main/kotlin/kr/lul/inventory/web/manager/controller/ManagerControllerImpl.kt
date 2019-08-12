@@ -4,7 +4,7 @@ import kr.lul.inventory.business.borderline.ManagerBorderline
 import kr.lul.inventory.business.borderline.cmd.CreateManagerCmd
 import kr.lul.inventory.design.domain.AttributeValidationException
 import kr.lul.inventory.web.manager.configuration.ErrorCode.ManagerErrorCode
-import kr.lul.inventory.web.manager.controller.request.CreateManagerReq
+import kr.lul.inventory.web.manager.controller.argument.CreateManagerReq
 import kr.lul.inventory.web.manager.mapping.IndexMvc
 import kr.lul.inventory.web.manager.mapping.ManagerMvc.M
 import kr.lul.inventory.web.manager.mapping.ManagerMvc.V
@@ -15,6 +15,7 @@ import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.validation.FieldError
 import org.springframework.web.bind.annotation.ModelAttribute
+import java.util.*
 import javax.validation.Valid
 
 @Controller
@@ -42,6 +43,7 @@ internal class ManagerControllerImpl : ManagerController {
     private fun doCreate(req: CreateManagerReq, result: BindingResult, model: Model): String =
             try {
                 managerBorderline.create(CreateManagerCmd(
+                        UUID.randomUUID(),
                         req.email!!,
                         req.name!!,
                         req.secret!!

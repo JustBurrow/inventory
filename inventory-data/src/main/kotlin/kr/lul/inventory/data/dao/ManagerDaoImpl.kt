@@ -12,6 +12,7 @@ import kr.lul.inventory.design.domain.ManagerCredential
 import kr.lul.inventory.design.util.Assertion.`is`
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -33,10 +34,9 @@ internal class ManagerDaoImpl : ManagerDao {
         `is`(manager, ManagerEntity::class, "manager")
 
         if (managerRepository.existsByEmail(manager.email))
-            throw AttributeValidationException(ATTR_EMAIL, manager.email,
-                    "used $ATTR_EMAIL : ${manager.email}")
+            throw AttributeValidationException("already used $ATTR_EMAIL", ATTR_EMAIL, manager.email)
         else if (managerRepository.existsByName(manager.name))
-            throw AttributeValidationException(ATTR_NAME, manager.name, "used $ATTR_NAME : ${manager.name}")
+            throw AttributeValidationException("already used $ATTR_NAME", ATTR_NAME, manager.name)
 
 
         val saved = managerRepository.save(manager as ManagerEntity)
@@ -44,6 +44,18 @@ internal class ManagerDaoImpl : ManagerDao {
         if (log.isTraceEnabled)
             log.trace("return : {}", saved)
         return saved
+    }
+
+    override fun read(id: Int): Manager? {
+        if (log.isTraceEnabled) log.trace("args : id=$id")
+
+        val manager = if (0 < id)
+            managerRepository.findByIdOrNull(id)
+        else
+            null
+
+        if (log.isTraceEnabled) log.trace("return : $manager")
+        return manager
     }
 
     override fun create(credential: ManagerCredential): ManagerCredential {

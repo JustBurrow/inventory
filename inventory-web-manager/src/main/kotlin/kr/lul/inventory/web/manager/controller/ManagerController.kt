@@ -1,6 +1,6 @@
 package kr.lul.inventory.web.manager.controller
 
-import kr.lul.inventory.web.manager.controller.request.CreateManagerReq
+import kr.lul.inventory.web.manager.controller.argument.CreateManagerReq
 import kr.lul.inventory.web.manager.mapping.ManagerMvc.C
 import kr.lul.inventory.web.manager.mapping.ManagerMvc.M
 import org.springframework.ui.Model

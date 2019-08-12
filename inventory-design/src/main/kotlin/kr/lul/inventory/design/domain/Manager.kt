@@ -43,14 +43,14 @@ interface Manager : ToSimpleString {
             val msg = if (email.isEmpty())
                 "$ATTR_EMAIL is empty."
             else if (EMAIL_MAX_LENGTH < email.length)
-                "$ATTR_EMAIL is too long : length=${email.length}, max=$EMAIL_MAX_LENGTH"
+                "$ATTR_EMAIL is too long(max=$EMAIL_MAX_LENGTH)"
             else if (!email.matches(EMAIL_REGEX))
-                "illegal $ATTR_EMAIL pattern : email='$email', pattern='$EMAIL_PATTERN'"
+                "illegal $ATTR_EMAIL pattern(pattern='$EMAIL_PATTERN')"
             else
                 null
 
             if (null != msg) {
-                throw AttributeValidationException(ATTR_EMAIL, email, msg)
+                throw AttributeValidationException(msg, ATTR_EMAIL, email)
             }
         }
 
@@ -65,16 +65,16 @@ interface Manager : ToSimpleString {
         @Throws(AttributeValidationException::class)
         fun validateName(name: String) {
             val msg = if (NAME_MIN_LENGTH > name.length)
-                "too short $ATTR_NAME : length=${name.length}, min=$NAME_MIN_LENGTH"
+                "too short $ATTR_NAME(min=$NAME_MIN_LENGTH)"
             else if (NAME_MAX_LENGTH < name.length)
-                "too long $ATTR_NAME : length=${name.length}, max=$NAME_MAX_LENGTH"
+                "too long $ATTR_NAME(max=$NAME_MAX_LENGTH)"
             else if (!name.matches(NAME_REGEX))
-                "illegal $ATTR_NAME pattern : name='$name', pattern='$NAME_PATTERN'"
+                "illegal $ATTR_NAME(pattern='$NAME_PATTERN')"
             else
                 null
 
             if (null != msg) {
-                throw AttributeValidationException(ATTR_NAME, name, msg)
+                throw AttributeValidationException(msg, ATTR_NAME, name)
             }
         }
 
@@ -83,10 +83,16 @@ interface Manager : ToSimpleString {
         fun isValidPassword(password: String) = PASSWORD_MIN_LENGTH < password.length
 
         @Throws(AttributeValidationException::class)
-        fun validatePassword(secret: String) {
-            if (PASSWORD_MIN_LENGTH > secret.length)
-                throw AttributeValidationException(ATTR_PASSWORD, "[ PROTECTED ]",
-                        "too short $ATTR_PASSWORD : length=${secret.length}, min=$PASSWORD_MIN_LENGTH")
+        fun validatePassword(password: String) {
+            val msg = if (password.isEmpty())
+                "empty password"
+            else if (PASSWORD_MIN_LENGTH > password.length)
+                "too short $ATTR_PASSWORD(min=$PASSWORD_MIN_LENGTH)"
+            else
+                null
+
+            if (null != msg)
+                throw AttributeValidationException(msg, ATTR_PASSWORD, "[ PROTECTED ]")
         }
     }
 

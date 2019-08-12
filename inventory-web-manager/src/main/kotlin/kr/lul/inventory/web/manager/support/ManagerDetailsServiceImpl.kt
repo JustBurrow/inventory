@@ -3,6 +3,7 @@ package kr.lul.inventory.web.manager.support
 import kr.lul.inventory.business.service.ManagerService
 import kr.lul.inventory.business.service.params.SearchCredentialParams
 import kr.lul.inventory.design.util.TimeProvider
+import kr.lul.inventory.web.manager.controller.argument.CurrentManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -21,7 +22,7 @@ internal class ManagerDetailsServiceImpl : ManagerDetailsService {
     // kr.lul.inventory.web.manager.support.ManagerDetailsService
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Throws(UsernameNotFoundException::class)
-    override fun loadUserByUsername(username: String?): ManagerDetails {
+    override fun loadUserByUsername(username: String?): CurrentManager {
         if (log.isTraceEnabled)
             log.trace("args : username={}", username)
         username ?: throw UsernameNotFoundException("username is null.")
@@ -37,7 +38,7 @@ internal class ManagerDetailsServiceImpl : ManagerDetailsService {
         if (log.isTraceEnabled)
             log.trace("manager={}", manager)
 
-        val details = ManagerDetails(manager.id,
+        val details = CurrentManager(manager.id,
                 manager.email,
                 manager.name,
                 timeProvider.toZoneDateTime(manager.createdAt),

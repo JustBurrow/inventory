@@ -23,7 +23,7 @@
 <header class="position-fixed fixed-top" th:replace="component/navbar :: delegator">
     navbar
 </header>
-<main class="container container-fluid">
+<main class="container-fluid">
     <h1>Create Noun</h1>
     <!--/*@thymesVar id="createNounReq" type="kr.lul.inventory.web.manager.controller.request.CreateItemReq"*/-->
     <form id="form-create" action="#" method="post"
@@ -67,6 +67,14 @@
                        th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MIN_LENGTH}"
                        th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MAX_LENGTH}"
                        th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_PATTERN}"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-2"
+                   for="description">Flavor</label>
+            <div class="col">
+                <textarea id="description" class="form-control" rows="10"
+                          form="form-create"></textarea>
             </div>
         </div>
         <div class="form-group">

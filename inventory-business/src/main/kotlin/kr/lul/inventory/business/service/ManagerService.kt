@@ -12,6 +12,8 @@ import kr.lul.inventory.design.domain.ManagerCredential
 interface ManagerService {
     fun create(params: CreateManagerParams): Manager
 
+    fun read(id: Int): Manager?
+
     /**
      * 조건에 맞는 [ManagerCredential]을 찾는다. 없으면 `null`.
      *

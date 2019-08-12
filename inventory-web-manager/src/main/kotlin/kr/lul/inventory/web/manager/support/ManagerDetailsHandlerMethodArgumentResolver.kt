@@ -1,5 +1,6 @@
 package kr.lul.inventory.web.manager.support
 
+import kr.lul.inventory.web.manager.controller.argument.CurrentManager
 import org.slf4j.LoggerFactory
 import org.springframework.core.MethodParameter
 import org.springframework.security.core.context.SecurityContextHolder
@@ -25,7 +26,7 @@ class ManagerDetailsHandlerMethodArgumentResolver : HandlerMethodArgumentResolve
         if (log.isTraceEnabled)
             log.trace("args : param=$param, param.type=${param.genericParameterType}")
 
-        return param.genericParameterType == ManagerDetails::class.java
+        return param.genericParameterType == CurrentManager::class.java
     }
 
     override fun resolveArgument(
@@ -42,11 +43,11 @@ class ManagerDetailsHandlerMethodArgumentResolver : HandlerMethodArgumentResolve
         val manager = if (
                 null === authentication ||
                 null === authentication.principal ||
-                authentication.principal !is ManagerDetails
+                authentication.principal !is CurrentManager
         ) {
             null
         } else {
-            authentication.principal as ManagerDetails
+            authentication.principal as CurrentManager
         }
 
         if (log.isTraceEnabled)

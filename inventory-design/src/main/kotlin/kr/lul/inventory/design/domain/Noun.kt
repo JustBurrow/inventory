@@ -25,8 +25,7 @@ interface Noun {
         @Throws(AttributeValidationException::class)
         fun validateManager(manager: Manager) {
             if (0 >= manager.id)
-                throw AttributeValidationException(ATTR_MANAGER, manager,
-                        "not persisted $ATTR_MANAGER : manager=$manager")
+                throw AttributeValidationException("not persisted manager", ATTR_MANAGER, manager)
         }
 
         const val KEY_MIN_LENGTH = 1
@@ -43,16 +42,16 @@ interface Noun {
         @Throws(AttributeValidationException::class)
         fun validateKey(key: String) {
             val msg = if (KEY_MIN_LENGTH > key.length)
-                "too short $ATTR_KEY : length=${key.length}, min=$KEY_MIN_LENGTH"
+                "too short $ATTR_KEY(min=$KEY_MIN_LENGTH)"
             else if (KEY_MAX_LENGTH < key.length)
-                "too long $ATTR_KEY : length=${key.length}, max=$KEY_MAX_LENGTH"
+                "too long $ATTR_KEY(max=$KEY_MAX_LENGTH)"
             else if (!key.matches(KEY_REGEX))
-                "illegal $ATTR_KEY pattern : $ATTR_KEY='$key', pattern='$KEY_PATTERN'"
+                "illegal $ATTR_KEY pattern(pattern='$KEY_PATTERN')"
             else
                 null
 
             if (null != msg) {
-                throw AttributeValidationException(ATTR_KEY, key, msg);
+                throw AttributeValidationException(msg, ATTR_KEY, key);
             }
         }
 
@@ -70,16 +69,16 @@ interface Noun {
         @Throws(AttributeValidationException::class)
         fun validateLabel(label: String) {
             val msg = if (LABEL_MIN_LENGTH > label.length)
-                "too short $ATTR_LABEL : length=${label.length}, min=$LABEL_MIN_LENGTH"
+                "too short $ATTR_LABEL(min=$LABEL_MIN_LENGTH)"
             else if (LABEL_MAX_LENGTH < label.length)
-                "too long $ATTR_LABEL : length=${label.length}, max=$LABEL_MAX_LENGTH"
+                "too long $ATTR_LABEL(max=$LABEL_MAX_LENGTH)"
             else if (!label.matches(LABEL_REGEX))
-                "illegal $ATTR_LABEL pattern : $ATTR_LABEL='$label', pattern='$LABEL_PATTERN'"
+                "illegal $ATTR_LABEL pattern(pattern='$LABEL_PATTERN')"
             else
                 null
 
             if (null != msg) {
-                throw AttributeValidationException(ATTR_LABEL, label, msg)
+                throw AttributeValidationException(msg, ATTR_LABEL, label)
             }
         }
 
@@ -98,16 +97,16 @@ interface Noun {
         @Throws(AttributeValidationException::class)
         fun validateLabelCode(labelCode: String) {
             val msg = if (LABEL_CODE_MIN_LENGTH > labelCode.length)
-                "too short $ATTR_LABEL_CODE : length=${labelCode.length}, min=$LABEL_CODE_MIN_LENGTH"
+                "too short $ATTR_LABEL_CODE(min=$LABEL_CODE_MIN_LENGTH)"
             else if (LABEL_CODE_MAX_LENGTH < labelCode.length)
-                "too long $ATTR_LABEL_CODE : length=${labelCode.length}, max=$LABEL_CODE_MAX_LENGTH"
+                "too long $ATTR_LABEL_CODE(max=$LABEL_CODE_MAX_LENGTH)"
             else if (!labelCode.matches(LABEL_CODE_REGEX))
-                "illegal $ATTR_LABEL_CODE pattern : $ATTR_LABEL_CODE='$labelCode', pattern='$LABEL_CODE_PATTERN'"
+                "illegal $ATTR_LABEL_CODE pattern(pattern='$LABEL_CODE_PATTERN')"
             else
                 null
 
             if (null != msg) {
-                throw AttributeValidationException(ATTR_LABEL_CODE, labelCode, msg)
+                throw AttributeValidationException(msg, ATTR_LABEL_CODE, labelCode)
             }
         }
 
@@ -118,8 +117,8 @@ interface Noun {
         @Throws(AttributeValidationException::class)
         fun validateDescription(description: String) {
             if (DESCRIPTION_MAX_LENGTH < description.length)
-                throw AttributeValidationException(ATTR_DESCRIPTION, description,
-                        "too long description : description.length=${description.length}, max=$DESCRIPTION_MAX_LENGTH")
+                throw AttributeValidationException("too long description(max=$DESCRIPTION_MAX_LENGTH)",
+                        ATTR_DESCRIPTION, description)
         }
     }
 

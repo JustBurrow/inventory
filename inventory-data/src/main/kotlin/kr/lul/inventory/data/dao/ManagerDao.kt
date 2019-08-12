@@ -12,5 +12,7 @@ interface ManagerDao {
 
     fun create(credential: ManagerCredential): ManagerCredential
 
+    fun read(id: Int): Manager?
+
     fun readCredential(publicKey: String): ManagerCredential?
 }

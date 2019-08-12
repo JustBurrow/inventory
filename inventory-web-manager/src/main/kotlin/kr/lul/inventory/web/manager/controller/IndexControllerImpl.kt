@@ -1,7 +1,7 @@
 package kr.lul.inventory.web.manager.controller
 
+import kr.lul.inventory.web.manager.controller.argument.CurrentManager
 import kr.lul.inventory.web.manager.mapping.IndexMvc.V
-import kr.lul.inventory.web.manager.support.ManagerDetails
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -12,12 +12,12 @@ internal class IndexControllerImpl : IndexController {
 
     private fun anonymous(model: Model): String = V.INDEX_ANONYMOUS
 
-    private fun dashboard(manager: ManagerDetails, model: Model): String = V.INDEX_MANAGER
+    private fun dashboard(manager: CurrentManager, model: Model): String = V.INDEX_MANAGER
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // kr.lul.inventory.web.manager.controller.IndexController
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    override fun index(manager: ManagerDetails?, model: Model): String {
+    override fun index(manager: CurrentManager?, model: Model): String {
         if (log.isTraceEnabled)
             log.trace("args : manager=$manager, model=$model")
 

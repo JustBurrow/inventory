@@ -1,6 +1,7 @@
 package kr.lul.inventory.business.borderline
 
 import kr.lul.inventory.business.borderline.cmd.CreateManagerCmd
+import kr.lul.inventory.business.borderline.cmd.ReadManagerCmd
 import kr.lul.inventory.business.converter.ManagerConverter
 import kr.lul.inventory.business.service.ManagerService
 import kr.lul.inventory.business.service.params.CreateManagerParams
@@ -39,6 +40,19 @@ internal class ManagerBorderlineImpl : ManagerBorderline {
 
         if (log.isTraceEnabled)
             log.trace("return : {}", dto)
+        return dto
+    }
+
+    override fun read(cmd: ReadManagerCmd): ManagerDetailDto? {
+        if (log.isTraceEnabled) log.trace("args : cmd$cmd")
+
+        val manager = managerService.read(cmd.id)
+        val dto = if (null == manager)
+            null
+        else
+            managerConverter.convert(manager, ManagerDetailDto::class)
+
+        if (log.isTraceEnabled) log.trace("return : $dto")
         return dto
     }
 }
