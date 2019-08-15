@@ -5,11 +5,11 @@ import org.springframework.security.core.userdetails.User
 import java.time.ZonedDateTime
 
 class CurrentManager(
-        private val id: Int,
-        private val email: String,
-        private val name: String,
-        private val createdAt: ZonedDateTime,
-        private val updatedAt: ZonedDateTime,
+        val id: Int,
+        val email: String,
+        val name: String,
+        val createdAt: ZonedDateTime,
+        val updatedAt: ZonedDateTime,
         password: String
 ) : User(name, password, true, true, true, true,
         mutableListOf(SimpleGrantedAuthority(

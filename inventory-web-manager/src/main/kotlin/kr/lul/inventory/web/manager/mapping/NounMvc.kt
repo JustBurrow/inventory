@@ -20,11 +20,15 @@ object NounMvc {
         const val GROUP = "/nouns"
 
         const val API_LIST = ""
+
         const val API_CREATE_FORM = "/create"
         const val API_CREATE = ""
-
+        const val API_DETAIL = "/{id:[1-9]\\d*}"
         const val FULL_API_LIST = GROUP
+
         const val FULL_API_CREATE_FORM = "$GROUP$API_CREATE_FORM"
         const val FULL_API_CREATE = GROUP
+
+        const val FULL_API_DETAIL = "$GROUP$API_DETAIL"
     }
 }

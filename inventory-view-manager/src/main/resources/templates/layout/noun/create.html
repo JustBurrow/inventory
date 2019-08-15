@@ -15,6 +15,8 @@
             th:href="@{/libs/popper/popper.js}"></script>
     <script src="../../../libs/bootstrap/js/bootstrap.js"
             th:href="@{/libs/bootstrap/js/bootstrap.js}"></script>
+    <script src="../../../libs/vue/vue.js"
+            th:href="@{/libs/vue/vue.js}"></script>
     <script src="../../../assets/js/inventory.js"
             th:href="@{/assets/js/inventory.js}"></script>
     <title>Create Form</title>
@@ -25,22 +27,56 @@
 </header>
 <main class="container-fluid">
     <h1>Create Noun</h1>
-    <!--/*@thymesVar id="createNounReq" type="kr.lul.inventory.web.manager.controller.request.CreateItemReq"*/-->
     <form id="form-create" action="#" method="post"
           th:action="@{/nouns}"></form>
+    <!--/*@thymesVar id="createNounReq" type="kr.lul.inventory.web.manager.controller.argument.CreateNounReq"*/-->
     <div class="container"
          th:object="${createNounReq}">
+        <div class="form-group row">
+            <label class="col-form-label col-2" for="input-create-type">TYPE</label>
+            <div class="col">
+                <!--/*@thymesVar id="type" type="kr.lul.inventory.design.domain.NounType"*/-->
+                <select id="input-create-type" class="form-control"
+                        form="form-create" name="type"
+                        required="required"
+                        th:field="*{type}" th:errorClass="is-invalid">
+                    <option th:each="type : ${T(kr.lul.inventory.design.domain.NounType).values()}"
+                            th:value="${type}" th:selected="${false}"
+                            th:text="${type}">COUNTABLE
+                    </option>
+                    <option th:remove="all">IDENTIFIABLE</option>
+                    <option th:remove="all">LIMITED_COUNTABLE</option>
+                    <option th:remove="all">LIMITED_IDENTIFIABLE</option>
+                </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('type')}">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('type')}" th:text="${err}">error</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <div class="form-group row">
             <label class="col-form-label col-2"
                    for="input-create-key">KEY</label>
             <div class="col">
-                <input id="input-create-key" class="form-control"
-                       form="form-create"
-                       required="required" minlength="1" maxlength="255"
-                       th:field="*{key}"
-                       th:minlength="${T(kr.lul.inventory.design.domain.Noun).KEY_MIN_LENGTH}"
-                       th:maxlength="${T(kr.lul.inventory.design.domain.Noun).KEY_MAX_LENGTH}"
-                       th:pattern="${T(kr.lul.inventory.design.domain.Noun).KEY_PATTERN}"/>
+                <label class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"
+                              th:text="${T(kr.lul.inventory.design.domain.Noun).KEY_NAMESPACE +'.'}">namespace.</span>
+                    </div>
+                    <input id="input-create-key" class="form-control"
+                           form="form-create" name="key"
+                           required="required" minlength="1" maxlength="255"
+                           th:field="*{key}" th:errorClass="is-invalid"
+                           th:minlength="${T(kr.lul.inventory.design.domain.Noun).KEY_MIN_LENGTH}"
+                           th:maxlength="${T(kr.lul.inventory.design.domain.Noun).KEY_MAX_LENGTH}"
+                           th:pattern="${T(kr.lul.inventory.design.domain.Noun).KEY_PATTERN}"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('key')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('key')}" th:text="${err}">error</li>
+                        </ul>
+                    </div>
+                </label>
             </div>
         </div>
         <div class="form-group row">
@@ -48,33 +84,69 @@
                    for="input-create-label">LABEL</label>
             <div class="col">
                 <input id="input-create-label" class="form-control"
-                       form="form-create"
+                       form="form-create" name="label"
                        required="required" minlength="1" maxlength="255"
-                       th:field="*{label}"
+                       th:field="*{label}" th:errorClass="is-invalid"
                        th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_MIN_LENGTH}"
                        th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_MAX_LENGTH}"
                        th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_PATTERN}"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('label')}">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('label')}" th:text="${err}">error</li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-form-label col-2"
                    for="input-create-label-code">LABEL CODE</label>
             <div class="col">
-                <input id="input-create-label-code" class="form-control"
-                       form="form-create"
-                       required="required" minlength="1" maxlength="255"
-                       th:field="*{labelCode}"
-                       th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MIN_LENGTH}"
-                       th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MAX_LENGTH}"
-                       th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_PATTERN}"/>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"
+                              th:text="${'#' +T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_NAMESPACE +'.'}">#namespace.</span>
+                    </div>
+                    <input id="input-create-label-code" class="form-control"
+                           form="form-create" name="label-code"
+                           required="required" minlength="1" maxlength="255"
+                           th:field="*{labelCode}" th:errorClass="is-invalid"
+                           th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MIN_LENGTH}"
+                           th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MAX_LENGTH}"
+                           th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_PATTERN}"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('labelCode')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('labelCode')}" th:text="${err}">error</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-2" for="input-create-limit">LIMIT</label>
+            <div class="col">
+                <input type="number" id="input-create-limit" class="form-control"
+                       form="form-create" name="limit"
+                       min="0" value="0"
+                       th:field="*{limit}" th:errorClass="is-invalid"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('limit')}">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('limit')}" th:text="${err}">error</li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-form-label col-2"
-                   for="description">Flavor</label>
+                   for="description">DESCRIPTION</label>
             <div class="col">
                 <textarea id="description" class="form-control" rows="10"
-                          form="form-create"></textarea>
+                          form="form-create" name="description"
+                          th:field="*{description}" th:errorClass="is-invalid"></textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('description')}" th:text="${err}">error</li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="form-group">

@@ -12,6 +12,7 @@ import kr.lul.inventory.design.domain.Noun.Companion.LABEL_PATTERN
 import kr.lul.inventory.design.domain.NounType
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
@@ -31,5 +32,7 @@ data class CreateNounReq(
         @Pattern(regexp = LABEL_CODE_PATTERN)
         var labelCode: String? = null,
         @Min(1)
-        var limit: Int? = null
+        var limit: Int? = null,
+        @NotNull
+        var description: String? = null
 )

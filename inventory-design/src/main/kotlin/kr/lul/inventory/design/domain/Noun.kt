@@ -3,7 +3,7 @@ package kr.lul.inventory.design.domain
 import java.time.Instant
 
 /**
- * 추사화한 아이템 정보. 유저는 소유할 수 없다.
+ * 추상화한 아이템 정보. 유저는 소유할 수 없다.
  *
  * @author justburrow
  * @since 2019-07-06
@@ -19,6 +19,9 @@ interface Noun {
         const val ATTR_DESCRIPTION = "description"
         const val ATTR_CREATED_AT = "createdAt"
         const val ATTR_UPDATED_AT = "updatedAt"
+
+        const val KEY_NAMESPACE = "inventory.noun"
+        const val LABEL_CODE_NAMESPACE = "inventory.labelcode.noun"
 
         fun isValidManager(manager: Manager) = 0 < manager.id
 

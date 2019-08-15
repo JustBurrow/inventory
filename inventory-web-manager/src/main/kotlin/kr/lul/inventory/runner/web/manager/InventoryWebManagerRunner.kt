@@ -1,27 +1,34 @@
 package kr.lul.inventory.runner.web.manager
 
+import kr.lul.inventory.design.util.MillisecondSystemTimeProvider
+import kr.lul.inventory.design.util.TimeProvider
 import kr.lul.inventory.web.manager.WebManagerModuleAnchor
 import org.slf4j.LoggerFactory
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.ApplicationPidFileWriter
+import org.springframework.context.annotation.Bean
 
 /**
  * @author justburrow
  * @since 2019-07-10
  */
 @SpringBootApplication(scanBasePackageClasses = [WebManagerModuleAnchor::class])
-class WebManagerRunner
+class InventoryWebManagerRunner {
+    @Bean
+    fun timeProvider(): TimeProvider = MillisecondSystemTimeProvider()
+}
 
-val log = LoggerFactory.getLogger(WebManagerRunner::class.java)!!
+internal val log = LoggerFactory.getLogger(InventoryWebManagerRunner::class.java)!!
 
 fun main(args: Array<String>) {
-    val app = SpringApplication(WebManagerRunner::class.java)
+    val app = SpringApplication(InventoryWebManagerRunner::class.java)
     app.addListeners(ApplicationPidFileWriter())
     val ctx = app.run(*args)
 
-    if (log.isInfoEnabled)
+    if (log.isInfoEnabled) {
         ctx.beanDefinitionNames.forEach {
-            log.info("$it=${ctx.getBean(it)}")
+            log.info("bean : $it=${ctx.getBean(it)}")
         }
+    }
 }

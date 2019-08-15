@@ -1,6 +1,7 @@
 package kr.lul.inventory.web.manager.controller
 
 import kr.lul.inventory.web.manager.controller.argument.CreateNounReq
+import kr.lul.inventory.web.manager.controller.argument.CurrentManager
 import kr.lul.inventory.web.manager.mapping.NounMvc.C
 import kr.lul.inventory.web.manager.mapping.NounMvc.M
 import org.springframework.data.domain.Pageable
@@ -27,6 +28,9 @@ interface NounController {
 
     @PostMapping(C.API_CREATE)
     fun create(
-            @ModelAttribute(M.CREATE_NOUN_REQ) @Valid req: CreateNounReq, binding: BindingResult, model: Model
+            user: CurrentManager,
+            @ModelAttribute(M.CREATE_NOUN_REQ) @Valid req: CreateNounReq,
+            binding: BindingResult,
+            model: Model
     ): String
 }
