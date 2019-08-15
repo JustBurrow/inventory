@@ -12,12 +12,14 @@ import kr.lul.inventory.design.domain.InvalidAttributeException
 import kr.lul.inventory.design.domain.LimitedNoun
 import kr.lul.inventory.design.domain.Noun
 import kr.lul.inventory.design.domain.NounType
+import kr.lul.inventory.dto.LimitedNounDetailDto
 import kr.lul.inventory.dto.NounDetailDto
 import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.CREATE_LIMIT_IS_NULL
 import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.CREATE_LIMIT_NOT_ACCEPTABLE
 import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.CREATE_LIMIT_NOT_POSITIVE
 import kr.lul.inventory.web.manager.controller.argument.CreateNounReq
 import kr.lul.inventory.web.manager.controller.argument.CurrentManager
+import kr.lul.inventory.web.manager.controller.argument.UpdateNounReq
 import kr.lul.inventory.web.manager.mapping.NounMvc.C
 import kr.lul.inventory.web.manager.mapping.NounMvc.M
 import kr.lul.inventory.web.manager.mapping.NounMvc.V
@@ -159,6 +161,20 @@ internal class NounControllerImpl : NounController {
         return template
     }
 
+    private fun doUpdateForm(user: CurrentManager, noun: NounDetailDto?, model: Model): String {
+        model.addAttribute(M.NOUN, noun)
+        if (!model.containsAttribute(M.UPDATE_NOUN_REQ)) {
+            val req = when (noun) {
+                null -> null
+                is LimitedNounDetailDto -> UpdateNounReq(noun.label, noun.labelCode, noun.limit, noun.description)
+                else -> UpdateNounReq(noun.label, noun.labelCode, null, noun.description)
+            }
+            model.addAttribute(M.UPDATE_NOUN_REQ, req)
+        }
+
+        return V.UPDATE_FORM
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // kr.lul.inventory.web.manager.controller.NounController
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,7 +234,7 @@ internal class NounControllerImpl : NounController {
         } else try {
             nounBorderline.read<NounDetailDto>(ReadNounCmd(randomUUID(), user.id, id))
         } catch (e: NotOwnerException) {
-            log.warn("current=$user, id=$id")
+            log.warn("${e.message} : user=$user, id=$id")
             null
         }
         model.addAttribute(M.NOUN, noun)
@@ -241,5 +257,36 @@ internal class NounControllerImpl : NounController {
         val template = V.LIST
         if (log.isTraceEnabled) log.trace("result : template='$template', model=$model")
         return template
+    }
+
+    override fun updateForm(user: CurrentManager, @PathVariable(M.NOUN_ID) id: Int, model: Model): String {
+        if (log.isTraceEnabled) log.trace("args : user=$user, id=$id, model=$model")
+
+        val noun = if (0 >= id) {
+            log.warn("noun id is out-of-range : user=$user, id=$id")
+            null
+        } else try {
+            val cmd = ReadNounCmd(randomUUID(), user.id, id)
+            nounBorderline.read<NounDetailDto>(cmd)
+        } catch (e: NotOwnerException) {
+            log.warn("${e.message} : user=$user, id=$id")
+            null
+        }
+        val template = doUpdateForm(user, noun, model)
+
+        if (log.isTraceEnabled) log.trace("result : template='$template', model=$model")
+        return template
+    }
+
+    override fun update(
+            user: CurrentManager,
+            @PathVariable(M.NOUN_ID) id: Int,
+            @ModelAttribute(M.UPDATE_NOUN_REQ) @Valid req: UpdateNounReq,
+            binding: BindingResult,
+            model: Model
+    ): String {
+        if (log.isTraceEnabled) log.trace("args : user=$user, id=$id, req=$req, model=$model")
+
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

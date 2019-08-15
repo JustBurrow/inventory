@@ -9,10 +9,10 @@ data class LimitedCountableNounDetailDto(
         override val key: String,
         override val label: String,
         override val labelCode: String,
-        val limit: Int,
+        override val limit: Int,
         override val description: String,
         override val createdAt: ZonedDateTime,
         override val updatedAt: ZonedDateTime
-) : NounDetailDto {
+) : LimitedNounDetailDto {
     override val type = NounType.LIMITED_COUNTABLE
 }

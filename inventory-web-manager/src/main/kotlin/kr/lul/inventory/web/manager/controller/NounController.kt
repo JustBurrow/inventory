@@ -2,6 +2,7 @@ package kr.lul.inventory.web.manager.controller
 
 import kr.lul.inventory.web.manager.controller.argument.CreateNounReq
 import kr.lul.inventory.web.manager.controller.argument.CurrentManager
+import kr.lul.inventory.web.manager.controller.argument.UpdateNounReq
 import kr.lul.inventory.web.manager.mapping.NounMvc.C
 import kr.lul.inventory.web.manager.mapping.NounMvc.M
 import org.springframework.data.domain.Pageable
@@ -10,6 +11,7 @@ import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -39,6 +41,18 @@ interface NounController {
     fun list(
             user: CurrentManager,
             @SortDefault pageable: Pageable,
+            model: Model
+    ): String
+
+    @GetMapping(C.API_UPDATE_FORM)
+    fun updateForm(user: CurrentManager, @PathVariable(M.NOUN_ID) id: Int, model: Model): String
+
+    @PatchMapping(C.API_UPDATE)
+    fun update(
+            user: CurrentManager,
+            @PathVariable(M.NOUN_ID) id: Int,
+            @ModelAttribute(M.UPDATE_NOUN_REQ) @Valid req: UpdateNounReq,
+            binding: BindingResult,
             model: Model
     ): String
 }

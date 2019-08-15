@@ -3,7 +3,7 @@
       th:lang="${#locale}">
 <head>
     <meta name="author" content="justburrow" th:remove="all"/>
-    <meta name="since" content="2019-08-15 11:23" th:remove="all"/>
+    <meta name="since" content="2019-08-15 17:00" th:remove="all"/>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="../../../libs/bootstrap/css/bootstrap.css"
           th:href="@{/libs/bootstrap/css/bootstrap.css}"/>
@@ -19,33 +19,28 @@
             th:href="@{/libs/vue/vue.js}"></script>
     <script src="../../../assets/js/inventory.js"
             th:href="@{/assets/js/inventory.js}"></script>
-    <title>Noun Detail</title>
+    <title>Noun update</title>
 </head>
 <body>
 <header class="position-fixed fixed-top" th:replace="component/navbar :: render">
     navbar
 </header>
 <main class="container">
-    <h1>Noun Detail</h1>
+    <h1>Noun update</h1>
     <!--/*@thymesVar id="noun" type="kr.lul.inventory.dto.NounDetailDto"*/-->
     <div th:unless="${noun}">
-        <div>
-            <p>noun does not exist.</p>
-        </div>
-        <div class="container">
-            <a class="btn btn-lg btn-link" href="list.html"
-               th:href="@{/nouns}">LIST</a>
-        </div>
+        <p class="alert alert-warning">noun does not exist.</p>
     </div>
-    <div th:if="${noun}" th:remove="tag">
-        <div th:switch="${noun.class}" th:remove="tag">
-            <div class="container" th:replace="component/dto/__${noun.class.name}__/detail :: render(${noun})">
-                detail
-            </div>
+    <div class="container" th:if="${noun}">
+        <form id="form-update" class="hide"
+              action="detail.html" method="post"
+              th:action="@{/nouns/__${noun.id}__}" th:method="PATCH"></form>
+        <div th:replace="component/dto/__${noun.class.name}__/update :: render(${noun}, ${req})">
+            form
         </div>
-        <div class="container">
-            <a class="btn btn-lg btn-warning" href="update.html"
-               th:href="@{/nouns/__${noun.id}__/edit}">EDIT</a>
+        <div>
+            <button class="btn btn-lg btn-primary" form="form-update">SUBMIT</button>
+            <button type="reset" class="btn btn-lg btn-warning" form="form-update">RESET</button>
             <a class="btn btn-lg btn-light" href="list.html"
                th:href="@{/nouns}">LIST</a>
         </div>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}">
+<head>
+    <meta name="author" content="justburrow" th:remove="all"/>
+    <meta name="since" content="2019-08-15 19:02" th:remove="all"/>
+    <meta charset="UTF-8"/>
+    <title>`kr.lul.inventory.dto.CountableNounDetailDto` form</title>
+</head>
+<body>
+<main>
+    <h1><code>kr.lul.inventory.dto.CountableNounDetailDto</code> &lt;form&gt;</h1>
+    <div class="container">
+        <form id="form-update" class="hide" action="detail.html" method="post"></form>
+        <!--/*@thymesVar id="noun" type="kr.lul.inventory.dto.CountableNounDetailDto"*/-->
+        <div class="container"
+             th:fragment="render(noun, req)" th:object="${noun}" th:remove="tag">
+            <div class="form-group row">
+                <span class="col-form-label col-2">ID</span>
+                <div class="col">
+                    <span class="form-control" th:text="*{id}">id</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <span class="col-form-label col-2">TYPE</span>
+                <div class="col">
+                    <span class="form-control" th:text="*{type.label}">type</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <span class="col-form-label col-2">KEY</span>
+                <div class="col">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text"
+                              th:text="${T(kr.lul.inventory.design.domain.Noun).KEY_NAMESPACE +'.'}">namespace.</span>
+                        </div>
+                        <span class="form-control"
+                              th:text="*{key}">key</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2" for="input-update-label">LABEL</label>
+                <div class="col">
+                    <input id="input-update-label" class="form-control"
+                           form="form-update"
+                           required="required"
+                           th:field="*{label}" th:errorClass="is-invalid"
+                           th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_MIN_LENGTH}"
+                           th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_MAX_LENGTH}"
+                           th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_PATTERN}"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2" for="input-update-label-code">LABEL CODE</label>
+                <div class="col">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"
+                                 th:text="${'#' +T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_NAMESPACE +'.'}">
+                                namespace.
+                            </div>
+                        </div>
+                        <input id="input-update-label-code" class="form-control"
+                               form="form-update" name="label-code"
+                               required="required"
+                               th:field="*{labelCode}" th:errorClass="is-invalid"
+                               th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MIN_LENGTH}"
+                               th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MAX_LENGTH}"
+                               th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_PATTERN}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-2" for="input-update-description">DESCRIPTION</label>
+                <div class="col">
+                    <textarea id="input-update-description" class="form-control"
+                              form="form-update"
+                              required="required"
+                              th:field="*{description}" th:errorClass="is-invalid"></textarea>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button type="reset" class="btn btn-lg btn-warning" form="form-update">RESET</button>
+            <button class="btn btn-lg btn-primary" form="form-update">SUBMIT</button>
+            <a class="btn btn-lg btn-light" href="../../../layout/noun/list.html"
+               th:href="@{/nouns}">LIST</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>
