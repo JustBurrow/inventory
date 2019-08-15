@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}">
+<head>
+    <meta name="author" content="justburrow" th:remove="all"/>
+    <meta name="since" content="2019-08-15 11:54" th:remove="all"/>
+    <meta charset="UTF-8"/>
+    <title>ManagerSimpleDto</title>
+</head>
+<body>
+<main>
+    <h1>ManagerSimpleDto</h1>
+    <div th:fragment="render(manager)">
+        <!--/*@thymesVar id="manager" type="kr.lul.inventory.dto.ManagerSimpleDto"*/-->
+        <span th:attr="id=${manager.id}" th:text="${manager.name}">name</span>
+    </div>
+</main>
+</body>
+</html>

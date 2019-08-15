@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:nl2br="https://github.com/bufferings/thymeleaf-extras-nl2br"
+      th:lang="${#locale}">
+<head>
+    <meta name="author" content="justburrow" th:remove="all"/>
+    <meta name="since" content="2019-08-15 11:34" th:remove="all"/>
+    <meta charset="UTF-8"/>
+    <title>`kr.lul.inventory.dto.LimitedIdentifiableNounDetailDto` Detail</title>
+</head>
+<body>
+<main class="container">
+    <h1><code>kr.lul.inventory.dto.LimitedIdentifiableNounDetailDto</code> Detail</h1>
+    <div class="container" th:fragment="render(noun)">
+        <!--/*@thymesVar id="noun" type="kr.lul.inventory.dto.LimitedIdentifiableNounDetailDto"*/-->
+        <dl class="row" th:object="${noun}">
+            <dt class="col-2">ID</dt>
+            <dd class="col-10">
+                <span th:text="*{id}">id</span>
+            </dd>
+            <dt class="col-2">Manager</dt>
+            <dd class="col-10">
+                <div th:replace="component/dto/__*{manager.class.name}__ :: render(*{manager})">manager</div>
+            </dd>
+            <dt class="col-2">KEY</dt>
+            <dd class="col-10">
+                <span>
+                    <span th:text="${T(kr.lul.inventory.design.domain.Noun).KEY_NAMESPACE}">namespace</span>.<span
+                        th:text="*{key}">key</span>
+                </span>
+            </dd>
+            <dt class="col-2">Label</dt>
+            <dd class="col-10">
+                <span th:text="*{label}">label</span>
+            </dd>
+            <dt class="col-2">Label Code</dt>
+            <dd class="col-10">
+                <span th:text="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_NAMESPACE}">namespace</span>.<span
+                    th:text="*{labelCode}">label code</span>
+            </dd>
+            <dt class="col-2">Limit</dt>
+            <dd class="col-10">
+                <span th:text="*{limit}">limit</span>
+            </dd>
+            <dt class="col-2">Description</dt>
+            <dd class="col-10">
+                <div nl2br:text="*{description}">description</div>
+            </dd>
+            <dt class="col-2">Created at</dt>
+            <dd class="col-4">
+                <time th:replace="component/tag/time :: createdAt(*{createdAt})">created at</time>
+            </dd>
+            <dt class="col-2">Updated at</dt>
+            <dd class="col-4">
+                <time th:replace="component/tag/time :: updatedAt(*{updatedAt})">updated at</time>
+            </dd>
+        </dl>
+    </div>
+</main>
+</body>
+</html>

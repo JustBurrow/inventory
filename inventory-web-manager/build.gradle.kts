@@ -11,7 +11,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework:spring-tx")
 
+    implementation("org.thymeleaf.extras:thymeleaf-extras-java8time")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
+    implementation("com.github.bufferings:thymeleaf-extras-nl2br")
 }
 
 tasks.withType<Jar> {

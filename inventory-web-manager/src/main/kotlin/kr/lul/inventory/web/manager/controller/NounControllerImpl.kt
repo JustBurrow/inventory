@@ -5,9 +5,12 @@ import kr.lul.inventory.business.borderline.cmd.CreateCountableNounCmd
 import kr.lul.inventory.business.borderline.cmd.CreateIdentifiableNounCmd
 import kr.lul.inventory.business.borderline.cmd.CreateLimitedCountableNounCmd
 import kr.lul.inventory.business.borderline.cmd.CreateLimitedIdentifiableNounCmd
+import kr.lul.inventory.business.borderline.cmd.ReadNounCmd
+import kr.lul.inventory.design.domain.InvalidAttributeException
 import kr.lul.inventory.design.domain.LimitedNoun
 import kr.lul.inventory.design.domain.Noun
 import kr.lul.inventory.design.domain.NounType
+import kr.lul.inventory.dto.NounDetailDto
 import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.CREATE_LIMIT_IS_NULL
 import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.CREATE_LIMIT_NOT_ACCEPTABLE
 import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.CREATE_LIMIT_NOT_POSITIVE
@@ -25,7 +28,8 @@ import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.validation.FieldError
 import org.springframework.web.bind.annotation.ModelAttribute
-import java.util.*
+import org.springframework.web.bind.annotation.PathVariable
+import java.util.UUID.randomUUID
 import javax.validation.Valid
 
 @Controller
@@ -56,7 +60,7 @@ internal class NounControllerImpl : NounController {
             doCreateForm(model)
         else {
             val cmd = CreateIdentifiableNounCmd(
-                    UUID.randomUUID(),
+                    randomUUID(),
                     user.id!!,
                     req.key!!,
                     req.label!!,
@@ -77,7 +81,7 @@ internal class NounControllerImpl : NounController {
             doCreateForm(model)
         else {
             val cmd = CreateCountableNounCmd(
-                    UUID.randomUUID(),
+                    randomUUID(),
                     user.id!!,
                     req.key!!,
                     req.label!!,
@@ -116,7 +120,7 @@ internal class NounControllerImpl : NounController {
             doCreateForm(model)
         else {
             val cmd = CreateLimitedIdentifiableNounCmd(
-                    UUID.randomUUID(),
+                    randomUUID(),
                     user.id!!,
                     req.key!!,
                     req.label!!,
@@ -139,7 +143,7 @@ internal class NounControllerImpl : NounController {
             doCreateForm(model)
         else {
             val cmd = CreateLimitedCountableNounCmd(
-                    UUID.randomUUID(),
+                    randomUUID(),
                     user.id!!,
                     req.key!!,
                     req.label!!,
@@ -156,10 +160,36 @@ internal class NounControllerImpl : NounController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // kr.lul.inventory.web.manager.controller.NounController
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    override fun list(@SortDefault pageable: Pageable, model: Model): String {
-        if (log.isTraceEnabled) log.trace("args : pageable=$pageable, model=$model")
+    override fun create(
+            user: CurrentManager,
+            @ModelAttribute(M.CREATE_NOUN_REQ) @Valid req: CreateNounReq,
+            binding: BindingResult,
+            model: Model
+    ): String {
+        if (log.isTraceEnabled) log.trace("args : req=$req, binding=$binding, model=$model")
 
-        val template = V.LIST
+        val template = if (binding.hasErrors())
+            doCreateForm(model)
+        else {
+            try {
+                when (req.type) {
+                    NounType.IDENTIFIABLE -> doCreateIdentifiable(user, req, binding, model)
+                    NounType.COUNTABLE -> doCreateCountable(user, req, binding, model)
+                    NounType.LIMITED_IDENTIFIABLE -> doCreateLimitedIdentifiable(user, req, binding, model)
+                    NounType.LIMITED_COUNTABLE -> doCreateLimitedCountable(user, req, binding, model)
+                    else -> {
+                        binding.addError(FieldError(M.CREATE_NOUN_REQ, Noun.ATTR_TYPE, req.type, false,
+                                arrayOf(CREATE_LIMIT_NOT_ACCEPTABLE), null, "not acceptable type : ${req.type}"))
+                        doCreateForm(model)
+                    }
+                }
+            } catch (e: InvalidAttributeException) {
+                binding.addError(FieldError(M.CREATE_NOUN_REQ, e.attrName, e.value, false,
+                        arrayOf(e.baseMessage), null, e.message))
+                doCreateForm(model)
+            }
+        }
+
         if (log.isTraceEnabled) log.trace("result : template='$template', model=$model")
         return template
     }
@@ -173,28 +203,20 @@ internal class NounControllerImpl : NounController {
         return V.CREATE_FORM
     }
 
-    override fun create(
-            user: CurrentManager,
-            @ModelAttribute(M.CREATE_NOUN_REQ) @Valid req: CreateNounReq,
-            binding: BindingResult,
-            model: Model
-    ): String {
-        if (log.isTraceEnabled) log.trace("args : req=$req, binding=$binding, model=$model")
+    override fun detail(user: CurrentManager, @PathVariable(M.NOUN_ID) id: Int, model: Model): String {
+        if (log.isTraceEnabled) log.trace("args : user=$user, id=$id, model=$model")
 
-        val template = if (binding.hasErrors())
-            doCreateForm(model)
-        else when (req.type) {
-            NounType.IDENTIFIABLE -> doCreateIdentifiable(user, req, binding, model)
-            NounType.COUNTABLE -> doCreateCountable(user, req, binding, model)
-            NounType.LIMITED_IDENTIFIABLE -> doCreateLimitedIdentifiable(user, req, binding, model)
-            NounType.LIMITED_COUNTABLE -> doCreateLimitedCountable(user, req, binding, model)
-            else -> {
-                binding.addError(FieldError(M.CREATE_NOUN_REQ, Noun.ATTR_TYPE, req.type, false,
-                        arrayOf(CREATE_LIMIT_NOT_ACCEPTABLE), null, "not acceptable type : ${req.type}"))
-                doCreateForm(model)
-            }
-        }
+        val noun = nounBorderline.read<NounDetailDto>(ReadNounCmd(randomUUID(), user.id, id))
+        model.addAttribute(M.NOUN, noun)
 
+        if (log.isTraceEnabled) log.trace("result : template='${V.DETAIL}', model=$model")
+        return V.DETAIL
+    }
+
+    override fun list(@SortDefault pageable: Pageable, model: Model): String {
+        if (log.isTraceEnabled) log.trace("args : pageable=$pageable, model=$model")
+
+        val template = V.LIST
         if (log.isTraceEnabled) log.trace("result : template='$template', model=$model")
         return template
     }

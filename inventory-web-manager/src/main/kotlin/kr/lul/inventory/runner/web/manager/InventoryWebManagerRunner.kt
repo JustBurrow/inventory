@@ -1,5 +1,6 @@
 package kr.lul.inventory.runner.web.manager
 
+import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect
 import kr.lul.inventory.design.util.MillisecondSystemTimeProvider
 import kr.lul.inventory.design.util.TimeProvider
 import kr.lul.inventory.web.manager.WebManagerModuleAnchor
@@ -17,6 +18,9 @@ import org.springframework.context.annotation.Bean
 class InventoryWebManagerRunner {
     @Bean
     fun timeProvider(): TimeProvider = MillisecondSystemTimeProvider()
+
+    @Bean
+    fun dialect() = Nl2brDialect()
 }
 
 internal val log = LoggerFactory.getLogger(InventoryWebManagerRunner::class.java)!!

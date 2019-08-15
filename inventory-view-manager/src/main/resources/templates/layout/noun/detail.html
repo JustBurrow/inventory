@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sd="http://www.thymeleaf.org/spring-data"
       th:lang="${#locale}">
 <head>
     <meta name="author" content="justburrow" th:remove="all"/>
-    <meta name="since" content="2019-08-03 20:19" th:remove="all"/>
+    <meta name="since" content="2019-08-15 11:23" th:remove="all"/>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="../../../libs/bootstrap/css/bootstrap.css"
           th:href="@{/libs/bootstrap/css/bootstrap.css}"/>
@@ -16,32 +15,34 @@
             th:href="@{/libs/popper/popper.js}"></script>
     <script src="../../../libs/bootstrap/js/bootstrap.js"
             th:href="@{/libs/bootstrap/js/bootstrap.js}"></script>
+    <script src="../../../libs/vue/vue.js"
+            th:href="@{/libs/vue/vue.js}"></script>
     <script src="../../../assets/js/inventory.js"
             th:href="@{/assets/js/inventory.js}"></script>
-    <title>Noun List</title>
+    <title>Noun Detail</title>
 </head>
 <body>
 <header class="position-fixed fixed-top" th:replace="component/navbar :: render">
     navbar
 </header>
-<main class="container-fluid">
-    <h1 class="h1">Noun List</h1>
-    <div class="container-fluid">
+<main class="container">
+    <h1>Noun Detail</h1>
+    <!--/*@thymesVar id="noun" type="kr.lul.inventory.dto.NounDetailDto"*/-->
+    <div th:unless="${noun}">
+        noun does not exist.
     </div>
-    <div class="container-fluid">
-        <div>
-            <div sd:pagination-summary="">info</div>
+    <div th:if="${noun}" th:remove="tag">
+        <div th:switch="${noun.class}" th:remove="tag">
+            <div class="container" th:replace="component/dto/__${noun.class.name}__ :: render(${noun})">identifiable
+                detail
+            </div>
         </div>
-        <nav class="pull-right">
-            <ul class="pagination" sd:page-object="${list}" sd:pagination-split="10" sd:pagination="full">
-                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-            </ul>
-        </nav>
     </div>
-    <div class="container-fluid">
-        <a class="btn btn-link" href="create.html"
-           th:href="@{/nouns/create}">NEW</a>
+    <div class="container">
+        <a class="btn btn-lg btn-warning" href="update.html"
+           th:href="@{/nouns/__${noun.id}__/edit}">EDIT</a>
+        <a class="btn btn-lg btn-link" href="list.html"
+           th:href="@{/nouns}">LIST</a>
     </div>
 </main>
 </body>

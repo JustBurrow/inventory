@@ -10,6 +10,7 @@ import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import javax.validation.Valid
@@ -20,9 +21,6 @@ import javax.validation.Valid
  */
 @RequestMapping(C.GROUP)
 interface NounController {
-    @GetMapping(C.API_LIST)
-    fun list(@SortDefault pageable: Pageable, model: Model): String
-
     @GetMapping(C.API_CREATE_FORM)
     fun createForm(model: Model): String
 
@@ -33,4 +31,10 @@ interface NounController {
             binding: BindingResult,
             model: Model
     ): String
+
+    @GetMapping(C.API_DETAIL)
+    fun detail(user: CurrentManager, @PathVariable(M.NOUN_ID) id: Int, model: Model): String
+
+    @GetMapping(C.API_LIST)
+    fun list(@SortDefault pageable: Pageable, model: Model): String
 }

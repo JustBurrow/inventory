@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}">
+<head>
+    <meta name="author" content="justburrow" th:remove="all"/>
+    <meta name="since" content="2019-08-15 11:43" th:remove="all"/>
+    <meta charset="UTF-8"/>
+    <title>time tag</title>
+</head>
+<body>
+<main>
+    <h1><code>&lt;time&gt;</code> tag</h1>
+    <section>
+        <h2>Created at</h2>
+        <!--/*@thymesVar id="time" type="java.time.ZonedDateTime"*/-->
+        <time class="time-created"
+              th:fragment="createdAt(time)"
+              th:datetime="${#temporals.formatISO(time)}"
+              th:text="${#temporals.format(time, 'yyyy-MM-dd HH:mm:ss')}">created at
+        </time>
+    </section>
+    <section>
+        <h2>Updated at</h2>
+        <!--/*@thymesVar id="time" type="java.time.ZonedDateTime"*/-->
+        <time class="time-updated"
+              th:fragment="updatedAt(time)"
+              th:datetime="${#temporals.formatISO(time)}"
+              th:text="${#temporals.format(time, 'yyyy-MM-dd HH:mm:ss')}">updated at
+        </time>
+    </section>
+</main>
+</body>
+</html>
