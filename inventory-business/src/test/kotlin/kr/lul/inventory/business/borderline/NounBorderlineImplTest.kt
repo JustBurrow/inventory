@@ -1,7 +1,12 @@
 package kr.lul.inventory.business.borderline
 
 import kr.lul.inventory.business.BusinessModuleTestConfiguration
-import kr.lul.inventory.business.borderline.cmd.*
+import kr.lul.inventory.business.borderline.cmd.CreateCountableNounCmd
+import kr.lul.inventory.business.borderline.cmd.CreateIdentifiableNounCmd
+import kr.lul.inventory.business.borderline.cmd.CreateLimitedCountableNounCmd
+import kr.lul.inventory.business.borderline.cmd.CreateLimitedIdentifiableNounCmd
+import kr.lul.inventory.business.borderline.cmd.ReadNounCmd
+import kr.lul.inventory.business.service.NotOwnerException
 import kr.lul.inventory.design.domain.LimitedNoun.Companion.ATTR_LIMIT
 import kr.lul.inventory.design.domain.Manager
 import kr.lul.inventory.design.domain.Noun.Companion.ATTR_CREATED_AT
@@ -13,10 +18,15 @@ import kr.lul.inventory.design.domain.Noun.Companion.ATTR_LABEL_CODE
 import kr.lul.inventory.design.domain.Noun.Companion.ATTR_TYPE
 import kr.lul.inventory.design.domain.Noun.Companion.ATTR_UPDATED_AT
 import kr.lul.inventory.design.domain.NounType
-import kr.lul.inventory.dto.*
+import kr.lul.inventory.dto.CountableNounDetailDto
+import kr.lul.inventory.dto.IdentifiableNounDetailDto
+import kr.lul.inventory.dto.LimitedCountableNounDetailDto
+import kr.lul.inventory.dto.LimitedIdentifiableNounDetailDto
+import kr.lul.inventory.dto.NounDetailDto
 import kr.lul.inventory.test.AbstractTest
 import kr.lul.inventory.test.NounUtil
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -323,5 +333,22 @@ class NounBorderlineImplTest : AbstractTest() {
         // THEN
         assertThat(noun)
                 .isNull()
+    }
+
+    @Test
+    fun `test read(cmd) without ownership`() {
+        // GIVEN
+        val expected = nounUtil.identifiable()
+        log.debug("GIVEN - expected=$expected")
+        val manager = managerUtil.manager()
+        log.debug("GIVEN - manager=$manager")
+        val cmd = ReadNounCmd(randomUUID(), manager.id, expected.id)
+        log.debug("GIVEN - cmd=$cmd")
+
+        // WHEN & THEN
+        assertThatThrownBy { borderline.read<NounDetailDto>(cmd) }
+                .isInstanceOf(NotOwnerException::class.java)
+                .extracting("manager")
+                .containsSequence(manager)
     }
 }

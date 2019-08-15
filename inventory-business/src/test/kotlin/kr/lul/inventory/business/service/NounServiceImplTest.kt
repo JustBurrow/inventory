@@ -1,6 +1,7 @@
 package kr.lul.inventory.business.service
 
 import kr.lul.inventory.business.BusinessModuleTestConfiguration
+import kr.lul.inventory.business.borderline.cmd.ReadNounParams
 import kr.lul.inventory.business.service.params.CreateCountableNounParams
 import kr.lul.inventory.business.service.params.CreateIdentifiableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedCountableNounParams
@@ -116,7 +117,7 @@ class NounServiceImplTest {
         entityManager.clear()
 
         // WHEN
-        val actual = service.read<Noun>(id)
+        val actual = service.read<Noun>(ReadNounParams(randomUUID(), manager, id))
         log.debug("WHEN - actual=$actual")
 
         // THEN
@@ -175,7 +176,7 @@ class NounServiceImplTest {
         entityManager.clear()
 
         // WHEN
-        val actual = service.read<Noun>(id)
+        val actual = service.read<Noun>(ReadNounParams(randomUUID(), manager, id))
         log.debug("WHEN - actual=$actual")
 
         // THEN
@@ -236,7 +237,7 @@ class NounServiceImplTest {
         entityManager.clear()
 
         // WHEN
-        val actual = service.read<Noun>(id)
+        val actual = service.read<Noun>(ReadNounParams(randomUUID(), manager, id))
         log.debug("WHEN - actual=$actual")
 
         // THEN

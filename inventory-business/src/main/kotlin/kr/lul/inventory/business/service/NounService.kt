@@ -1,5 +1,6 @@
 package kr.lul.inventory.business.service
 
+import kr.lul.inventory.business.borderline.cmd.ReadNounParams
 import kr.lul.inventory.business.service.params.CreateCountableNounParams
 import kr.lul.inventory.business.service.params.CreateIdentifiableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedCountableNounParams
@@ -32,8 +33,10 @@ interface NounService {
 
     /**
      * @return [Noun] 인스턴스. 없으면 `null`.
+     * @throws NotOwnerException 권한이 없을 때.
      */
-    fun <N : Noun> read(id: Int): N?
+    @Throws(NotOwnerException::class)
+    fun <N : Noun> read(params: ReadNounParams): N?
 
     fun search(params: SearchNounParams): Page<Noun>
 }

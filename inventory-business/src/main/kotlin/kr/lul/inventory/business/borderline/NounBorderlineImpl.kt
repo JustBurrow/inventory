@@ -5,6 +5,7 @@ import kr.lul.inventory.business.borderline.cmd.CreateIdentifiableNounCmd
 import kr.lul.inventory.business.borderline.cmd.CreateLimitedCountableNounCmd
 import kr.lul.inventory.business.borderline.cmd.CreateLimitedIdentifiableNounCmd
 import kr.lul.inventory.business.borderline.cmd.ReadNounCmd
+import kr.lul.inventory.business.borderline.cmd.ReadNounParams
 import kr.lul.inventory.business.borderline.cmd.SearchNounCmd
 import kr.lul.inventory.business.converter.NounConverter
 import kr.lul.inventory.business.service.ManagerService
@@ -116,7 +117,12 @@ internal class NounBorderlineImpl : NounBorderline {
     override fun <N : NounDetailDto> read(cmd: ReadNounCmd): N? {
         if (log.isTraceEnabled) log.trace("args : cmd=$cmd")
 
-        val noun = nounService.read<Noun>(cmd.id)
+        val manager = managerService.read(cmd.manager)
+                ?: throw InvalidAttributeException("manager does not exist", "cmd.manager", cmd.manager)
+
+        val params = ReadNounParams(cmd.contextId, manager, cmd.id)
+        val noun = nounService.read<Noun>(params)
+
         val dto = when (noun?.type) {
             NounType.IDENTIFIABLE -> nounConverter.convert(noun, IdentifiableNounDetailDto::class) as N
             NounType.COUNTABLE -> nounConverter.convert(noun, CountableNounDetailDto::class) as N

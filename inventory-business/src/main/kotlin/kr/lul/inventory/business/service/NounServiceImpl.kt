@@ -1,5 +1,6 @@
 package kr.lul.inventory.business.service
 
+import kr.lul.inventory.business.borderline.cmd.ReadNounParams
 import kr.lul.inventory.business.service.params.AbstractCreateNounParams
 import kr.lul.inventory.business.service.params.CreateCountableNounParams
 import kr.lul.inventory.business.service.params.CreateIdentifiableNounParams
@@ -89,10 +90,12 @@ internal class NounServiceImpl : NounService {
         return noun
     }
 
-    override fun <N : Noun> read(id: Int): N? {
-        if (log.isTraceEnabled) log.trace("args : id=$id")
+    override fun <N : Noun> read(params: ReadNounParams): N? {
+        if (log.isTraceEnabled) log.trace("args : params=$params")
 
-        val noun = dao.read<N>(id)
+        val noun = dao.read<N>(params.id)
+        if (null != noun && params.manager != noun.manager)
+            throw NotOwnerException("manager is not owner.", params.manager)
 
         if (log.isTraceEnabled) log.trace("return : $noun")
         return noun

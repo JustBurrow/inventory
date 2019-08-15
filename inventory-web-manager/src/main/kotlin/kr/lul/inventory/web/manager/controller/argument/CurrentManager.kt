@@ -21,10 +21,8 @@ class CurrentManager(
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // java.lang.Object
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    override fun toString(): String {
-        return "${CurrentManager::class.simpleName}(id=$id, email='$email', name='$name', " +
-                "enabled=$isEnabled, accountNonExpired=$isAccountNonExpired, " +
-                "credentialsNonExpired=$isCredentialsNonExpired, accountNonLocked=$isAccountNonLocked" +
-                "createdAt=$createdAt, updatedAt=$updatedAt)"
-    }
+    override fun toString() = "${CurrentManager::class.simpleName}(id=$id, email='$email', name='$name', " +
+            "enabled=$isEnabled, accountNonExpired=$isAccountNonExpired, " +
+            "credentialsNonExpired=$isCredentialsNonExpired, accountNonLocked=$isAccountNonLocked " +
+            "createdAt=$createdAt, updatedAt=$updatedAt)"
 }
