@@ -6,6 +6,7 @@ import kr.lul.inventory.business.borderline.cmd.CreateLimitedCountableNounCmd
 import kr.lul.inventory.business.borderline.cmd.CreateLimitedIdentifiableNounCmd
 import kr.lul.inventory.business.borderline.cmd.ReadNounCmd
 import kr.lul.inventory.business.borderline.cmd.SearchNounCmd
+import kr.lul.inventory.business.borderline.cmd.UpdateNounCmd
 import kr.lul.inventory.business.service.NotOwnerException
 import kr.lul.inventory.design.domain.Noun
 import kr.lul.inventory.dto.CountableNounDetailDto
@@ -39,4 +40,7 @@ interface NounBorderline {
      * 소유권을 가진 [Noun] 목록 조회하기.
      */
     fun search(cmd: SearchNounCmd): Page<NounSimpleDto>
+
+    @Throws(NotOwnerException::class)
+    fun <N : NounDetailDto> update(cmd: UpdateNounCmd): N
 }

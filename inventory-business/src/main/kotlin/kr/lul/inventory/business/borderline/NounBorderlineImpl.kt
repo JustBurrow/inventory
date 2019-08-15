@@ -7,6 +7,7 @@ import kr.lul.inventory.business.borderline.cmd.CreateLimitedIdentifiableNounCmd
 import kr.lul.inventory.business.borderline.cmd.ReadNounCmd
 import kr.lul.inventory.business.borderline.cmd.ReadNounParams
 import kr.lul.inventory.business.borderline.cmd.SearchNounCmd
+import kr.lul.inventory.business.borderline.cmd.UpdateNounCmd
 import kr.lul.inventory.business.converter.NounConverter
 import kr.lul.inventory.business.service.ManagerService
 import kr.lul.inventory.business.service.NounService
@@ -15,9 +16,18 @@ import kr.lul.inventory.business.service.params.CreateIdentifiableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedCountableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedIdentifiableNounParams
 import kr.lul.inventory.business.service.params.SearchNounParams
+import kr.lul.inventory.design.domain.CountableNoun
+import kr.lul.inventory.design.domain.IdentifiableNoun
 import kr.lul.inventory.design.domain.InvalidAttributeException
+import kr.lul.inventory.design.domain.LimitedCountableNoun
+import kr.lul.inventory.design.domain.LimitedIdentifiableNoun
+import kr.lul.inventory.design.domain.Manager
 import kr.lul.inventory.design.domain.Noun
 import kr.lul.inventory.design.domain.NounType
+import kr.lul.inventory.design.domain.NounType.COUNTABLE
+import kr.lul.inventory.design.domain.NounType.IDENTIFIABLE
+import kr.lul.inventory.design.domain.NounType.LIMITED_COUNTABLE
+import kr.lul.inventory.design.domain.NounType.LIMITED_IDENTIFIABLE
 import kr.lul.inventory.design.util.Assertion.positive
 import kr.lul.inventory.design.util.TimeProvider
 import kr.lul.inventory.dto.CountableNounDetailDto
@@ -46,6 +56,27 @@ internal class NounBorderlineImpl : NounBorderline {
     private lateinit var managerService: ManagerService
     @Autowired
     private lateinit var timeProvider: TimeProvider
+
+    private fun update(manager: Manager, cmd: UpdateNounCmd, noun: IdentifiableNoun): IdentifiableNounDetailDto {
+
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun update(manager: Manager, cmd: UpdateNounCmd, noun: CountableNoun): CountableNounDetailDto {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun update(
+            manager: Manager, cmd: UpdateNounCmd, noun: LimitedIdentifiableNoun
+    ): LimitedIdentifiableNounDetailDto {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun update(
+            manager: Manager, cmd: UpdateNounCmd, noun: LimitedCountableNoun
+    ): LimitedCountableNounDetailDto {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // kr.lul.inventory.business.borderline.NounBorderline
@@ -144,6 +175,25 @@ internal class NounBorderlineImpl : NounBorderline {
         val params = SearchNounParams(cmd.contextId, manager, cmd.page, cmd.size, cmd.sort)
         val list = nounService.search(params)
         val dto = list.map { nounConverter.convert(it, NounSimpleDto::class) }
+
+        if (log.isTraceEnabled) log.trace("return : $dto")
+        return dto
+    }
+
+    override fun <N : NounDetailDto> update(cmd: UpdateNounCmd): N {
+        if (log.isTraceEnabled) log.trace("args : cmd=$cmd")
+
+        val manager = managerService.read(cmd.manager)
+                ?: throw InvalidAttributeException("manager does not exist", "cmd.manager", cmd.manager)
+        val noun = nounService.read<Noun>(ReadNounParams(cmd.contextId, manager, cmd.id))
+                ?: throw InvalidAttributeException("noun does not exist", "cmd.id", cmd.id)
+
+        @Suppress("UNCHECKED_CAST") val dto = when (noun.type) {
+            IDENTIFIABLE -> update(manager, cmd, noun as IdentifiableNoun) as N
+            COUNTABLE -> update(manager, cmd, noun as CountableNoun) as N
+            LIMITED_IDENTIFIABLE -> update(manager, cmd, noun as LimitedIdentifiableNoun) as N
+            LIMITED_COUNTABLE -> update(manager, cmd, noun as LimitedCountableNoun) as N
+        }
 
         if (log.isTraceEnabled) log.trace("return : $dto")
         return dto

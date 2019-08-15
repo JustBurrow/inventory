@@ -33,7 +33,7 @@ interface NounService {
 
     /**
      * @return [Noun] 인스턴스. 없으면 `null`.
-     * @throws NotOwnerException 권한이 없을 때.
+     * @throws NotOwnerException 소유자가 아닐 때.
      */
     @Throws(NotOwnerException::class)
     fun <N : Noun> read(params: ReadNounParams): N?
