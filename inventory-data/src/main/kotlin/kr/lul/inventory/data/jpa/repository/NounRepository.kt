@@ -1,6 +1,9 @@
 package kr.lul.inventory.data.jpa.repository
 
 import kr.lul.inventory.data.jpa.entity.AbstractNounEntity
+import kr.lul.inventory.design.domain.Manager
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -11,4 +14,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface NounRepository : JpaRepository<AbstractNounEntity, Int> {
     fun existsByKey(key: String): Boolean
+
+    fun findAllByManager(manager: Manager, page: Pageable): Page<AbstractNounEntity>
 }

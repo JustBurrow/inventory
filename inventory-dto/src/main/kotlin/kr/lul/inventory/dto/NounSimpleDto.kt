@@ -1,3 +1,10 @@
 package kr.lul.inventory.dto
 
-data class NounSimpleDto(val id: Int, val key: String, val label: String, val labelCode: String)
+import kr.lul.inventory.design.domain.NounType
+
+data class NounSimpleDto(
+        val id: Int,
+        val type: NounType,
+        val key: String,
+        val label: String,
+        val labelCode: String)

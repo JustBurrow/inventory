@@ -9,6 +9,7 @@ object NounMvc {
         const val CREATE_NOUN_REQ = "createNounReq"
         const val NOUN_ID = "id"
         const val NOUN = "noun"
+        const val LIST = "list"
     }
 
     object V {

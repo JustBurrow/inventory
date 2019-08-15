@@ -5,6 +5,7 @@ import kr.lul.inventory.business.service.params.CreateCountableNounParams
 import kr.lul.inventory.business.service.params.CreateIdentifiableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedCountableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedIdentifiableNounParams
+import kr.lul.inventory.business.service.params.SearchNounParams
 import kr.lul.inventory.data.jpa.entity.CountableNounEntity
 import kr.lul.inventory.data.jpa.entity.IdentifiableNounEntity
 import kr.lul.inventory.data.jpa.entity.LimitedIdentifiableNounEntity
@@ -31,6 +32,8 @@ import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.Sort.Direction.ASC
+import org.springframework.data.domain.Sort.by
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -274,5 +277,30 @@ class NounServiceImplTest {
                         params.limit, params.description, params.createAt, params.createAt)
         assertThat(noun.id)
                 .isPositive()
+    }
+
+    @Test
+    fun `test search(params)`() {
+        // GIVEN
+        val manager = managerUtil.manager()
+        log.debug("GIVEN - manager=$manager")
+        val identifiable = nounUtil.identifiable(manager)
+        log.debug("GIVEN - identifiable=$identifiable")
+        val countable = nounUtil.countable(manager)
+        log.debug("GIVEN - countable=$countable")
+        val limitedIdentifiable = nounUtil.limitedIdentifiable(manager)
+        log.debug("GIVEN - limitedIdentifiable=$limitedIdentifiable")
+        val limitedCountable = nounUtil.limitedCountable(manager)
+        log.debug("GIVEN - limitedCountable=$limitedCountable")
+        val params = SearchNounParams(randomUUID(), manager, 0, Int.MAX_VALUE, by(ASC, ATTR_ID))
+        log.debug("GIVEN - params=$params")
+
+        // WHEN
+        val list = service.search(params)
+        log.debug("WHEN - list=$list")
+
+        // THEN
+        assertThat(list)
+                .containsExactly(identifiable, countable, limitedIdentifiable, limitedCountable)
     }
 }

@@ -1,7 +1,18 @@
 package kr.lul.inventory.business.borderline
 
-import kr.lul.inventory.business.borderline.cmd.*
-import kr.lul.inventory.dto.*
+import kr.lul.inventory.business.borderline.cmd.CreateCountableNounCmd
+import kr.lul.inventory.business.borderline.cmd.CreateIdentifiableNounCmd
+import kr.lul.inventory.business.borderline.cmd.CreateLimitedCountableNounCmd
+import kr.lul.inventory.business.borderline.cmd.CreateLimitedIdentifiableNounCmd
+import kr.lul.inventory.business.borderline.cmd.ReadNounCmd
+import kr.lul.inventory.business.borderline.cmd.SearchNounCmd
+import kr.lul.inventory.dto.CountableNounDetailDto
+import kr.lul.inventory.dto.IdentifiableNounDetailDto
+import kr.lul.inventory.dto.LimitedCountableNounDetailDto
+import kr.lul.inventory.dto.LimitedIdentifiableNounDetailDto
+import kr.lul.inventory.dto.NounDetailDto
+import kr.lul.inventory.dto.NounSimpleDto
+import org.springframework.data.domain.Page
 
 /**
  * @author justburrow
@@ -17,4 +28,6 @@ interface NounBorderline {
     fun create(cmd: CreateLimitedIdentifiableNounCmd): LimitedIdentifiableNounDetailDto
 
     fun <N : NounDetailDto> read(cmd: ReadNounCmd): N?
+
+    fun search(cmd: SearchNounCmd): Page<NounSimpleDto>
 }

@@ -1,6 +1,11 @@
 package kr.lul.inventory.business.borderline
 
-import kr.lul.inventory.business.borderline.cmd.*
+import kr.lul.inventory.business.borderline.cmd.CreateCountableNounCmd
+import kr.lul.inventory.business.borderline.cmd.CreateIdentifiableNounCmd
+import kr.lul.inventory.business.borderline.cmd.CreateLimitedCountableNounCmd
+import kr.lul.inventory.business.borderline.cmd.CreateLimitedIdentifiableNounCmd
+import kr.lul.inventory.business.borderline.cmd.ReadNounCmd
+import kr.lul.inventory.business.borderline.cmd.SearchNounCmd
 import kr.lul.inventory.business.converter.NounConverter
 import kr.lul.inventory.business.service.ManagerService
 import kr.lul.inventory.business.service.NounService
@@ -8,14 +13,21 @@ import kr.lul.inventory.business.service.params.CreateCountableNounParams
 import kr.lul.inventory.business.service.params.CreateIdentifiableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedCountableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedIdentifiableNounParams
+import kr.lul.inventory.business.service.params.SearchNounParams
 import kr.lul.inventory.design.domain.InvalidAttributeException
 import kr.lul.inventory.design.domain.Noun
 import kr.lul.inventory.design.domain.NounType
 import kr.lul.inventory.design.util.Assertion.positive
 import kr.lul.inventory.design.util.TimeProvider
-import kr.lul.inventory.dto.*
+import kr.lul.inventory.dto.CountableNounDetailDto
+import kr.lul.inventory.dto.IdentifiableNounDetailDto
+import kr.lul.inventory.dto.LimitedCountableNounDetailDto
+import kr.lul.inventory.dto.LimitedIdentifiableNounDetailDto
+import kr.lul.inventory.dto.NounDetailDto
+import kr.lul.inventory.dto.NounSimpleDto
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -112,6 +124,20 @@ internal class NounBorderlineImpl : NounBorderline {
             NounType.LIMITED_COUNTABLE -> nounConverter.convert(noun, LimitedCountableNounDetailDto::class) as N
             else -> null
         }
+
+        if (log.isTraceEnabled) log.trace("return : $dto")
+        return dto
+    }
+
+    override fun search(cmd: SearchNounCmd): Page<NounSimpleDto> {
+        if (log.isTraceEnabled) log.trace("args : cmd=$cmd")
+
+        val manager = managerService.read(cmd.manager)
+                ?: throw InvalidAttributeException("manager does not exist", "cmd.manager", cmd.manager)
+
+        val params = SearchNounParams(cmd.contextId, manager, cmd.page, cmd.size, cmd.sort)
+        val list = nounService.search(params)
+        val dto = list.map { nounConverter.convert(it, NounSimpleDto::class) }
 
         if (log.isTraceEnabled) log.trace("return : $dto")
         return dto

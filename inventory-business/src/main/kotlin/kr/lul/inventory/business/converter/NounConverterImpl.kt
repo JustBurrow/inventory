@@ -1,8 +1,17 @@
 package kr.lul.inventory.business.converter
 
-import kr.lul.inventory.design.domain.*
+import kr.lul.inventory.design.domain.CountableNoun
+import kr.lul.inventory.design.domain.IdentifiableNoun
+import kr.lul.inventory.design.domain.LimitedCountableNoun
+import kr.lul.inventory.design.domain.LimitedIdentifiableNoun
+import kr.lul.inventory.design.domain.Noun
 import kr.lul.inventory.design.util.TimeProvider
-import kr.lul.inventory.dto.*
+import kr.lul.inventory.dto.CountableNounDetailDto
+import kr.lul.inventory.dto.IdentifiableNounDetailDto
+import kr.lul.inventory.dto.LimitedCountableNounDetailDto
+import kr.lul.inventory.dto.LimitedIdentifiableNounDetailDto
+import kr.lul.inventory.dto.ManagerSimpleDto
+import kr.lul.inventory.dto.NounSimpleDto
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -16,6 +25,13 @@ internal class NounConverterImpl : NounConverter {
     private lateinit var managerConverter: ManagerConverter
     @Autowired
     private lateinit var timeProvider: TimeProvider
+
+    private fun nounSimple(noun: Noun) = NounSimpleDto(
+            noun.id,
+            noun.type,
+            noun.key,
+            noun.label,
+            noun.labelCode)
 
     private fun countableDetail(noun: CountableNoun): CountableNounDetailDto = CountableNounDetailDto(
             noun.id,
@@ -67,6 +83,7 @@ internal class NounConverterImpl : NounConverter {
         if (log.isTraceEnabled) log.trace("args : noun={}, type={}", noun, type)
 
         val dto = when (type) {
+            NounSimpleDto::class -> nounSimple(noun) as T
             CountableNounDetailDto::class -> countableDetail(noun as CountableNoun) as T
             IdentifiableNounDetailDto::class -> identifiableDetail(noun as IdentifiableNoun) as T
             LimitedCountableNounDetailDto::class -> limitedCountableDetail(noun as LimitedCountableNoun) as T

@@ -28,6 +28,18 @@ object Assertion {
     }
 
     @Throws(AssertionException::class)
+    fun notNegative(num: Int, name: String) {
+        if (0 > num)
+            throw AssertionException(num, name, "$name is negative : $num")
+    }
+
+    @Throws(AssertionException::class)
+    fun notNegative(num: Long, name: String) {
+        if (0 > num)
+            throw AssertionException(num, name, "$name is negative : $num")
+    }
+
+    @Throws(AssertionException::class)
     fun `is`(target: Any, expect: KClass<out Any>, name: String) {
         if (target::class != expect) {
             throw AssertionException(target, name, "$name is not $expect : target=${target::class}, expect=$expect")

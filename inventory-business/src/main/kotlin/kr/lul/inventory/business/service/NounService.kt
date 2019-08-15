@@ -4,7 +4,14 @@ import kr.lul.inventory.business.service.params.CreateCountableNounParams
 import kr.lul.inventory.business.service.params.CreateIdentifiableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedCountableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedIdentifiableNounParams
-import kr.lul.inventory.design.domain.*
+import kr.lul.inventory.business.service.params.SearchNounParams
+import kr.lul.inventory.design.domain.CountableNoun
+import kr.lul.inventory.design.domain.IdentifiableNoun
+import kr.lul.inventory.design.domain.InvalidAttributeException
+import kr.lul.inventory.design.domain.LimitedCountableNoun
+import kr.lul.inventory.design.domain.LimitedIdentifiableNoun
+import kr.lul.inventory.design.domain.Noun
+import org.springframework.data.domain.Page
 
 /**
  * @author justburrow
@@ -27,4 +34,6 @@ interface NounService {
      * @return [Noun] 인스턴스. 없으면 `null`.
      */
     fun <N : Noun> read(id: Int): N?
+
+    fun search(params: SearchNounParams): Page<Noun>
 }

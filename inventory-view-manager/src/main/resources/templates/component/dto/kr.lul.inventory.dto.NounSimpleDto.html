@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}">
+<head>
+    <meta name="author" content="justburrow" th:remove="all"/>
+    <meta name="since" content="2019-08-15 15:50" th:remove="all"/>
+    <meta charset="UTF-8"/>
+    <title>kr.lul.inventory.dto.NounSimpleDto</title>
+</head>
+<body>
+<main>
+    <h1>kr.lul.inventory.dto.NounSimpleDto</h1>
+    <!--/*@thymesVar id="noun" type="kr.lul.inventory.dto.NounSimpleDto"*/-->
+    <div class="my-1"
+         th:fragment="render(noun)" th:object="${noun}">
+        <div class="text-lg-left">
+            <span class="badge badge-pill badge-info" th:text="*{type.label}">type</span>
+            <span>
+                <span class="text-muted"
+                      th:text="${T(kr.lul.inventory.design.domain.Noun).KEY_NAMESPACE}">namespace</span>.<span
+                    class="text-secondary" th:text="*{key}">key</span>
+            </span>
+            <div th:text="*{label}">label</div>
+        </div>
+        <div class="text-sm-right">
+            <a class="btn btn-sm btn-link" href="../../layout/noun/detail.html"
+               th:href="@{/nouns/__*{id}__}">DETAIL</a>
+            <a class="btn btn-sm btn-link" href="../../layout/noun/update.html"
+               th:href="@{/nouns/__*{id}__/edit}">EDIT</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

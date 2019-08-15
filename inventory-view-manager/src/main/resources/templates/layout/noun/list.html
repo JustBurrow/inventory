@@ -26,20 +26,27 @@
 </header>
 <main class="container-fluid">
     <h1 class="h1">Noun List</h1>
-    <div class="container-fluid">
+    <div class="container">
+        <!--/*@thymesVar id="list" type="org.springframework.data.domain.Page<kr.lul.inventory.dto.NounSimpleDto>"*/-->
+        <ol th:start="${1 +list.number *list.size}">
+            <!--/*@thymesVar id="list" type="org.springframework.data.domain.Page<kr.lul.inventory.dto.NounSimpleDto>"*/-->
+            <li th:each="noun : ${list.content}">
+                <div th:replace="component/dto/__${noun.class.name}__ :: render(${noun})">noun</div>
+            </li>
+        </ol>
     </div>
-    <div class="container-fluid">
+    <div class="container" sd:page-object="${list}">
         <div>
             <div sd:pagination-summary="">info</div>
         </div>
         <nav class="pull-right">
-            <ul class="pagination" sd:page-object="${list}" sd:pagination-split="10" sd:pagination="full">
+            <ul class="pagination" sd:pagination-split="10" sd:pagination="full">
                 <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
                 <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
             </ul>
         </nav>
     </div>
-    <div class="container-fluid">
+    <div class="container">
         <a class="btn btn-link" href="create.html"
            th:href="@{/nouns/create}">NEW</a>
     </div>

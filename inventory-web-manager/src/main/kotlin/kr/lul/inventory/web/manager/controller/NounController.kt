@@ -22,7 +22,7 @@ import javax.validation.Valid
 @RequestMapping(C.GROUP)
 interface NounController {
     @GetMapping(C.API_CREATE_FORM)
-    fun createForm(model: Model): String
+    fun createForm(user: CurrentManager, model: Model): String
 
     @PostMapping(C.API_CREATE)
     fun create(
@@ -36,5 +36,9 @@ interface NounController {
     fun detail(user: CurrentManager, @PathVariable(M.NOUN_ID) id: Int, model: Model): String
 
     @GetMapping(C.API_LIST)
-    fun list(@SortDefault pageable: Pageable, model: Model): String
+    fun list(
+            user: CurrentManager,
+            @SortDefault pageable: Pageable,
+            model: Model
+    ): String
 }

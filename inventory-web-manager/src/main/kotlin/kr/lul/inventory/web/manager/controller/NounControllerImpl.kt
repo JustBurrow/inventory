@@ -6,6 +6,7 @@ import kr.lul.inventory.business.borderline.cmd.CreateIdentifiableNounCmd
 import kr.lul.inventory.business.borderline.cmd.CreateLimitedCountableNounCmd
 import kr.lul.inventory.business.borderline.cmd.CreateLimitedIdentifiableNounCmd
 import kr.lul.inventory.business.borderline.cmd.ReadNounCmd
+import kr.lul.inventory.business.borderline.cmd.SearchNounCmd
 import kr.lul.inventory.design.domain.InvalidAttributeException
 import kr.lul.inventory.design.domain.LimitedNoun
 import kr.lul.inventory.design.domain.Noun
@@ -194,8 +195,8 @@ internal class NounControllerImpl : NounController {
         return template
     }
 
-    override fun createForm(model: Model): String {
-        if (log.isTraceEnabled) log.trace("args : model=$model")
+    override fun createForm(user: CurrentManager, model: Model): String {
+        if (log.isTraceEnabled) log.trace("args : user=$user, model=$model")
 
         val template = doCreateForm(model)
 
@@ -203,7 +204,11 @@ internal class NounControllerImpl : NounController {
         return V.CREATE_FORM
     }
 
-    override fun detail(user: CurrentManager, @PathVariable(M.NOUN_ID) id: Int, model: Model): String {
+    override fun detail(
+            user: CurrentManager,
+            @PathVariable(M.NOUN_ID) id: Int,
+            model: Model
+    ): String {
         if (log.isTraceEnabled) log.trace("args : user=$user, id=$id, model=$model")
 
         val noun = nounBorderline.read<NounDetailDto>(ReadNounCmd(randomUUID(), user.id, id))
@@ -213,8 +218,16 @@ internal class NounControllerImpl : NounController {
         return V.DETAIL
     }
 
-    override fun list(@SortDefault pageable: Pageable, model: Model): String {
-        if (log.isTraceEnabled) log.trace("args : pageable=$pageable, model=$model")
+    override fun list(
+            user: CurrentManager,
+            @SortDefault pageable: Pageable,
+            model: Model
+    ): String {
+        if (log.isTraceEnabled) log.trace("args : user=$user, pageable=$pageable, model=$model")
+
+        val cmd = SearchNounCmd(randomUUID(), user.id, pageable.pageNumber, pageable.pageSize, pageable.sort)
+        val list = nounBorderline.search(cmd)
+        model.addAttribute(M.LIST, list)
 
         val template = V.LIST
         if (log.isTraceEnabled) log.trace("result : template='$template', model=$model")
