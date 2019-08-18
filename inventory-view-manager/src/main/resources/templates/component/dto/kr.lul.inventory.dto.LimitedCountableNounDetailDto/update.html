@@ -8,23 +8,30 @@
     <title>`kr.lul.inventory.dto.LimitedCountableNounDetailDto` form</title>
 </head>
 <body>
-<main>
+<main class="container-fluid">
     <h1><code>kr.lul.inventory.dto.LimitedCountableNounDetailDto</code> &lt;form&gt;</h1>
     <div class="container">
         <form id="form-update" class="hide" action="detail.html" method="post"></form>
         <!--/*@thymesVar id="noun" type="kr.lul.inventory.dto.LimitedCountableNounDetailDto"*/-->
+        <!--/*@thymesVar id="updateNounReq" type="kr.lul.inventory.web.manager.controller.argument.UpdateNounReq"*/-->
         <div class="container"
-             th:fragment="render(noun, req)" th:object="${noun}" th:remove="tag">
+             th:fragment="render(noun)" th:object="${updateNounReq}">
+            <div class="container alert alert-danger"
+                 th:if="${#fields.hasErrors()}">
+                <ul class="list-unstyled">
+                    <li class="" th:each="err : ${#fields.detailedErrors()}" th:text="${err}">err</li>
+                </ul>
+            </div>
             <div class="form-group row">
                 <span class="col-form-label col-2">ID</span>
                 <div class="col">
-                    <span class="form-control" th:text="*{id}"/>
+                    <span class="form-control" th:text="${noun.id}"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <span class="col-form-label col-2">TYPE</span>
                 <div class="col">
-                    <span class="form-control" th:text="*{type.label}">type</span>
+                    <span class="form-control" th:text="${noun.type.label}">type</span>
                 </div>
             </div>
             <div class="form-group row">
@@ -36,7 +43,7 @@
                               th:text="${T(kr.lul.inventory.design.domain.Noun).KEY_NAMESPACE +'.'}">namespace.</span>
                         </div>
                         <span class="form-control"
-                              th:text="*{key}">key</span>
+                              th:text="${noun.key}">key</span>
                     </div>
                 </div>
             </div>
@@ -50,6 +57,10 @@
                            th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_MIN_LENGTH}"
                            th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_MAX_LENGTH}"
                            th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_PATTERN}"/>
+                    <ul class="invalid-feedback"
+                        th:if="${#fields.hasErrors('label')}">
+                        <li th:each="err : ${#fields.errors('label')}" th:text="${err}">err</li>
+                    </ul>
                 </div>
             </div>
             <div class="form-group row">
@@ -69,6 +80,10 @@
                                th:minlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MIN_LENGTH}"
                                th:maxlength="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_MAX_LENGTH}"
                                th:pattern="${T(kr.lul.inventory.design.domain.Noun).LABEL_CODE_PATTERN}"/>
+                        <ul class="invalid-feedback"
+                            th:if="${#fields.hasErrors('labelCode')}">
+                            <li th:each="err : ${#fields.errors('labelCode')}" th:text="${err}">err</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -80,15 +95,23 @@
                            required="required"
                            min="1"
                            th:field="*{limit}" th:errorClass="is-invalid"/>
+                    <ul class="invalid-feedback"
+                        th:if="${#fields.hasErrors('limit')}">
+                        <li th:each="err : ${#fields.errors('limit')}" th:text="${err}">err</li>
+                    </ul>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-form-label col-2" for="input-update-description">DESCRIPTION</label>
                 <div class="col">
-                    <textarea id="input-update-description" class="form-control"
+                    <textarea id="input-update-description" class="form-control" rows="10"
                               form="form-update"
                               required="required"
                               th:field="*{description}" th:errorClass="is-invalid"></textarea>
+                    <ul class="invalid-feedback"
+                        th:if="${#fields.hasErrors('description')}">
+                        <li th:each="err : ${#fields.errors('description')}" th:text="${err}">err</li>
+                    </ul>
                 </div>
             </div>
         </div>

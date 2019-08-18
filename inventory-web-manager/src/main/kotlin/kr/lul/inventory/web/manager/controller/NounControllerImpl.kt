@@ -7,17 +7,29 @@ import kr.lul.inventory.business.borderline.cmd.CreateLimitedCountableNounCmd
 import kr.lul.inventory.business.borderline.cmd.CreateLimitedIdentifiableNounCmd
 import kr.lul.inventory.business.borderline.cmd.ReadNounCmd
 import kr.lul.inventory.business.borderline.cmd.SearchNounCmd
-import kr.lul.inventory.business.borderline.cmd.UpdateNounCmd
+import kr.lul.inventory.business.borderline.cmd.UpdateCountableNounCmd
+import kr.lul.inventory.business.borderline.cmd.UpdateIdentifiableNounCmd
+import kr.lul.inventory.business.borderline.cmd.UpdateLimitedCountableNounCmd
+import kr.lul.inventory.business.borderline.cmd.UpdateLimitedIdentifiableNounCmd
 import kr.lul.inventory.business.service.NotOwnerException
+import kr.lul.inventory.design.domain.AttributeValidationException
 import kr.lul.inventory.design.domain.InvalidAttributeException
 import kr.lul.inventory.design.domain.LimitedNoun
+import kr.lul.inventory.design.domain.LimitedNoun.Companion.ATTR_LIMIT
 import kr.lul.inventory.design.domain.Noun
 import kr.lul.inventory.design.domain.NounType
+import kr.lul.inventory.design.domain.NounType.COUNTABLE
+import kr.lul.inventory.design.domain.NounType.IDENTIFIABLE
+import kr.lul.inventory.design.domain.NounType.LIMITED_COUNTABLE
+import kr.lul.inventory.design.domain.NounType.LIMITED_IDENTIFIABLE
 import kr.lul.inventory.dto.LimitedNounDetailDto
 import kr.lul.inventory.dto.NounDetailDto
 import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.CREATE_LIMIT_IS_NULL
 import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.CREATE_LIMIT_NOT_ACCEPTABLE
 import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.CREATE_LIMIT_NOT_POSITIVE
+import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.UPDATE_LIMIT_NOT_POSITIVE
+import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.UPDATE_LIMIT_NULL
+import kr.lul.inventory.web.manager.configuration.ErrorCode.NounErrorCode.UPDATE_TYPE_NULL
 import kr.lul.inventory.web.manager.controller.argument.CreateNounReq
 import kr.lul.inventory.web.manager.controller.argument.CurrentManager
 import kr.lul.inventory.web.manager.controller.argument.UpdateNounReq
@@ -33,6 +45,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.validation.FieldError
+import org.springframework.validation.ObjectError
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import java.util.UUID.randomUUID
@@ -175,31 +188,85 @@ internal class NounControllerImpl : NounController {
 
         if (null != noun && !model.containsAttribute(M.UPDATE_NOUN_REQ)) {
             val r = when (noun) {
-                is LimitedNounDetailDto -> UpdateNounReq(noun.label, noun.labelCode, noun.limit, noun.description)
-                else -> UpdateNounReq(noun.label, noun.labelCode, null, noun.description)
+                is LimitedNounDetailDto -> UpdateNounReq(
+                        noun.type, noun.label, noun.labelCode, noun.limit, noun.description)
+                else -> UpdateNounReq(noun.type, noun.label, noun.labelCode, null, noun.description)
             }
             model.addAttribute(M.UPDATE_NOUN_REQ, r)
         }
 
+        if (log.isTraceEnabled) log.trace("result : model=$model")
         return V.UPDATE_FORM
     }
 
-    private fun doUpdate(
-            user: CurrentManager, id: Int, req: UpdateNounReq, binding: BindingResult, model: Model
-    ): String {
-        val template = try {
-            val cmd = UpdateNounCmd(randomUUID(), user.id, id,
-                    req.label!!, req.labelCode!!, req.limit, req.description!!)
-            val noun: NounDetailDto = nounBorderline.update(cmd)
-            "redirect:${C.GROUP}/${noun.id}"
-        } catch (e: NotOwnerException) {
-            log.warn(e.message)
-            throw NotFoundException(e.message!!, e)
-        } catch (e: Exception) {
-            doUpdateForm(user, id, req, model)
-        }
+    private fun validate(req: UpdateNounReq, binding: BindingResult) {
+    }
 
-        return template
+    private fun doUpdateIdentifiable(
+            user: CurrentManager, id: Int, req: UpdateNounReq, binding: BindingResult, model: Model): String {
+
+        validate(req, binding)
+
+        return if (binding.hasErrors())
+            doUpdateForm(user, id, req, model)
+        else {
+            val cmd = UpdateIdentifiableNounCmd(randomUUID(), user.id, id, req.label!!, req.labelCode!!,
+                    req.description!!)
+            val noun = nounBorderline.update(cmd)
+            "redirect:${C.GROUP}/${noun.id}"
+        }
+    }
+
+    private fun doUpdateCountable(
+            user: CurrentManager, id: Int, req: UpdateNounReq, binding: BindingResult, model: Model): String {
+        validate(req, binding)
+
+        return if (binding.hasErrors())
+            doUpdateForm(user, id, req, model)
+        else {
+            val cmd = UpdateCountableNounCmd(randomUUID(), user.id, id, req.label!!, req.labelCode!!, req.description!!)
+            val noun = nounBorderline.update(cmd)
+            "redirect:${C.GROUP}/${noun.id}"
+        }
+    }
+
+    private fun validateLimited(req: UpdateNounReq, binding: BindingResult) {
+        if (null == req.limit)
+            binding.addError(FieldError(M.UPDATE_NOUN_REQ, ATTR_LIMIT, req.limit, false,
+                    arrayOf(UPDATE_LIMIT_NULL), null, "limit is null."))
+        else if (0 >= req.limit)
+            binding.addError(FieldError(M.UPDATE_NOUN_REQ, ATTR_LIMIT, req.limit, false,
+                    arrayOf(UPDATE_LIMIT_NOT_POSITIVE), null, "limit is not positive."))
+    }
+
+    private fun doUpdateLimitedIdentifiable(
+            user: CurrentManager, id: Int, req: UpdateNounReq, binding: BindingResult, model: Model): String {
+        validateLimited(req, binding)
+
+        return if (binding.hasErrors())
+            doUpdateForm(user, id, req, model)
+        else {
+            val cmd = UpdateLimitedIdentifiableNounCmd(randomUUID(), user.id, id, req.label!!, req.labelCode!!,
+                    req.limit!!,
+                    req.description!!)
+            val noun = nounBorderline.update(cmd)
+            "redirect:${C.GROUP}/${noun.id}"
+        }
+    }
+
+    private fun doUpdateLimitedCountable(
+            user: CurrentManager, id: Int, req: UpdateNounReq, binding: BindingResult, model: Model): String {
+        validateLimited(req, binding)
+
+        return if (binding.hasErrors())
+            doUpdateForm(user, id, req, model)
+        else {
+            val cmd =
+                    UpdateLimitedCountableNounCmd(randomUUID(), user.id, id, req.label!!, req.labelCode!!, req.limit!!,
+                            req.description!!)
+            val noun = nounBorderline.update(cmd)
+            "redirect:${C.GROUP}/${noun.id}"
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -303,14 +370,32 @@ internal class NounControllerImpl : NounController {
             binding: BindingResult,
             model: Model
     ): String {
-        if (log.isTraceEnabled) log.trace("args : user=$user, id=$id, req=$req, model=$model")
+        if (log.isTraceEnabled) log.trace("args : user=$user, id=$id, req=$req, binding=$binding, model=$model")
 
         if (0 >= id) throw NotFoundException("out of range : id=$id")
 
         val template = if (binding.hasErrors())
             doUpdateForm(user, id, req, model)
-        else
-            doUpdate(user, id, req, binding, model)
+        else try {
+            when (req.type) {
+                IDENTIFIABLE -> doUpdateIdentifiable(user, id, req, binding, model)
+                COUNTABLE -> doUpdateCountable(user, id, req, binding, model)
+                LIMITED_IDENTIFIABLE -> doUpdateLimitedIdentifiable(user, id, req, binding, model)
+                LIMITED_COUNTABLE -> doUpdateLimitedCountable(user, id, req, binding, model)
+                else -> {
+                    log.warn("$M.UPDATE_NOUN_REQ.type is null.")
+                    binding.addError(ObjectError(M.UPDATE_NOUN_REQ, arrayOf(UPDATE_TYPE_NULL), null, "Illegal type.."))
+                    doUpdateForm(user, id, req, model)
+                }
+            }
+        } catch (e: AttributeValidationException) {
+            log.warn(e.message, e)
+            binding.addError(FieldError(M.UPDATE_NOUN_REQ, e.attribute, e.value, false, null, null, e.baseMessage))
+            doUpdateForm(user, id, req, model)
+        } catch (e: NotOwnerException) {
+            log.warn(e.message, e)
+            throw NotFoundException(e.message!!, e)
+        }
 
         if (log.isTraceEnabled) log.trace("result : template='$template', model=$model")
         return template

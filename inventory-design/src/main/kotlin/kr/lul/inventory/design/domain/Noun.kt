@@ -88,7 +88,7 @@ interface Noun {
         const val LABEL_CODE_PREFIX = "noun.labelcode."
         const val LABEL_CODE_MIN_LENGTH = 1
         const val LABEL_CODE_MAX_LENGTH = 255
-        const val LABEL_CODE_PATTERN = "([a-z][a-z\\d]*\\.)*[a-z][a-z\\d]*"
+        const val LABEL_CODE_PATTERN = "([a-z][a-z\\d-]*\\.)*[a-z][a-z\\d-]*"
         val LABEL_CODE_REGEX = LABEL_CODE_PATTERN.toRegex()
 
         fun isValidLabelCode(labelCode: String) = labelCode.length in LABEL_CODE_MIN_LENGTH..LABEL_CODE_MAX_LENGTH

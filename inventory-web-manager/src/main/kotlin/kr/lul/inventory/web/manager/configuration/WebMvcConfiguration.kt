@@ -4,9 +4,15 @@ import kr.lul.inventory.web.manager.mapping.IndexMvc
 import kr.lul.inventory.web.manager.support.LoggingHandlerInterceptor
 import kr.lul.inventory.web.manager.support.ManagerDetailsHandlerMethodArgumentResolver
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.filter.HiddenHttpMethodFilter
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
-import org.springframework.web.servlet.config.annotation.*
+import org.springframework.web.servlet.config.annotation.EnableWebMvc
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 /**
  * @author justburrow
@@ -19,6 +25,9 @@ class WebMvcConfiguration : WebMvcConfigurer {
     private lateinit var loggingHandlerInterceptor: LoggingHandlerInterceptor
     @Autowired
     private lateinit var managerDetailsHandlerMethodArgumentResolver: ManagerDetailsHandlerMethodArgumentResolver
+
+    @Bean
+    fun hiddenHttpMethodFilter() = HiddenHttpMethodFilter()
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // org.springframework.web.servlet.config.annotation.WebMvcConfigurer

@@ -20,5 +20,9 @@ object ErrorCode {
         const val CREATE_LIMIT_IS_NULL = "$PREFIX.create.limit.null"
         const val CREATE_LIMIT_NOT_POSITIVE = "$PREFIX.create.limit.not-positive"
         const val CREATE_LIMIT_NOT_ACCEPTABLE = "$PREFIX.create.limit.not-acceptable"
+
+        const val UPDATE_TYPE_NULL = "$PREFIX.update.type.null"
+        const val UPDATE_LIMIT_NULL = "$PREFIX.update.limit.null"
+        const val UPDATE_LIMIT_NOT_POSITIVE = "$PREFIX.update.limit.not-positive"
     }
 }
