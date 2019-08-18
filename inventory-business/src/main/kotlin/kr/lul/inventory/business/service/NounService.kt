@@ -6,6 +6,10 @@ import kr.lul.inventory.business.service.params.CreateIdentifiableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedCountableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedIdentifiableNounParams
 import kr.lul.inventory.business.service.params.SearchNounParams
+import kr.lul.inventory.business.service.params.UpdateCountableNounParams
+import kr.lul.inventory.business.service.params.UpdateIdentifiableNounParams
+import kr.lul.inventory.business.service.params.UpdateLimitedCountableNounParams
+import kr.lul.inventory.business.service.params.UpdateLimitedIdentifiableNounParams
 import kr.lul.inventory.design.domain.CountableNoun
 import kr.lul.inventory.design.domain.IdentifiableNoun
 import kr.lul.inventory.design.domain.InvalidAttributeException
@@ -39,4 +43,16 @@ interface NounService {
     fun <N : Noun> read(params: ReadNounParams): N?
 
     fun search(params: SearchNounParams): Page<Noun>
+
+    @Throws(NotOwnerException::class)
+    fun update(params: UpdateIdentifiableNounParams): IdentifiableNoun
+
+    @Throws(NotOwnerException::class)
+    fun update(params: UpdateCountableNounParams): CountableNoun
+
+    @Throws(NotOwnerException::class)
+    fun update(params: UpdateLimitedIdentifiableNounParams): LimitedIdentifiableNoun
+
+    @Throws(NotOwnerException::class)
+    fun update(params: UpdateLimitedCountableNounParams): LimitedCountableNoun
 }

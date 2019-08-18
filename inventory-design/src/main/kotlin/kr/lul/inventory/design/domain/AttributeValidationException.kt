@@ -7,5 +7,6 @@ package kr.lul.inventory.design.domain
 class AttributeValidationException(
         val baseMessage: String,
         val attribute: String,
-        val value: Any?
-) : RuntimeException("$baseMessage : attribute=$attribute, value=$value")
+        val value: Any?,
+        cause: Throwable? = null
+) : RuntimeException("$baseMessage : attribute=$attribute, value=$value", cause)

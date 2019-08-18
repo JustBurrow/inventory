@@ -18,8 +18,12 @@ interface LimitedNoun : Noun {
         }
     }
 
+    interface Updater : Noun.Updater {
+        var limit: Int
+    }
+
     /**
      * @return 유저가 가질 수 있는 최대 갯수.
      */
-    var limit: Int
+    val limit: Int
 }

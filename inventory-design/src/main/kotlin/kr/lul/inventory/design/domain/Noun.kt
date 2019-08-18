@@ -125,6 +125,26 @@ interface Noun {
         }
     }
 
+    interface Updater {
+        val id: Int
+
+        val manager: Manager
+
+        val key: String
+
+        val type: NounType
+
+        var label: String
+
+        var labelCode: String
+
+        var description: String
+
+        val createdAt: Instant
+
+        val updatedAt: Instant
+    }
+
     /**
      * 시스템이 부여하는 아이템 ID.
      */
@@ -150,16 +170,18 @@ interface Noun {
      *
      * @see getLabelCode 코드에 해당하는 레이블이 없을 경우 사용.
      */
-    var label: String
+    val label: String
 
     /**
      * 아이템 코드.
      *
      * @see https://ko.wikipedia.org/wiki/%EA%B5%AD%EC%A0%9C%ED%99%94%EC%99%80_%EC%A7%80%EC%97%AD%ED%99%94
      */
-    var labelCode: String
+    val labelCode: String
 
-    var description: String
+    val description: String
+
+    fun updater(updatedAt: Instant): Updater
 
     val createdAt: Instant
 

@@ -1,12 +1,25 @@
 package kr.lul.inventory.test
 
-import kr.lul.inventory.data.jpa.entity.*
+import kr.lul.inventory.data.jpa.entity.AbstractNounEntity
+import kr.lul.inventory.data.jpa.entity.CountableNounEntity
+import kr.lul.inventory.data.jpa.entity.IdentifiableNounEntity
+import kr.lul.inventory.data.jpa.entity.LimitedCountableNounEntity
+import kr.lul.inventory.data.jpa.entity.LimitedIdentifiableNounEntity
+import kr.lul.inventory.data.jpa.entity.ManagerEntity
 import kr.lul.inventory.data.jpa.repository.NounRepository
 import kr.lul.inventory.design.domain.Noun
+import kr.lul.inventory.design.domain.NounType
+import kr.lul.inventory.design.domain.NounType.COUNTABLE
+import kr.lul.inventory.design.domain.NounType.IDENTIFIABLE
+import kr.lul.inventory.design.domain.NounType.LIMITED_COUNTABLE
+import kr.lul.inventory.design.domain.NounType.LIMITED_IDENTIFIABLE
 import kr.lul.inventory.design.util.TimeProvider
 import org.apache.commons.lang3.RandomStringUtils
+import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
+import org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.concurrent.ThreadLocalRandom
+import java.util.concurrent.ThreadLocalRandom.current
 
 class NounUtil {
     @Autowired
@@ -34,7 +47,7 @@ class NounUtil {
 
             do {
                 label = "test noun label - ${RandomStringUtils.random(
-                        ThreadLocalRandom.current().nextInt(1, Noun.LABEL_MAX_LENGTH - 20))}"
+                        current().nextInt(1, Noun.LABEL_MAX_LENGTH - 20))}"
             } while (!Noun.isValidLabel(label))
 
             return label
@@ -45,9 +58,26 @@ class NounUtil {
             var labelCode: String
 
             do {
-                labelCode = "test.${RandomStringUtils.randomAlphabetic(1)}".toLowerCase()
+                labelCode = "test.${randomAlphabetic(1)}${randomAlphanumeric(0, 10)}".toLowerCase()
             } while (!Noun.isValidLabelCode(labelCode))
 
+            return labelCode
+        }
+
+    val unusedLabel: String
+        get() {
+            var label: String
+            do {
+                label = this.label
+            } while (repository.existsByLabel(label))
+            return label
+        }
+    val unusedLabelCode: String
+        get() {
+            var labelCode: String
+            do {
+                labelCode = this.labelCode
+            } while (repository.existsByLabelCode(labelCode))
             return labelCode
         }
 
@@ -69,7 +99,6 @@ class NounUtil {
             LimitedCountableNounEntity(manager, key, label, labelCode,
                     ThreadLocalRandom.current().nextInt(1, Int.MAX_VALUE),
                     description, timeProvider.instant)
-
 
     fun identifiable(manager: ManagerEntity = managerUtil.manager()): IdentifiableNounEntity {
         while (true) {
@@ -106,4 +135,12 @@ class NounUtil {
             }
         }
     }
+
+    fun random(manager: ManagerEntity = managerUtil.manager()): AbstractNounEntity =
+            when (NounType.values().toList().shuffled()[0]) {
+                IDENTIFIABLE -> identifiable(manager)
+                COUNTABLE -> countable(manager)
+                LIMITED_IDENTIFIABLE -> limitedIdentifiable(manager)
+                LIMITED_COUNTABLE -> limitedCountable(manager)
+            }
 }

@@ -7,9 +7,15 @@ import kr.lul.inventory.business.service.params.CreateIdentifiableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedCountableNounParams
 import kr.lul.inventory.business.service.params.CreateLimitedIdentifiableNounParams
 import kr.lul.inventory.business.service.params.SearchNounParams
+import kr.lul.inventory.business.service.params.UpdateCountableNounParams
+import kr.lul.inventory.business.service.params.UpdateIdentifiableNounParams
+import kr.lul.inventory.business.service.params.UpdateLimitedCountableNounParams
+import kr.lul.inventory.business.service.params.UpdateLimitedIdentifiableNounParams
+import kr.lul.inventory.data.jpa.entity.AbstractNounEntity
 import kr.lul.inventory.data.jpa.entity.CountableNounEntity
 import kr.lul.inventory.data.jpa.entity.IdentifiableNounEntity
 import kr.lul.inventory.data.jpa.entity.LimitedIdentifiableNounEntity
+import kr.lul.inventory.design.domain.AttributeValidationException
 import kr.lul.inventory.design.domain.IdentifiableNoun
 import kr.lul.inventory.design.domain.LimitedNoun.Companion.ATTR_LIMIT
 import kr.lul.inventory.design.domain.Noun
@@ -23,10 +29,16 @@ import kr.lul.inventory.design.domain.Noun.Companion.ATTR_MANAGER
 import kr.lul.inventory.design.domain.Noun.Companion.ATTR_TYPE
 import kr.lul.inventory.design.domain.Noun.Companion.ATTR_UPDATED_AT
 import kr.lul.inventory.design.domain.NounType
+import kr.lul.inventory.design.domain.NounType.COUNTABLE
+import kr.lul.inventory.design.domain.NounType.IDENTIFIABLE
+import kr.lul.inventory.design.domain.NounType.LIMITED_COUNTABLE
+import kr.lul.inventory.design.domain.NounType.LIMITED_IDENTIFIABLE
 import kr.lul.inventory.design.util.TimeProvider
 import kr.lul.inventory.test.ManagerUtil
 import kr.lul.inventory.test.NounUtil
+import org.apache.commons.lang3.RandomStringUtils.random
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -94,7 +106,7 @@ class NounServiceImplTest {
                 .isInstanceOf(IdentifiableNounEntity::class.java)
                 .extracting(ATTR_TYPE, ATTR_MANAGER, ATTR_KEY, ATTR_LABEL, ATTR_LABEL_CODE,
                         ATTR_DESCRIPTION, ATTR_CREATED_AT, ATTR_UPDATED_AT)
-                .containsSequence(NounType.IDENTIFIABLE, manager, params.key, params.label, params.labelCode,
+                .containsSequence(IDENTIFIABLE, manager, params.key, params.label, params.labelCode,
                         params.description, before, before)
         assertThat(noun.id)
                 .isPositive()
@@ -127,7 +139,7 @@ class NounServiceImplTest {
                 .isInstanceOf(IdentifiableNounEntity::class.java)
                 .extracting(ATTR_TYPE, ATTR_MANAGER, ATTR_KEY, ATTR_LABEL, ATTR_LABEL_CODE, ATTR_DESCRIPTION,
                         ATTR_CREATED_AT, ATTR_UPDATED_AT)
-                .containsSequence(NounType.IDENTIFIABLE, manager, key, label, labelCode, description,
+                .containsSequence(IDENTIFIABLE, manager, key, label, labelCode, description,
                         createdAt, updatedAt)
     }
 
@@ -303,5 +315,232 @@ class NounServiceImplTest {
         // THEN
         assertThat(list)
                 .containsExactly(identifiable, countable, limitedIdentifiable, limitedCountable)
+    }
+
+    @Test
+    fun `test update(params) Identifiable`() {
+        // GIVEN
+        val manager = managerUtil.manager()
+        log.debug("GIVEN - manager=$manager")
+        val noun = nounUtil.identifiable(manager)
+        log.debug("GIVEN - noun=$noun")
+
+        entityManager.clear()
+
+        val label = nounUtil.unusedLabel
+        val labelCode = nounUtil.unusedLabelCode
+        var description: String
+        do {
+            description = random(current().nextInt(1, 100))
+        } while (noun.description == description)
+
+        val params = UpdateIdentifiableNounParams(randomUUID(), manager, noun.id, label, labelCode, description,
+                timeProvider.instant)
+        log.debug("GIVEN - params=$params")
+
+        // WHEN
+        val updated = service.update(params)
+        log.debug("WHEN - updated=$updated")
+
+        // THEN
+        assertThat(updated)
+                .isNotSameAs(noun)
+                .isEqualTo(noun)
+                .extracting(ATTR_ID, ATTR_MANAGER, ATTR_TYPE, ATTR_KEY, ATTR_LABEL, ATTR_LABEL_CODE, ATTR_DESCRIPTION,
+                        ATTR_CREATED_AT, ATTR_UPDATED_AT)
+                .containsSequence(noun.id, manager, IDENTIFIABLE, noun.key, label, labelCode, description,
+                        noun.createdAt, params.timestamp)
+    }
+
+    @Test
+    fun `test update(params) Identifiable without ownership`() {
+        // GIVEN
+        val manager = managerUtil.manager()
+        log.debug("GIVEN - manager=$manager")
+        val noun = nounUtil.identifiable()
+        log.debug("GIVEN - noun=$noun")
+
+        val params = UpdateIdentifiableNounParams(randomUUID(), manager, noun.id,
+                "test update label", "test.update.label", "test description", timeProvider.instant)
+        log.debug("GIVEN - params=$params")
+
+        // WHEN & THEN
+        assertThatThrownBy { service.update(params) }
+                .isInstanceOf(AttributeValidationException::class.java)
+                .hasCauseInstanceOf(NotOwnerException::class.java)
+                .extracting("cause.manager")
+                .containsSequence(manager)
+    }
+
+    @Test
+    fun `test update(params) Identifiable with illegal type`() {
+        // GIVEN
+        val manager = managerUtil.manager()
+        log.debug("GIVEN - manager=$manager")
+        var noun: AbstractNounEntity
+        do {
+            noun = nounUtil.random(manager)
+        } while (IDENTIFIABLE == noun.type)
+        log.debug("GIVEN - noun=$noun")
+
+        val params = UpdateIdentifiableNounParams(randomUUID(), manager, noun.id, "test update label",
+                "test.update.label", "test description", timeProvider.instant)
+        log.debug("GIVEN - params=$params")
+
+        // WHEN & THEN
+        assertThatThrownBy { service.update(params) }
+                .isInstanceOf(AttributeValidationException::class.java)
+                .hasMessageContaining("noun type")
+                .extracting("attribute", "value")
+                .containsSequence("type", IDENTIFIABLE)
+    }
+
+    @Test
+    fun `test update(params) Identifiable with noun id 0`() {
+        // GIVEN
+        val manager = managerUtil.manager()
+        log.debug("GIVEN - manager=$manager")
+
+        val params = UpdateIdentifiableNounParams(randomUUID(), manager, 0, "test update label",
+                "test.update.label", "test description", timeProvider.instant)
+        log.debug("GIVEN - params=$params")
+
+        // WHEN & THEN
+        assertThatThrownBy { service.update(params) }
+                .isInstanceOf(AttributeValidationException::class.java)
+                .hasMessageContaining("noun id is not positive")
+                .extracting("attribute", "value")
+                .containsSequence(ATTR_ID, 0)
+    }
+
+    @Test
+    fun `test update(params) Identifiable with not exists noun id`() {
+        // GIVEN
+        val manager = managerUtil.manager()
+        log.debug("GIVEN - manager=$manager")
+
+        val params = UpdateIdentifiableNounParams(randomUUID(), manager, Int.MAX_VALUE, "test update label",
+                "test.update.label", "test description", timeProvider.instant)
+        log.debug("GIVEN - params=$params")
+
+        // WHEN & THEN
+        assertThatThrownBy { service.update(params) }
+                .isInstanceOf(AttributeValidationException::class.java)
+                .hasMessageContaining("noun does not exist")
+                .extracting("attribute", "value")
+                .containsSequence(ATTR_ID, Int.MAX_VALUE)
+    }
+
+    @Test
+    fun `test update(params) Countable`() {
+        // GIVEN
+        val manager = managerUtil.manager()
+        log.debug("GIVEN - manager=$manager")
+        val noun = nounUtil.countable(manager)
+        log.debug("GIVEN - noun=$noun")
+
+        entityManager.clear()
+
+        val label = nounUtil.unusedLabel
+        val labelCode = nounUtil.unusedLabelCode
+        var description: String
+        do {
+            description = random(current().nextInt(5, 50))
+        } while (noun.description == description)
+
+        val params = UpdateCountableNounParams(randomUUID(), manager, noun.id, label, labelCode, description,
+                timeProvider.instant)
+        log.debug("GIVEN - params=$params")
+
+        // WHEN
+        val updated = service.update(params)
+        log.debug("WHEN - updated=$updated")
+
+        // THEN
+        assertThat(updated)
+                .isNotSameAs(noun)
+                .isEqualTo(noun)
+                .extracting(ATTR_ID, ATTR_MANAGER, ATTR_TYPE, ATTR_KEY, ATTR_LABEL, ATTR_LABEL_CODE, ATTR_DESCRIPTION,
+                        ATTR_CREATED_AT, ATTR_UPDATED_AT)
+                .containsSequence(noun.id, manager, COUNTABLE, noun.key, label, labelCode, description,
+                        noun.createdAt, params.timestamp)
+    }
+
+    @Test
+    fun `test update(params) LimitedIdentifiable`() {
+        // GIVEN
+        val manager = managerUtil.manager()
+        log.debug("GIVEN - manager=$manager")
+        val noun = nounUtil.limitedIdentifiable(manager)
+        log.debug("GIVEN - noun=$noun")
+
+        entityManager.clear()
+
+        val label = nounUtil.unusedLabel
+        val labelCode = nounUtil.unusedLabelCode
+        var limit: Int
+        do {
+            limit = current().nextInt(1, Int.MAX_VALUE)
+        } while (noun.limit == limit)
+        var description: String
+        do {
+            description = random(current().nextInt(5, 50))
+        } while (noun.description == description)
+
+        val params = UpdateLimitedIdentifiableNounParams(randomUUID(), manager, noun.id, label, labelCode, limit,
+                description, timeProvider.instant)
+        log.debug("GIVEN - params=$params")
+
+        // WHEN
+        val updated = service.update(params)
+        log.debug("WHEN - updated=$updated")
+
+        // THEN
+        assertThat(updated)
+                .isNotSameAs(noun)
+                .isEqualTo(noun)
+                .extracting(ATTR_ID, ATTR_MANAGER, ATTR_TYPE, ATTR_KEY, ATTR_LABEL, ATTR_LABEL_CODE, ATTR_LIMIT,
+                        ATTR_DESCRIPTION, ATTR_CREATED_AT, ATTR_UPDATED_AT)
+                .containsSequence(noun.id, manager, LIMITED_IDENTIFIABLE, noun.key, label, labelCode, limit,
+                        description, noun.createdAt, params.timestamp)
+    }
+
+    @Test
+    fun `test update(params) LimitedCountable`() {
+        // GIVEN
+        val manager = managerUtil.manager()
+        log.debug("GIVEN - manager=$manager")
+        val noun = nounUtil.limitedCountable(manager)
+        log.debug("GIVEN - noun=$noun")
+
+        entityManager.clear()
+
+        val label = nounUtil.unusedLabel
+        val labelCode = nounUtil.unusedLabelCode
+        var limit: Int
+        do {
+            limit = current().nextInt(1, Int.MAX_VALUE)
+        } while (noun.limit == limit)
+        var description: String
+        do {
+            description = random(current().nextInt(5, 50))
+        } while (noun.description == description)
+
+        val params = UpdateLimitedCountableNounParams(randomUUID(), manager, noun.id, label, labelCode, limit,
+                description, timeProvider.instant)
+        log.debug("GIVEN - params=$params")
+
+        // WHEN
+        val updated = service.update(params)
+        log.debug("WHEN - updated=$updated")
+
+        // THEN
+        assertThat(updated)
+                .isNotSameAs(noun)
+                .isEqualTo(noun)
+                .extracting(ATTR_ID, ATTR_MANAGER, ATTR_TYPE, ATTR_KEY, ATTR_LABEL, ATTR_LABEL_CODE, ATTR_LIMIT,
+                        ATTR_DESCRIPTION, ATTR_CREATED_AT, ATTR_UPDATED_AT)
+                .containsSequence(noun.id, manager, LIMITED_COUNTABLE, noun.key, label, labelCode, limit,
+                        description, noun.createdAt, params.timestamp)
     }
 }

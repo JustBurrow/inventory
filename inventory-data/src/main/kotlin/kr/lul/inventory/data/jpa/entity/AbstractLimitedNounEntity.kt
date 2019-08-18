@@ -25,7 +25,7 @@ abstract class AbstractLimitedNounEntity(
         LimitedNoun {
     @Column(name = COL_LIMIT)
     override var limit: Int = limit
-        set(value) {
+        protected set(value) {
             validateLimit(value)
             field = value
         }

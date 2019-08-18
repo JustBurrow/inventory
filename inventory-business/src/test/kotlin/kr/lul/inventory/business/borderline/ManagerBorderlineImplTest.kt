@@ -22,7 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 import java.lang.Thread.sleep
 import java.time.Instant
-import java.util.*
 import java.util.UUID.randomUUID
 import kr.lul.inventory.design.domain.Manager.Companion.ATTR_NAME as ATTR_NAME1
 
@@ -76,14 +75,14 @@ class ManagerBorderlineImplTest {
     fun `test create(cmd) with same email`() {
         // GIVEN
         val email = managerUtil.email
-        val cmd = CreateManagerCmd(UUID.randomUUID(), email, managerUtil.name, managerUtil.password)
+        val cmd = CreateManagerCmd(randomUUID(), email, managerUtil.name, managerUtil.password)
         log.debug("GIVEN - cmd=$cmd")
         val manager = borderline.create(cmd)
         log.debug("GIVEN - manager=$manager")
 
         // WHEN & THEN
         assertThatThrownBy {
-            borderline.create(CreateManagerCmd(UUID.randomUUID(), email, managerUtil.name,
+            borderline.create(CreateManagerCmd(randomUUID(), email, managerUtil.name,
                     managerUtil.password))
         }
                 .isInstanceOf(AttributeValidationException::class.java)
@@ -96,13 +95,13 @@ class ManagerBorderlineImplTest {
     fun `test create(cmd) with same name`() {
         // GIVEN
         val name = managerUtil.name
-        val manager = borderline.create(CreateManagerCmd(UUID.randomUUID(), managerUtil.email, name,
+        val manager = borderline.create(CreateManagerCmd(randomUUID(), managerUtil.unusedEmail, name,
                 managerUtil.password))
         log.debug("GIVEN - manager=$manager")
 
         // WHEN & THEN
         assertThatThrownBy {
-            borderline.create(CreateManagerCmd(UUID.randomUUID(), managerUtil.email, name,
+            borderline.create(CreateManagerCmd(randomUUID(), managerUtil.email, name,
                     managerUtil.password))
         }
                 .isInstanceOf(AttributeValidationException::class.java)
@@ -114,7 +113,7 @@ class ManagerBorderlineImplTest {
     @Test
     fun `test create(cmd) with empty password`() {
         // GIVEN
-        val cmd = CreateManagerCmd(UUID.randomUUID(), managerUtil.email, managerUtil.name, "")
+        val cmd = CreateManagerCmd(randomUUID(), managerUtil.email, managerUtil.name, "")
         log.debug("GIVEN - cmd=$cmd")
 
         // WHEN & THEN
@@ -128,7 +127,8 @@ class ManagerBorderlineImplTest {
     @Test
     fun `test create(cmd) with min length password`() {
         // GIVEN
-        val cmd = CreateManagerCmd(UUID.randomUUID(), managerUtil.email, managerUtil.name, random(PASSWORD_MIN_LENGTH))
+        val cmd = CreateManagerCmd(randomUUID(), managerUtil.unusedEmail, managerUtil.unusedName,
+                random(PASSWORD_MIN_LENGTH))
         log.debug("GIVEN - cmd=$cmd")
 
         // WHEN
@@ -149,7 +149,7 @@ class ManagerBorderlineImplTest {
     @Test
     fun `test create(cmd) with short password`() {
         // GIVEN
-        val cmd = CreateManagerCmd(UUID.randomUUID(), managerUtil.email, managerUtil.name,
+        val cmd = CreateManagerCmd(randomUUID(), managerUtil.email, managerUtil.name,
                 random(PASSWORD_MIN_LENGTH - 1))
         log.debug("GIVEN - cmd=$cmd")
 
@@ -164,7 +164,7 @@ class ManagerBorderlineImplTest {
     @Test
     fun `test read(cmd)`() {
         // GIVEN
-        val expected = borderline.create(CreateManagerCmd(UUID.randomUUID(), managerUtil.email, managerUtil.name,
+        val expected = borderline.create(CreateManagerCmd(randomUUID(), managerUtil.email, managerUtil.name,
                 managerUtil.password))
         log.debug("GIVEN - expected=$expected")
         val cmd = ReadManagerCmd(randomUUID(), expected.id)

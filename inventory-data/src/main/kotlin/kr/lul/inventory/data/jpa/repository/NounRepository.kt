@@ -15,5 +15,9 @@ import org.springframework.stereotype.Repository
 interface NounRepository : JpaRepository<AbstractNounEntity, Int> {
     fun existsByKey(key: String): Boolean
 
+    fun existsByLabel(label: String): Boolean
+
+    fun existsByLabelCode(labelCode: String): Boolean
+
     fun findAllByManager(manager: Manager, page: Pageable): Page<AbstractNounEntity>
 }

@@ -6,7 +6,10 @@ import kr.lul.inventory.business.borderline.cmd.CreateLimitedCountableNounCmd
 import kr.lul.inventory.business.borderline.cmd.CreateLimitedIdentifiableNounCmd
 import kr.lul.inventory.business.borderline.cmd.ReadNounCmd
 import kr.lul.inventory.business.borderline.cmd.SearchNounCmd
-import kr.lul.inventory.business.borderline.cmd.UpdateNounCmd
+import kr.lul.inventory.business.borderline.cmd.UpdateCountableNounCmd
+import kr.lul.inventory.business.borderline.cmd.UpdateIdentifiableNounCmd
+import kr.lul.inventory.business.borderline.cmd.UpdateLimitedCountableNounCmd
+import kr.lul.inventory.business.borderline.cmd.UpdateLimitedIdentifiableNounCmd
 import kr.lul.inventory.business.service.NotOwnerException
 import kr.lul.inventory.design.domain.Noun
 import kr.lul.inventory.dto.CountableNounDetailDto
@@ -42,5 +45,14 @@ interface NounBorderline {
     fun search(cmd: SearchNounCmd): Page<NounSimpleDto>
 
     @Throws(NotOwnerException::class)
-    fun <N : NounDetailDto> update(cmd: UpdateNounCmd): N
+    fun update(cmd: UpdateIdentifiableNounCmd): IdentifiableNounDetailDto
+
+    @Throws(NotOwnerException::class)
+    fun update(cmd: UpdateCountableNounCmd): CountableNounDetailDto
+
+    @Throws(NotOwnerException::class)
+    fun update(cmd: UpdateLimitedIdentifiableNounCmd): LimitedIdentifiableNounDetailDto
+
+    @Throws(NotOwnerException::class)
+    fun update(cmd: UpdateLimitedCountableNounCmd): LimitedCountableNounDetailDto
 }

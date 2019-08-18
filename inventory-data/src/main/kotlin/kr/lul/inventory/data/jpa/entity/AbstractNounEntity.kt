@@ -31,7 +31,21 @@ import kr.lul.inventory.design.domain.Noun.Companion.validateLabel
 import kr.lul.inventory.design.domain.Noun.Companion.validateLabelCode
 import kr.lul.inventory.design.domain.Noun.Companion.validateManager
 import java.time.Instant
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.DiscriminatorColumn
+import javax.persistence.DiscriminatorType
+import javax.persistence.Entity
+import javax.persistence.ForeignKey
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.Index
+import javax.persistence.Inheritance
+import javax.persistence.InheritanceType
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
+import javax.persistence.UniqueConstraint
 
 /**
  * @author justburrow
@@ -66,24 +80,27 @@ abstract class AbstractNounEntity(
     override val id: Int = 0
     @Column(name = COL_LABEL, nullable = false)
     override var label: String = label
-        set(value) {
+        protected set(value) {
             validateLabel(value)
             field = value
         }
     @Column(name = COL_LABEL_CODE, nullable = false)
     override var labelCode: String = labelCode
-        set(value) {
+        protected set(value) {
             validateLabelCode(value)
             field = value
         }
     @Column(name = COL_DESCRIPTION, length = DESCRIPTION_MAX_LENGTH, nullable = false)
     override var description: String = description
-        set(value) {
+        protected set(value) {
             validateDescription(value)
             field = value
         }
     @Column(name = COL_UPDATED_AT, nullable = false)
     override var updatedAt: Instant = createdAt
+        protected set(value) {
+            field = value
+        }
 
     init {
         validateManager(manager)
